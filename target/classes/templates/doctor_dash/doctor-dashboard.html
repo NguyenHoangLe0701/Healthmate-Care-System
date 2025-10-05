@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bảng điều khiển bác sĩ</title>
+    <link rel="stylesheet" th:href="@{/css/doctor-dash.css}" />
+    <!-- CSS moved to static/css/doctordash.css -->
+  </head>
+  <body class="doctor-dash-body">
+    <div th:replace="doctor_dash/fragments/doctor-header :: doctorHeader"></div>
+    <div class="doctor-dash-container">
+      <div class="doctor-dash-section-title">Chức năng quản lý</div>
+      <ul class="doctor-dash-list">
+        <li>
+          <a th:href="@{/test-orders/doctor-list}" class="doctor-dash-link"
+            >Quản lý đơn xét nghiệm</a
+          >
+        </li>
+        <li>
+          <a href="#" class="doctor-dash-link"
+            >Quản lý bài viết trả lời câu hỏi</a
+          >
+        </li>
+        <li><a href="#" class="doctor-dash-link">Quản lý lịch làm việc</a></li>
+        <li><a href="#" class="doctor-dash-link">Cập nhật hồ sơ cá nhân</a></li>
+      </ul>
+      <div class="doctor-dash-section-title">Thông báo</div>
+      <div style="color: #009e90; font-size: 1.08em; margin-bottom: 12px">
+        Chào mừng bạn đến với trang quản lý dành cho bác sĩ!<br />
+        Hãy chọn chức năng bên trên để bắt đầu.
+      </div>
+    </div>
+    <div th:replace="doctor_dash/fragments/doctor-footer :: doctorFooter"></div>
+  </body>
+</html>

@@ -1,0 +1,407 @@
+.thank-btn {
+  background: #10b981;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 1.08rem;
+  margin-right: 8px;
+  box-shadow: 0 2px 8px #10b98122;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.12s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.thank-btn:active {
+  transform: scale(0.97);
+}
+.thank-btn[disabled],
+.thank-btn.disabled {
+  background: #e2e8f0 !important;
+  color: #888 !important;
+  cursor: not-allowed !important;
+  box-shadow: none;
+}
+.thank-btn .icon-heart {
+  font-size: 1.15em;
+  margin-right: 2px;
+  color: #ff5e5e;
+  transition: color 0.18s;
+}
+.thank-btn[disabled] .icon-heart,
+.thank-btn.disabled .icon-heart {
+  color: #bbb;
+}
+.thank-count {
+  margin-left: 10px;
+  color: #10b981;
+  font-weight: bold;
+  font-size: 1.04em;
+  background: #e0f2fe;
+  border-radius: 6px;
+  padding: 2px 10px;
+  box-shadow: 0 1px 4px #10b98111;
+}
+.back-link {
+  margin-left: 18px;
+  color: #166950;
+  font-weight: 500;
+  text-decoration: none;
+  background: #e0f2fe;
+  border-radius: 6px;
+  padding: 6px 18px;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 1px 4px #10b98111;
+}
+.back-link:hover {
+  background: #b9fbc0;
+  color: #0d4d3b;
+  text-decoration: underline;
+}
+/* --- CSS cho nút Đóng/Mở câu hỏi và Từ chối câu hỏi --- */
+.close-question-btn {
+  background: #fef9c3;
+  color: #b45309;
+  border: 1.5px solid #fde68a;
+  border-radius: 7px;
+  font-weight: 600;
+  padding: 7px 18px;
+  margin-left: 12px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border 0.18s;
+  box-shadow: 0 2px 8px #fde68a33;
+}
+.close-question-btn:hover {
+  background: #fde68a;
+  color: #a16207;
+  border-color: #fbbf24;
+}
+.reject-question-btn {
+  background: #ffeaea;
+  color: #e11d48;
+  border: 1.5px solid #e11d48;
+  border-radius: 7px;
+  font-weight: 600;
+  padding: 7px 18px;
+  margin-left: 12px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border 0.18s;
+  box-shadow: 0 2px 8px #e11d4822;
+}
+.reject-question-btn:hover {
+  background: #e11d48;
+  color: #fff;
+  border-color: #b91c1c;
+}
+/* Form từ chối */
+#rejectForm {
+  background: #fff0f0;
+  border: 1.5px solid #e11d48;
+  border-radius: 10px;
+  padding: 12px 16px 10px 16px;
+  margin-top: 8px;
+  box-shadow: 0 2px 8px #e11d4822;
+  max-width: 420px;
+}
+#rejectForm textarea {
+  border: 1.5px solid #e11d48;
+  background: #fff;
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 1rem;
+  margin-bottom: 6px;
+  width: 100%;
+  resize: vertical;
+}
+#rejectForm label {
+  color: #e11d48;
+  font-weight: 500;
+}
+.hm-filter-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+  background: #e0f2fe;
+  border-radius: 10px;
+  padding: 12px 18px 10px 18px;
+  box-shadow: 0 2px 8px #10b98122;
+  border: 1.5px solid #b9fbc0;
+  transition: box-shadow 0.18s, border 0.18s;
+}
+.hm-filter-bar label {
+  font-weight: 600;
+  color: #166950;
+  margin-right: 2px;
+}
+.main-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  max-width: 1300px;
+  margin: 32px auto;
+  align-items: flex-start;
+}
+.questions-list {
+  flex: 1 1 60%;
+  min-width: 350px;
+  margin-right: 16px;
+}
+.question-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(16, 185, 129, 0.08),
+    0 1.5px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 32px;
+  padding: 26px 28px 18px 28px;
+  border: 1.5px solid #e2e8f0;
+  transition: box-shadow 0.22s, border 0.22s, transform 0.18s;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.question-title {
+  font-weight: bold;
+  color: #166950;
+  font-size: 1.18rem;
+  margin-bottom: 5px;
+  letter-spacing: 0.01em;
+  transition: color 0.18s;
+}
+.question-content {
+  color: #222;
+  font-size: 1.07rem;
+  margin-bottom: 10px;
+  line-height: 1.7;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 10px 14px;
+  border-left: 3.5px solid #10b981;
+  transition: background 0.18s;
+}
+.question-meta {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-style: italic;
+}
+.question-specialist {
+  background: linear-gradient(90deg, #e0f2fe 60%, #b9fbc0 100%);
+  color: #166950;
+  border-radius: 6px;
+  padding: 2px 12px;
+  font-size: 0.97em;
+  font-weight: 600;
+  margin-right: 8px;
+  display: inline-block;
+  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.07);
+}
+.question-status {
+  font-size: 1em;
+  margin-right: 10px;
+  font-weight: 500;
+}
+.ask-form-box {
+  background: #fff;
+  border-radius: 18px;
+  padding: 32px 24px 24px 24px;
+  box-shadow: 0 2px 16px rgba(22, 105, 80, 0.1);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 32px;
+}
+.ask-form-title {
+  color: #166950;
+  font-size: 1.35rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 18px;
+  letter-spacing: 0.5px;
+}
+.ask-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ask-form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ask-form-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0f2fe;
+}
+.ask-form-age {
+  flex: 1;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  padding: 8px 10px;
+  font-size: 1rem;
+}
+.ask-form-gender {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ask-form-gender label {
+  margin: 0;
+  font-size: 1rem;
+  color: #166950;
+  font-weight: 500;
+  cursor: pointer;
+}
+.ask-form input[type="radio"] {
+  accent-color: #10b981;
+}
+.ask-form-input,
+.ask-form textarea {
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  padding: 8px 10px;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border 0.2s;
+}
+.ask-form-input:focus,
+.ask-form textarea:focus {
+  outline: 2px solid #10b981;
+  border-color: #10b981;
+}
+.ask-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+.ask-form-image {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 10px 12px;
+  border: 1px dashed #10b981;
+  transition: background 0.2s;
+}
+.ask-form-image:hover {
+  background: #e0f2fe;
+}
+.ask-form-image img {
+  width: 48px;
+  height: 48px;
+  margin-right: 8px;
+}
+.ask-form-image span {
+  font-weight: 500;
+  color: #166950;
+}
+.ask-form-image-preview {
+  margin-top: 8px;
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+.ask-form-note {
+  color: #86899b;
+  text-align: center;
+  font-size: 0.95em;
+  margin-bottom: 8px;
+}
+.ask-form-btn {
+  background: #10b981;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  width: 100%;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ask-form-btn:hover {
+  background: #166950 !important;
+}
+@media (max-width: 900px) {
+  .main-wrap {
+    flex-direction: column;
+    padding: 12px 2px;
+  }
+  .ask-form-box {
+    margin-bottom: 18px;
+  }
+  .questions-list {
+    margin-right: 0;
+    min-width: unset;
+  }
+  .question-card {
+    padding: 18px 8px 14px 8px;
+    margin-bottom: 18px;
+  }
+  .question-title {
+    font-size: 1.05rem;
+  }
+  .question-content {
+    font-size: 1rem;
+    padding: 8px 6px;
+  }
+  .question-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    font-size: 0.97rem;
+  }
+  .ask-form-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .ask-form-avatar {
+    width: 38px;
+    height: 38px;
+  }
+  .ask-form-btn {
+    font-size: 1rem;
+    padding: 10px 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-wrap {
+    padding: 4px 0;
+    gap: 8px;
+  }
+  .question-card {
+    padding: 10px 2px 8px 2px;
+    border-radius: 8px;
+  }
+  .ask-form-box {
+    padding: 16px 4px 12px 4px;
+    border-radius: 10px;
+  }
+  .ask-form-title {
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+  }
+  .ask-form-btn {
+    font-size: 0.97rem;
+    padding: 8px 0;
+  }
+  .thank-btn {
+    font-size: 0.97rem;
+    padding: 6px 10px;
+  }
+  .thank-count {
+    font-size: 0.97em;
+    padding: 1px 6px;
+  }
+}

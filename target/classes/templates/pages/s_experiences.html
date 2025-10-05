@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Trang chủ</title>
+    <link rel="stylesheet" th:href="@{/css/s_experiences.css}" />
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="contact_support support_banner">
+        <div class="container_support support-h">
+          <div class="contact_support-title">
+            <div class="contact_support-col">
+              <div class="contact_support-hotline">
+                <span class="support_title-text">Tổng đài hỗ trợ:</span>
+                <a href="#" class="support_hotline">
+                  <i class="fa-solid fa-phone-volume ic-hotline"></i>
+                  <span class="link_hotline"> 0808099812</span>
+                </a>
+              </div>
+              <div class="contact_support-search">
+                <div class="search-box">
+                  <div class="search_input-banner">
+                    <i class="fa-solid fa-magnifying-glass ic-search"></i>
+                    <input
+                      type="text"
+                      placeholder="Bạn cần hỗ trợ điều gì?"
+                      maxlength="200"
+                      class="search_input-text"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-container">
+        <div class="education-intro">
+          <h1 class="education-intro__title">Kinh Nghiệm</h1>
+          <p class="education-intro__subtitle">
+            Các bài viết về sức khỏe cung cấp cho bạn thông tin về xu hướng và
+            hướng dẫn mới nhất.
+          </p>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-bar__item">
+            <select class="filter-bar__select">
+              <option value="all">Lựa chọn</option>
+              <option value="women">Sức khỏe phụ nữ</option>
+            </select>
+          </div>
+        </div>
+
+        <div th:replace="~{articles/health-library :: healthLibrarySection(${articles})}"></div>
+        
+        <div class="pagination">
+          <a href="#" class="pagination__item pagination__item--active">1</a>
+          <a href="#" class="pagination__item">2</a>
+          <a href="#" class="pagination__item">3</a>
+          <a href="#" class="pagination__item">4</a>
+          <a href="#" class="pagination__item">5</a>
+          <a href="#" class="pagination__arrow">&gt;</a>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const select = document.querySelector('.filter-bar__select');
+      const library = document.querySelector('.health-library');
+      const pagination = document.querySelector('.pagination');
+      let allArticles = [];
+      let currentPage = 1;
+      const pageSize = 9;
+
+      // Lấy danh sách category từ API và render dropdown
+      fetch('/api/articles/categories')
+        .then(res => res.json())
+        .then(categories => {
+          let options = '<option value="all">Tất cả</option>';
+          categories.forEach(cat => {
+            options += `<option value="${cat}">${cat}</option>`;
+          });
+          select.innerHTML = options;
+          // Gọi lọc mặc định khi trang vừa mở
+          filterArticles();
+        });
+
+      select.addEventListener('change', function() {
+        currentPage = 1;
+        filterArticles();
+      });
+
+      function filterArticles() {
+        const category = select.value;
+        fetch(`/api/articles?category=${encodeURIComponent(category)}`)
+          .then(res => res.json())
+          .then(articles => {
+            allArticles = articles;
+            renderPage(currentPage);
+            renderPagination();
+          });
+      }
+
+      function renderPage(page) {
+        const start = (page - 1) * pageSize;
+        const end = start + pageSize;
+        const articles = allArticles.slice(start, end);
+        library.innerHTML = articles.map(article => `
+          <div class="health-library__card">
+            <a href="/articles/${article.id}">
+              <img class="health-library__card-image" src="${article.imageUrl}" alt="${article.title}">
+            </a>
+            <div class="health-library__card-content">
+              <span class="health-library__card-category">${article.category}</span>
+              <h3 class="health-library__card-title">
+                <a href="/articles/${article.id}">${article.title}</a>
+              </h3>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderPagination() {
+        const totalPages = Math.ceil(allArticles.length / pageSize);
+        if (totalPages <= 1) {
+          pagination.innerHTML = '';
+          return;
+        }
+        let html = '';
+        for (let i = 1; i <= totalPages; i++) {
+          if (i === currentPage) {
+            html += `<a href="#" class="pagination__item pagination__item--active" data-page="${i}">${i}</a>`;
+          } else {
+            html += `<a href="#" class="pagination__item" data-page="${i}">${i}</a>`;
+          }
+        }
+        if (currentPage < totalPages) {
+          html += `<a href="#" class="pagination__arrow" data-page="${currentPage + 1}">&gt;</a>`;
+        }
+        pagination.innerHTML = html;
+        // Gán sự kiện click cho các nút phân trang
+        pagination.querySelectorAll('a[data-page]').forEach(a => {
+          a.onclick = function(e) {
+            e.preventDefault();
+            currentPage = parseInt(this.getAttribute('data-page'));
+            renderPage(currentPage);
+            renderPagination();
+            window.scrollTo({top: library.offsetTop, behavior: 'smooth'});
+          };
+        });
+      }
+    });
+    </script>
+  </body>
+</html>

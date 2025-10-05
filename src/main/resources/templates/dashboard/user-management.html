@@ -1,0 +1,43 @@
+<div th:fragment="contentUser">
+    <link rel="stylesheet" href="/css/user.css">
+    <div class="dashboard-title">Quản lý người dùng</div>
+    <div class="dashboard-welcome">Quản lý, tìm kiếm, thêm mới, chỉnh sửa và xóa người dùng trong hệ thống.</div>
+    <div style="margin-bottom: 18px; text-align: right;">
+        <a href="#" style="background: #009879; color: #fff; border: none; border-radius: 6px; padding: 8px 18px; font-size: 1rem; font-weight: 500; cursor: pointer; text-decoration: none;">
+            <i class="fa fa-plus"></i> Thêm người dùng
+        </a>
+    </div>
+    <div class="user-table-container">
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Mật khẩu</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user : ${users}">
+                    <td>[[${user.id}]]</td>
+                    <td>[[${user.name}]]</td>
+                    <td>[[${user.email}]]</td>
+                    <td><span style="letter-spacing:2px;">******</span></td>
+                    <td>
+                        <a th:href="@{'/dashboard/users/edit/' + ${user.id}}" class="btn-action btn-edit">
+                            <i class="fa fa-edit"></i> Sửa
+                        </a>
+                        <a th:href="@{'/dashboard/users/delete/' + ${user.id}}" class="btn-action btn-delete"
+                           onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');">
+                            <i class="fa fa-trash"></i> Xóa
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(users)}">
+                    <td colspan="5" style="text-align:center; color:#888; padding: 20px;">Chưa có người dùng nào.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

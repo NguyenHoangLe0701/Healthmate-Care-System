@@ -1,0 +1,155 @@
+<div th:fragment="doctorListContent">
+  <section class="hero-search">
+    <div class="hero-search__container">
+      <h1 class="hero-search__title">Đặt khám trước qua IVIE - Bác sĩ ơi</h1>
+      <p class="hero-search__subtitle">
+        Để được tiếp đón ưu tiên tại viện hoặc kết nối với bác sĩ giỏi ngay tại
+        nhà
+      </p>
+      <form id="filterForm" th:action="@{/bac-si-noi-bat}" method="get">
+        <div class="hero-search__input-wrapper">
+          <i class="hero-search__icon fas fa-search"></i>
+          <input
+            type="text"
+            class="hero-search__input"
+            placeholder="Tìm triệu chứng, chuyên khoa, tên bác sĩ..."
+            id="main-search-input"
+            name="query"
+            th:value="${query}"
+          />
+        </div>
+
+        <section class="main-doctor-content">
+          <div class="main-doctor-content__container">
+            <div class="filter-bar">
+              <h2 class="filter-bar__title">Chọn bác sĩ</h2>
+              <div class="filter-bar__controls">
+                <div class="filter-bar__item">
+                  <i class="filter-bar__icon fas fa-map-marker-alt"></i>
+                  <select class="filter-bar__select" name="location">
+                    <option
+                      value="all"
+                      th:selected="${location == null || location == 'all'}"
+                    >
+                      Chọn địa điểm
+                    </option>
+                    <option
+                      value="TP. Hồ Chí Minh"
+                      th:selected="${location == 'TP. Hồ Chí Minh'}"
+                    >
+                      TP. Hồ Chí Minh
+                    </option>
+                    <option
+                      value="Hà Nội"
+                      th:selected="${location == 'Hà Nội'}"
+                    >
+                      Hà Nội
+                    </option>
+                  </select>
+                  <i class="fas fa-chevron-down filter-bar__dropdown-icon"></i>
+                </div>
+                <div class="filter-bar__item">
+                  <i class="filter-bar__icon fas fa-notes-medical"></i>
+                  <select class="filter-bar__select" name="appointmentType">
+                    <option
+                      value="all"
+                      th:selected="${appointmentType == null || appointmentType == 'all'}"
+                    >
+                      Loại đặt khám
+                    </option>
+                    <option
+                      value="Video call"
+                      th:selected="${appointmentType == 'Video call'}"
+                    >
+                      Video call
+                    </option>
+                    <option
+                      value="Khám tại viện"
+                      th:selected="${appointmentType == 'Khám tại viện'}"
+                    >
+                      Khám tại viện
+                    </option>
+                  </select>
+                  <i class="fas fa-chevron-down filter-bar__dropdown-icon"></i>
+                </div>
+                <div class="filter-bar__item">
+                  <i class="filter-bar__icon fas fa-calendar-alt"></i>
+                  <input
+                    type="date"
+                    class="filter-bar__date-input"
+                    placeholder="Ngày khám"
+                    id="appointment-date-input"
+                    name="appointmentDate"
+                    th:value="${appointmentDate != null ? #temporals.format(appointmentDate, 'yyyy-MM-dd') : ''}"
+                  />
+                </div>
+                <button type="submit" class="filter-bar__more-filters-btn">
+                  <i class="fas fa-filter"></i> Lọc
+                </button>
+              </div>
+            </div>
+
+            <div class="doctor-grid">
+              <div class="doctor-card" th:each="doctor : ${doctors}">
+                <div class="doctor-card__image-wrapper">
+                  <img
+                    th:src="${doctor.imgUrl}"
+                    th:alt="${'Ảnh bác sĩ ' + doctor.name}"
+                    class="doctor-card__image"
+                  />
+                  <div class="doctor-card__online-status"></div>
+                </div>
+                <div class="doctor-card__info">
+                  <h3 class="doctor-card__name">[[${doctor.name}]]</h3>
+                  <p
+                    class="doctor-card__specialty-short"
+                    th:title="${'Chuyên khoa ' + doctor.specialty}"
+                  >
+                    Chuyên khoa [[${doctor.specialty}]]
+                  </p>
+                  <a
+                    th:href="@{'/ho-so-bac-si/' + ${doctor.id}}"
+                    class="doctor-card__btn doctor-card__btn--primary"
+                  >
+                    <i class="fas fa-calendar-alt doctor-card__btn-icon"></i>
+                    Đặt khám
+                  </a>
+                </div>
+              </div>
+              <div th:if="${#lists.isEmpty(doctors)}">
+                <p style="text-align: center; margin-top: 20px">
+                  Không có bác sĩ nào được tìm thấy.
+                </p>
+              </div>
+            </div>
+
+            <div class="pagination">
+              <a
+                th:if="${currentPage > 0}"
+                th:href="@{/bac-si-noi-bat(page=${currentPage - 1}, query=${query}, location=${location}, appointmentType=${appointmentType}, appointmentDate=${appointmentDate})}"
+                class="pagination__link"
+                >&laquo; Trước</a
+              >
+
+              <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                <a
+                  th:href="@{/bac-si-noi-bat(page=${i}, query=${query}, location=${location}, appointmentType=${appointmentType}, appointmentDate=${appointmentDate})}"
+                  th:classappend="${i == currentPage ? 'pagination__link--active' : ''}"
+                  class="pagination__link"
+                  >[[${i + 1}]]</a
+                >
+              </span>
+
+              <a
+                th:if="${currentPage < totalPages - 1}"
+                th:href="@{/bac-si-noi-bat(page=${currentPage + 1}, query=${query}, location=${location}, appointmentType=${appointmentType}, appointmentDate=${appointmentDate})}"
+                class="pagination__link"
+                >Sau &raquo;</a
+              >
+            </div>
+          </div>
+        </section>
+      </form>
+    </div>
+  </section>
+</div>

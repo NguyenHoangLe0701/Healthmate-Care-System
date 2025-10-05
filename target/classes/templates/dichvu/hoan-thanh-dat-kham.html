@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/xac-nhan-dat-kham.css}">
+    <title>Hoàn Thành Đặt Khám</title>
+    <style>
+        .complete-outer {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+            padding: 32px 28px 24px 28px;
+            max-width: 1000px;
+            margin: 40px auto;  
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="content">   
+        <div class="xac-nhan-stepper">
+            <div class="step ">
+                <div class="dot"></div>
+                <div class="label">Thông tin đặt khám</div>
+            </div>
+            <div class="step  ">
+                <div class="dot"></div>
+                <div class="label">Thanh toán</div>
+            </div>
+            <div class="step active">
+                <div class="dot"></div>
+                <div class="label">Hoàn thành đặt khám</div>
+            </div>
+            <div class="progress-line"></div>
+        </div>
+        <div class="complete-outer">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 300px;">
+                <h1 style="font-size: 3rem; color: #00bfae; font-weight: bold; text-align: center;">Đặt Khám Thành Công</h1>
+                <a href="/" style="margin-top: 32px; display: inline-block; padding: 16px 48px; font-size: 1.2rem; font-weight: 700; color: #fff; background: linear-gradient(90deg, #00bfae, #43e97b); border: none; border-radius: 8px; text-decoration: none; transition: background 0.2s;">Trở về trang chủ</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Thêm/Sửa Bác sĩ</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f8fafc;
+      }
+      .container {
+        max-width: 500px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px #10b98122;
+        padding: 32px;
+      }
+      h1 {
+        color: #166950;
+        font-size: 1.5rem;
+        margin-bottom: 24px;
+        text-align: center;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      label {
+        font-weight: 600;
+        color: #166950;
+        margin-bottom: 4px;
+      }
+      input,
+      select {
+        border-radius: 6px;
+        border: 1px solid #cbd5e1;
+        padding: 8px 10px;
+        font-size: 1rem;
+        background: #f8fafc;
+      }
+      .btn {
+        background: #10b981;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 0;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background 0.18s;
+        margin-top: 10px;
+      }
+      .btn:hover {
+        background: #166950;
+      }
+      .back-link {
+        display: block;
+        margin-top: 18px;
+        text-align: center;
+        color: #166950;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 th:text="${doctor.id == null} ? 'Thêm Bác sĩ' : 'Sửa Bác sĩ'"></h1>
+      <form
+        th:action="${doctor.id == null} ? @{/admin/doctors/add} : @{'/admin/doctors/edit/' + ${doctor.id}}"
+        method="post"
+      >
+        <label for="name">Tên bác sĩ</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          th:value="${doctor.name}"
+          required
+          maxlength="255"
+        />
+
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          th:value="${doctor.email}"
+          required
+          maxlength="255"
+        />
+
+        <label for="password">Mật khẩu</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          th:value="${doctor.password}"
+          required
+          maxlength="255"
+        />
+
+        <label for="specialization">Chuyên khoa</label>
+        <select id="specialization" name="specialization" required>
+          <option value="">Chọn chuyên khoa</option>
+          <option
+            th:each="spec : ${specializations}"
+            th:value="${spec}"
+            th:text="${spec}"
+            th:selected="${doctor.specialization} == spec"
+          ></option>
+        </select>
+
+        <button
+          type="submit"
+          class="btn"
+          th:text="${doctor.id == null} ? 'Thêm' : 'Cập nhật'"
+        ></button>
+      </form>
+      <a th:href="@{/admin/doctors}" class="back-link">Quay lại danh sách</a>
+    </div>
+  </body>
+</html>

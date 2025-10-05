@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IVIE - BÁC SĨ ƠI</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/contentmain.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/overlay.css}" />
+    <link rel="stylesheet" th:href="@{/css/chatbox.css}" />
+    <link rel="stylesheet" th:href="@{/css/contact.css}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
+    />
+  </head>
+  <body>
+    <div th:replace="~{fragments/header :: siteHeader(showTopBar=${false})}">
+      [HEADER]
+    </div>
+    <div layout:fragment="content">[CONTENT]</div>
+    <div
+      id="toast-login-alert"
+      th:if="${showLoginOverlay}"
+      style="
+        position: fixed;
+        top: 72px; /* Đẩy xuống dưới header */
+        right: 36px;
+        min-width: 280px;
+        max-width: 380px;
+        background: #fff;
+        color: #721c24;
+        border-left: 6px solid #f44336;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+        padding: 20px 28px 20px 20px;
+        border-radius: 12px;
+        font-size: 1.08em;
+        font-weight: 500;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        animation: toast-in 0.4s;
+        transition: opacity 0.3s;
+        cursor: pointer;
+        user-select: none;
+      "
+      onclick="this.style.opacity=0;setTimeout(()=>this.style.display='none',300);"
+      title="Bấm để đóng"
+    >
+      <i
+        class="fa-solid fa-circle-exclamation"
+        style="color: #f44336; font-size: 1.5em; flex-shrink: 0"
+      ></i>
+      <span style="flex: 1">Vui lòng đăng nhập để sử dụng chức năng này.</span>
+      <button
+        onclick="this.parentElement.style.opacity=0;setTimeout(()=>this.parentElement.style.display='none',300);event.stopPropagation();"
+        style="
+          background: transparent;
+          border: none;
+          color: #888;
+          font-size: 1.2em;
+          cursor: pointer;
+          padding: 0 4px 0 8px;
+        "
+        aria-label="Đóng"
+        title="Đóng"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <script th:if="${showLoginOverlay}">
+      setTimeout(function () {
+        var alert = document.getElementById("toast-login-alert");
+        if (alert) {
+          alert.style.opacity = "0";
+          setTimeout(function () {
+            if (alert) alert.style.display = "none";
+          }, 300);
+        }
+      }, 3500);
+    </script>
+    <style>
+      @keyframes toast-in {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+    <div th:replace="~{fragments/overlay :: overlay}"></div>
+    <div th:if="${message}" style="color: green; text-align: center">
+      [[${message}]]
+    </div>
+    <div th:if="${error}" style="color: red; text-align: center">
+      [[${error}]]
+    </div>
+    <div th:replace="~{fragments/footer :: siteFooter}">[FOOTER]</div>
+    <div th:replace="~{fragments/chatbox :: chatBox}"></div>
+    <script th:src="@{/js/overlay.js}" defer></script>
+    <script th:src="@{/js/chatbox.js}" defer></script>
+    <script th:src="@{/js/main.js}" defer></script>
+    <script th:if="${bookingSuccess}" th:inline="javascript">
+      window.addEventListener("DOMContentLoaded", function () {
+        let popup = document.createElement("div");
+        popup.textContent = "✅ Đặt lịch thành công!";
+        popup.style.position = "fixed";
+        popup.style.top = "20px";
+        popup.style.right = "20px";
+        popup.style.padding = "14px 20px";
+        popup.style.backgroundColor = "#4caf50";
+        popup.style.color = "#fff";
+        popup.style.borderRadius = "8px";
+        popup.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
+        popup.style.zIndex = 9999;
+        document.body.appendChild(popup);
+
+        setTimeout(() => {
+          popup.style.opacity = "0";
+          setTimeout(() => popup.remove(), 300);
+        }, 3000);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Thanh Toán</title>
+    <link rel="stylesheet" th:href="@{/css/paymentPage.css}" />
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="payment-container">
+        <div class="payment-box">
+          <!-- Thông tin bác sĩ -->
+          <div class="section doctor-info">
+            <h2>Bác sĩ</h2>
+            <p><strong th:text="${doctor.name}">BS Tên</strong></p>
+            <p><span th:text="${doctor.specialty}">Chuyên khoa</span></p>
+          </div>
+
+          <!-- Thông tin cuộc hẹn -->
+          <div class="section booking-info">
+            <h2>Lịch hẹn</h2>
+            <p>Ngày: <strong th:text="${selectedDate}">08/07/2025</strong></p>
+            <p>Giờ: <strong th:text="${selectedTime}">08:30</strong></p>
+            <p>Triệu chứng: <strong th:text="${symptom}">Đau đầu</strong></p>
+          </div>
+
+          <!-- Thanh toán -->
+          <div class="section payment-summary">
+            <h2>Thanh toán</h2>
+            <p>
+              Giá khám:
+              <strong
+                th:text="${doctor.price != null ? #numbers.formatDecimal(doctor.price, 0, 0) + ' đ' : 'Chưa có'}"
+              >
+                150000 đ
+              </strong>
+            </p>
+
+            <form th:action="@{/xac-nhan-thanh-toan}" method="post">
+              <input type="hidden" name="doctorId" th:value="${doctor.id}" />
+              <input
+                type="hidden"
+                name="selectedDate"
+                th:value="${selectedDate}"
+              />
+              <input
+                type="hidden"
+                name="selectedTime"
+                th:value="${selectedTime}"
+              />
+              <input type="hidden" name="symptom" th:value="${symptom}" />
+              <button type="submit" class="confirm-btn">
+                Xác nhận & Thanh toán
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- POPUP Đặt lịch thành công -->
+      <div
+        th:if="${bookingSuccess}"
+        id="success-popup"
+        style="
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background-color: #4caf50;
+          color: white;
+          padding: 16px 24px;
+          border-radius: 8px;
+          z-index: 9999;
+          transition: opacity 0.5s ease;
+        "
+      >
+        ✅ Đặt lịch thành công!
+      </div>
+
+      <script th:if="${bookingSuccess}">
+        setTimeout(() => {
+          const popup = document.getElementById("success-popup");
+          if (popup) {
+            popup.style.opacity = "0";
+            setTimeout(() => (popup.style.display = "none"), 500);
+          }
+        }, 4000);
+      </script>
+    </div>
+  </body>
+</html>

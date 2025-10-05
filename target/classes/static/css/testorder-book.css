@@ -1,0 +1,232 @@
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.stis-slot-btn.selected {
+  background: #00bfae !important;
+  color: #fff !important;
+  border-color: #00bfae !important;
+}
+.stis-time-slots {
+  margin-bottom: 18px;
+}
+.stis-body {
+  font-family: "Inter", "Segoe UI", "Roboto", Arial, sans-serif;
+  background: linear-gradient(120deg, #e0fcf8 0%, #f8fcff 100%);
+  margin: 0;
+  padding: 0;
+}
+.stis-title {
+  color: #00bfae;
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 24px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px #b2f5ea;
+}
+.stis-form {
+  background: #fff;
+  max-width: 1100px;
+  margin: 0 auto 36px auto;
+  border-radius: 22px;
+  box-shadow: 0 6px 36px 0 rgba(0, 191, 174, 0.13);
+  padding: 40px 44px 32px 44px;
+  border: 1.5px solid #b2f5ea;
+  position: relative;
+}
+.stis-label {
+  font-weight: 700;
+  color: #00bfae;
+  margin-bottom: 10px;
+  display: block;
+  font-size: 1.13em;
+  letter-spacing: 0.2px;
+}
+.stis-service-card {
+  transition: box-shadow 0.18s, border-color 0.18s, transform 0.12s;
+  cursor: pointer;
+  border: 1.5px solid #b2f5ea;
+  background: linear-gradient(120deg, #fafdff 60%, #e0fcf8 100%);
+  box-shadow: 0 2px 12px #b2f5ea;
+  min-height: 120px;
+}
+.stis-service-card:hover {
+  box-shadow: 0 6px 24px #00bfae44;
+  border-color: #00bfae;
+  transform: translateY(-2px) scale(1.018);
+  background: linear-gradient(120deg, #e0fcf8 60%, #fafdff 100%);
+}
+.stis-service-card input[type="radio"]:checked + img {
+  border: 2.5px solid #00bfae;
+  background: #e0fcf8;
+  box-shadow: 0 2px 8px #00bfae44;
+}
+.stis-service-card img {
+  border: 2px solid #b2f5ea;
+  transition: border 0.18s, background 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 6px #b2f5ea;
+}
+.stis-testtype-group {
+  margin-bottom: 28px;
+}
+.stis-select,
+.stis-date {
+  padding: 10px 14px;
+  border-radius: 9px;
+  border: 1.5px solid #b2f5ea;
+  font-size: 1.11em;
+  margin-bottom: 10px;
+  background: #fafdff;
+  transition: border 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 4px #b2f5ea;
+}
+.stis-select:focus,
+.stis-date:focus {
+  border: 1.5px solid #00bfae;
+  outline: none;
+  background: #e0fcf8;
+  box-shadow: 0 2px 8px #00bfae44;
+}
+.stis-selected-date-label {
+  font-size: 1.11em;
+  margin-left: 10px;
+  color: #00bfae;
+  font-weight: 600;
+}
+.stis-time-slots {
+  margin-bottom: 22px;
+  background: #fafdff;
+  border-radius: 12px;
+  padding: 22px 18px 12px 18px;
+  border: 1.2px solid #b2f5ea;
+  box-shadow: 0 1px 6px #b2f5ea;
+}
+.stis-slot-btn {
+  min-width: 92px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 4px #b2f5ea;
+  font-size: 1.09em;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1.5px solid #00bfae;
+  color: #00bfae;
+  background: #fff;
+  transition: all 0.15s;
+}
+.stis-slot-btn.selected {
+  background: #00bfae !important;
+  color: #fff !important;
+  border-color: #00bfae !important;
+  box-shadow: 0 2px 8px #00bfae44;
+}
+.stis-submit-btn {
+  background: linear-gradient(90deg, #00bfae 60%, #1abc9c 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.18em;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 44px;
+  margin-top: 22px;
+  box-shadow: 0 2px 12px #b2f5ea;
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+  letter-spacing: 0.5px;
+}
+.stis-submit-btn:hover {
+  background: linear-gradient(90deg, #1abc9c 10%, #00bfae 100%);
+  box-shadow: 0 6px 24px #00bfae44;
+  transform: translateY(-1px) scale(1.02);
+}
+/* Toast UX */
+.stis-toast-login-alert {
+  box-shadow: 0 6px 32px #00bfae44;
+  border-radius: 14px;
+  border-left: 7px solid #00bfae;
+  font-size: 1.11em;
+  padding: 22px 32px 22px 22px;
+  background: #fff;
+  color: #00897b;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  gap: 16px;
+  animation: toast-in 0.4s;
+  transition: opacity 0.3s;
+  cursor: pointer;
+  user-select: none;
+}
+.stis-toast-login-alert i {
+  color: #00bfae;
+  font-size: 1.6em;
+}
+.stis-toast-login-alert button {
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 0 4px 0 8px;
+}
+@media (max-width: 900px) {
+  .stis-form {
+    padding: 18px 6vw 18px 6vw;
+  }
+  .stis-service-card {
+    min-width: 220px;
+  }
+}
+@media (max-width: 600px) {
+  .stis-form {
+    padding: 8px 2vw 8px 2vw;
+  }
+  .stis-title {
+    font-size: 1.2em;
+  }
+  .stis-service-card {
+    min-width: 140px;
+  }
+}
+/* Style chuyển từ inline sang class cho testorder-book.html */
+.stis-service-card-ui {
+  flex: 1 1 350px;
+  min-width: 320px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #eee;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  border: 1.5px solid #e0e0e0;
+}
+.stis-radio-ui {
+  margin-top: 3px;
+  accent-color: #1976d2;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.stis-img-ui {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #f7f7f7;
+}
+.stis-total-price-ui {
+  font-size: 1.15em;
+  font-weight: bold;
+  color: #00bfae;
+  margin: 18px 0 0 0;
+  text-align: right;
+}

@@ -1,0 +1,32 @@
+<header th:fragment="doctorHeader">
+  <div class="doctor-dash-header" style="position: relative">
+    Bảng điều khiển bác sĩ
+    <span
+      th:if="${session.userName != null}"
+      style="
+        display: block;
+        font-size: 0.7em;
+        font-weight: 400;
+        margin-top: 8px;
+      "
+    >
+      Xin chào, <span style="font-weight: 700">[[${session.userName}]]</span>
+    </span>
+    <img
+      src="https://ivie.vn/_next/image?url=%2F_next%2Fstatic%2FIVIE_logo.svg&w=128&q=75"
+      alt="Logo"
+      style="
+        position: absolute;
+        top: 16px;
+        left: 32px;
+        height: 44px;
+        width: auto;
+        background: #fff;
+        border: 2px solid #00bfae;
+        border-radius: 10px;
+        padding: 6px 10px;
+        box-shadow: 0 2px 8px #b2f5ea;
+      "
+    />
+  </div>
+</header>

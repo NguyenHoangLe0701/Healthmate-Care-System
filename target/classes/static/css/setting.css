@@ -1,0 +1,107 @@
+/* CSS cho trang Cài đặt (Setting) */
+.setting-container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 32px 24px;
+}
+.setting-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 18px;
+    color: #009688;
+    text-align: center;
+}
+.setting-profile {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 24px;
+    justify-content: center;
+}
+.setting-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+}
+.setting-username {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.setting-role {
+    font-size: 0.98rem;
+    color: #888;
+}
+.setting-list {
+    list-style: none;
+    padding: 0;
+}
+.setting-list li {
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.setting-list a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.08rem;
+    transition: color 0.2s;
+}
+.setting-list a:hover {
+    color: #009688;
+}
+.setting-list i {
+    font-size: 1.2rem;
+    color: #009688;
+    min-width: 22px;
+    text-align: center;
+}
+.btn-logout {
+    background: linear-gradient(90deg, #ff5858 0%, #f09819 100%);
+    color: #fff;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(255,88,88,0.08);
+}
+.btn-logout:hover {
+    background: linear-gradient(90deg, #f09819 0%, #ff5858 100%);
+    box-shadow: 0 4px 16px rgba(255,88,88,0.15);
+}
+.modal-logout {
+    display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.25); align-items: center; justify-content: center;
+}
+.modal-logout.active { display: flex; }
+.modal-content-logout {
+    background: #fff; border-radius: 14px; padding: 32px 28px; box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    text-align: center; min-width: 320px; position: relative;
+}
+.close-logout {
+    position: absolute; top: 12px; right: 18px; font-size: 1.5rem; color: #888; cursor: pointer;
+}
+.modal-icon { font-size: 2.5rem; color: #f09819; margin-bottom: 12px; }
+.modal-title { font-size: 1.2rem; font-weight: 500; margin-bottom: 24px; }
+.btn-confirm-logout {
+    background: #e53935; color: #fff; border: none; padding: 10px 28px; border-radius: 7px; font-size: 1rem; margin-right: 12px; cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-confirm-logout:hover { background: #b71c1c; }
+.btn-cancel-logout {
+    background: #eee; color: #333; border: none; padding: 10px 22px; border-radius: 7px; font-size: 1rem; cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-cancel-logout:hover { background: #ccc; } 

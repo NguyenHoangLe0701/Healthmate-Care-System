@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ĂN THẬT NHIỀU lúc mang thai – CÓ NÊN KHÔNG?</title>
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/centered_content.css}" />
+    <link rel="stylesheet" th:href="@{/css/s_experiences.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <style>
+        .page-title {
+            color: #13a97b;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center; 
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+        .page-desc {
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            color: #222;
+        }
+        .page-list {
+            margin-left: 32px;
+            margin-bottom: 12px;
+        }
+        .page-list li {
+            margin-bottom: 6px;
+            font-size: 1em;
+        }
+        .page-highlight {
+            color: #d42c71;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .page-video {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .page-video video {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/header :: siteHeader(showTopBar=${false})}"></div>
+
+    <div class="centered-content">
+        <div class="page-title">
+            ĂN THẬT NHIỀU lúc mang thai – CÓ NÊN KHÔNG?
+        </div>
+        <div class="page-desc">
+            Tùy từng giai đoạn của thai kỳ, mà bà mẹ sẽ có nhu cầu năng lượng khác nhau :
+        </div>
+        <ul class="page-list">
+            <li>Trong 3 tháng đầu: nhu cầu năng lượng tăng không nhiều. Chế độ ăn có thể giữ như trước khi mang thai, bổ sung thêm khoảng 50kcal/ngày, tương ứng với 1 bữa phụ của chị em.</li>
+            <li>3 tháng giữa thai kỳ là giai đoạn thai nhi phát triển nhanh. Vì vậy chế độ ăn của bà bầu cần tăng thêm 250 kcal, các mẹ nên ăn thêm 1 bữa phụ trong ngày.</li>
+            <li>Đặc biệt, 3 tháng cuối là giai đoạn thai nhi phát triển nhanh nhất nên cần bổ sung thêm 450kcal/ngày, tương đương với 2 bữa phụ.</li>
+        </ul>
+        <div class="page-video">
+            <video controls poster="/images/support/page_s_3.png">
+                <source src="/video/video_s/video_page_3.mp4" type="video/mp4">
+                Trình duyệt của bạn không hỗ trợ video.
+            </video>
+        </div>
+    </div>
+    
+    <div th:replace="~{fragments/footer :: siteFooter}"></div>
+    <div th:replace="~{fragments/chatbox :: chatBox}"></div>
+    <div th:replace="~{fragments/overlay :: overlay}"></div>
+</body>
+</html>

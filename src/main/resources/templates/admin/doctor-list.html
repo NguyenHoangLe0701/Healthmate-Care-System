@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quản lý Bác sĩ</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f8fafc;
+      }
+      .container {
+        max-width: 900px;
+        margin: 32px auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px #10b98122;
+        padding: 32px;
+      }
+      h1 {
+        color: #166950;
+        font-size: 2rem;
+        margin-bottom: 24px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 24px;
+      }
+      th,
+      td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #e2e8f0;
+        text-align: left;
+      }
+      th {
+        background: #10b981;
+        color: #fff;
+        font-weight: 600;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      .actions a,
+      .actions form {
+        display: inline-block;
+        margin-right: 8px;
+      }
+      .btn {
+        background: #10b981;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 7px 16px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.18s;
+      }
+      .btn:hover {
+        background: #166950;
+      }
+      .btn-danger {
+        background: #ef4444;
+      }
+      .btn-danger:hover {
+        background: #b91c1c;
+      }
+      .add-btn {
+        float: right;
+        margin-bottom: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        Danh sách Bác sĩ
+        <a th:href="@{'/admin/doctors/add'}" class="btn add-btn"
+          >+ Thêm bác sĩ</a
+        >
+      </h1>
+      <table>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Tên</th>
+            <th>Email</th>
+            <th>Chuyên khoa</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="doctor,iter : ${doctors}">
+            <td th:text="${iter.index + 1}"></td>
+            <td th:text="${doctor.name}"></td>
+            <td th:text="${doctor.email}"></td>
+            <td th:text="${doctor.specialization}"></td>
+            <td class="actions">
+              <a th:href="@{'/admin/doctors/edit/' + ${doctor.id}}" class="btn"
+                >Sửa</a
+              >
+              <form
+                th:action="@{'/admin/doctors/delete/' + ${doctor.id}}"
+                method="get"
+                style="display: inline"
+              >
+                <button
+                  type="submit"
+                  class="btn btn-danger"
+                  onclick="return confirm('Bạn có chắc muốn xóa bác sĩ này?');"
+                >
+                  Xóa
+                </button>
+              </form>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(doctors)}">
+            <td colspan="5" style="text-align: center; color: #86899b">
+              Chưa có bác sĩ nào.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

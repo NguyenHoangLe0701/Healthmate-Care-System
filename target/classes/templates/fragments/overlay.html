@@ -1,0 +1,68 @@
+<div th:fragment="overlay">
+    <div id="authOverlay">
+        <!-- <button class="auth-container__close">&times;</button> -->
+        <div class="auth-container" id="auth-container">
+            <button class="auth-container__close">&times;</button>
+            <div class="auth-container__form auth-container__form--register">
+                <form class="auth-container__form-content" th:action="@{/auth/register}" method="post">
+                    <h1 class="auth-container__title auth-container__title--register">Đăng ký</h1>
+                    <input class="auth-container__input" type="text" name="name" placeholder="Name" required>
+                    <input class="auth-container__input" type="email" name="email" placeholder="Email" required>
+                    <input class="auth-container__input" type="password" name="password" placeholder="Password" required>
+                    <button class="auth-container__button auth-container__button--register" type="submit">Xác nhận</button>
+                    <span class="auth-container__text">hoặc sử dụng tài khoản</span>
+                    <div class="auth-container__social">
+                        <a href="#" class="auth-container__social-link"><i class="lni lni-facebook-fill"></i></a>
+                        <a href="#" class="auth-container__social-link"><i class="lni lni-google"></i></a>
+                        <a href="#" class="auth-container__social-link"><i class="lni lni-linkedin-original"></i></a>
+                    </div>
+                    <div th:if="${message}" style="color:green;">[[${message}]]</div>
+                </form>
+            </div>
+        
+            <div class="auth-container__form auth-container__form--login">
+                <form class="auth-container__form-content" th:action="@{/auth/login}" method="post">
+                    <h1 class="auth-container__title auth-container__title--login">Đăng nhập</h1>
+                    <input class="auth-container__input" type="text" name="email" placeholder="Email hoặc admin" required>
+                    <input class="auth-container__input" type="password" name="password" placeholder="Password" required>
+                    <div class="auth-container__content">
+                        <div class="auth-container__checkbox">
+                            <input type="checkbox" name="checkbox" id="checkbox">
+                            <label class="auth-container__checkbox-label">Nhớ tài khoản</label>
+                        </div>
+                        <div class="auth-container__pass-link">
+                            <a href="#" class="auth-container__pass-link-text">Quên mật khẩu?</a>
+                        </div>
+                    </div>
+                    <button class="auth-container__button auth-container__button--login" type="submit">Xác nhận</button>
+                    <span class="auth-container__text">hoặc sử dụng tài khoản</span>
+                    <div class="auth-container__social">
+                        <a href="#" class="auth-container__social-link"><i class="lni lni-facebook-fill"></i></a>
+                        <a href="#" class="auth-container__social-link"><i class="lni lni-google"></i></a>
+                        <a href="#" class="auth-container__social-link"><i class="lni lni-linkedin-original"></i></a>
+                    </div>
+                    <div th:if="${error}" style="color:red;">[[${error}]]</div>
+                </form>
+            </div>
+        
+            <div class="auth-container__overlay">
+                <div class="auth-container__overlay-inner">
+                    <div class="auth-container__overlay-panel auth-container__overlay-panel--left">
+                        <h1 class="auth-container__title">Xin chào <br> bạn</h1>
+                        <p class="auth-container__description">Nếu như bạn đã có tài khoản hãy ấn vào đăng nhập</p>
+                        <button class="auth-container__button auth-container__button--ghost" id="auth-login">Đăng nhập
+                            <i class="lni lni-arrow-left auth-container__button-icon auth-container__button-icon--login"></i>
+                        </button>
+                    </div>
+                    <div class="auth-container__overlay-panel auth-container__overlay-panel--right">
+                        <h1 class="auth-container__title">Bắt đầu <br> tìm hiểu về chúng tôi</h1>
+                        <p class="auth-container__description">Nếu như bạn không có tài khoản hãy ấn vào đăng ký</p>
+                        <button class="auth-container__button auth-container__button--ghost" id="auth-register">Đăng ký
+                            <i class="lni lni-arrow-left auth-container__button-icon auth-container__button-icon--register"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

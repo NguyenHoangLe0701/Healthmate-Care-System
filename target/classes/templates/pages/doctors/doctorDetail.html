@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+  lang="vi"
+>
+  <head>
+    <title>Chi tiết bác sĩ</title>
+    <link rel="stylesheet" th:href="@{/css/doctor-page.css}" />
+    <script th:src="@{/js/doctorDetail.js}" defer></script>
+    <style>
+      .calendar-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .date-dropdown-trigger {
+        padding: 8px 12px;
+        border: 1px solid #ff9800;
+        border-radius: 5px;
+        background-color: #fff8e1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1em;
+        min-width: 150px;
+        justify-content: space-between;
+      }
+
+      .date-dropdown-trigger span,
+      .date-dropdown-trigger i {
+        color: #e65100;
+      }
+
+      .calendar {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 15px;
+        z-index: 100;
+        width: 300px;
+      }
+
+      .calendar.show {
+        display: block;
+      }
+
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      .calendar-header h4 {
+        margin: 0;
+        font-size: 1.2em;
+      }
+      .calendar-header button {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #007bff;
+      }
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        text-align: center;
+      }
+      .calendar-grid .day-name {
+        font-weight: bold;
+        color: #555;
+        padding: 8px 0;
+      }
+      .calendar-grid .day-cell {
+        padding: 10px 0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+        min-height: 38px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .calendar-grid .day-cell.inactive {
+        background-color: #f0f0f0;
+        color: #ccc;
+        cursor: not-allowed;
+      }
+      .calendar-grid .day-cell.active {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+      }
+      .calendar-grid .day-cell.today {
+        border: 2px solid #28a745;
+        color: #28a745;
+        font-weight: bold;
+        background-color: #e6ffe6;
+      }
+      .calendar-grid .day-cell:not(.inactive):hover {
+        background-color: #e0f2f7;
+      }
+
+      .schedule-main-row {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .schedule-main-row h3 {
+        margin: 0;
+        flex-shrink: 0;
+      }
+
+      .time-slot-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 10px;
+      }
+      .time-slot {
+        padding: 10px 15px;
+        border: 1px solid #ff9800;
+        border-radius: 6px;
+        background: #fff8e1;
+        color: #e65100;
+        cursor: pointer;
+        font-size: 1em;
+        text-align: center;
+        transition: background-color 0.2s, border-color 0.2s;
+      }
+      .time-slot.active {
+        background-color: #ff9800;
+        color: white;
+        border-color: #ff9800;
+        font-weight: bold;
+      }
+      .time-slot:hover:not(.active) {
+        background-color: #ffecb3;
+        border-color: #ffb74d;
+      }
+    </style>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div
+        class="doctor-profile-container"
+        style="max-width: 1200px; margin: 0 auto; padding: 24px"
+      >
+        <div
+          style="
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+          "
+        >
+          <img
+            th:src="${doctor.imgUrl}"
+            alt="Ảnh bác sĩ"
+            style="width: 240px; border-radius: 8px; border: 1px solid #ccc"
+          />
+          <div style="flex: 1">
+            <h2 th:text="${doctor.name}" style="font-size: 24px">Tên bác sĩ</h2>
+            <p style="font-size: 18px; color: #2e7d32">
+              <strong
+                th:text="${doctor.price != null ? #numbers.formatDecimal(doctor.price, 0, 0) + ' đ' : 'Chưa có'}"
+              >
+                150000 đ
+              </strong>
+
+              <span th:if="${doctor.price == null}">Chưa có</span>
+            </p>
+
+            <span
+              class="badge"
+              style="
+                background-color: #e3f2fd;
+                padding: 6px 10px;
+                border-radius: 8px;
+              "
+              th:text="${doctor.specialty}"
+              >Chuyên khoa</span
+            >
+          </div>
+        </div>
+
+        <div
+          class="doctor-schedule"
+          style="border: 1px solid #ddd; padding: 20px; border-radius: 12px"
+        >
+          <div class="schedule-main-row">
+            <h3 style="flex-shrink: 0">Lịch tư vấn trực tuyến</h3>
+            <div class="calendar-container">
+              <div id="dateDropdownTrigger" class="date-dropdown-trigger">
+                <span
+                  id="selectedDateDisplay"
+                  th:text="${#temporals.format(today, 'dd/MM/yyyy')}"
+                  >08/07/2025</span
+                >
+                <i class="fas fa-chevron-down"></i>
+              </div>
+
+              <div id="calendar" class="calendar">
+                <div class="calendar-header">
+                  <button id="prevMonth">&lt;</button>
+                  <h4
+                    id="currentMonthYear"
+                    th:text="'Tháng ' + ${currentMonth} + ' ' + ${currentYear}"
+                  >
+                    Tháng 7 2025
+                  </h4>
+                  <button id="nextMonth">&gt;</button>
+                </div>
+                <div class="calendar-grid">
+                  <span class="day-name">CN</span>
+                  <span class="day-name">T2</span>
+                  <span class="day-name">T3</span>
+                  <span class="day-name">T4</span>
+                  <span class="day-name">T5</span>
+                  <span class="day-name">T6</span>
+                  <span class="day-name">T7</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="timeSlotContainer" class="time-slot-grid"></div>
+
+          <div
+            class="consultation-summary"
+            style="margin-top: 30px; text-align: center"
+          >
+            <div
+              class="consultation-text"
+              style="
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+              "
+            >
+              <i class="fas fa-check-circle" style="color: #4caf50"></i>
+              <span>
+                Tư vấn với BS
+                <strong th:text="${doctor.name}">Tên bác sĩ</strong>
+              </span>
+            </div>
+
+            <form
+              id="bookingForm"
+              th:action="@{/thong-tin-dat-kham}"
+              method="get"
+              style="display: inline-block"
+            >
+              <input type="hidden" name="doctorId" th:value="${doctor.id}" />
+              <input type="hidden" id="selectedTimeInput" name="selectedTime" />
+              <input
+                type="hidden"
+                id="selectedDateInput"
+                name="selectedDate"
+                th:value="${#temporals.format(today, 'yyyy-MM-dd')}"
+              />
+              <button
+                type="button"
+                id="btnBookOrConsult"
+                style="
+                  display: none;
+                  background: #4caf50;
+                  color: white;
+                  padding: 10px 24px;
+                  border: none;
+                  border-radius: 8px;
+                  cursor: pointer;
+                  font-size: 1.1em;
+                "
+              >
+                Đặt lịch
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

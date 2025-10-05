@@ -1,0 +1,310 @@
+/* service.css - Style hiện đại cho dashboard/services */
+
+.dashboard-title {
+  font-size: 2rem;
+  color: #009879;
+  font-weight: bold;
+  margin-bottom: 18px;
+}
+
+.btn-action {
+  padding: 10px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.btn-add {
+  background: #009879;
+  color: #fff;
+}
+.btn-add:hover {
+  background: #007a63;
+}
+.btn-edit {
+  background: #ffc107;
+  color: #333;
+}
+.btn-edit:hover {
+  background: #e0a800;
+}
+.btn-delete {
+  background: #dc3545;
+  color: #fff;
+}
+.btn-delete:hover {
+  background: #b52a37;
+}
+
+.user-table-container {
+  margin-top: 18px;
+  overflow-x: auto;
+}
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  overflow: hidden;
+}
+.user-table th, .user-table td {
+  padding: 12px 10px;
+  text-align: left;
+}
+.user-table th {
+  background: #009879;
+  color: #fff;
+  font-weight: 600;
+}
+.user-table tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background 0.2s;
+}
+.user-table tr:hover {
+  background: #f6f6f6;
+}
+
+/* Modal style */
+#addModal, #editModal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.25);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+#addModal[style*="display: flex"], #editModal[style*="display: flex"] {
+  display: flex !important;
+}
+/* Modal cải tiến */
+#addModal > div, #editModal > div {
+  background: #fff;
+  border-radius: 18px;
+  padding: 36px 32px;
+  min-width: 340px;
+  max-width: 95vw;
+  margin: auto;
+  position: relative;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.18);
+  animation: modalIn 0.2s;
+}
+@keyframes modalIn {
+  from { transform: translateY(-40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@media (max-width: 600px) {
+  #addModal > div, #editModal > div {
+    padding: 18px 6px;
+    min-width: 98vw;
+  }
+}
+
+/* Form grid đẹp hơn */
+#addModal form > div, #editModal form > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 700px) {
+  #addModal form > div, #editModal form > div {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Input đẹp hơn */
+.form-control, select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #cfd8dc;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  background: #f8f9fa;
+  transition: border 0.2s;
+}
+.form-control:focus, select:focus, textarea:focus {
+  border: 2px solid #009879;
+  outline: none;
+  background: #fff;
+}
+label {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .dashboard-title { font-size: 1.3rem; }
+  .user-table th, .user-table td { padding: 8px 4px; font-size: 0.95rem; }
+} 
+
+.statistic-summary {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 18px 32px;
+  min-width: 180px;
+  text-align: center;
+  flex: 1 1 180px;
+}
+.stat-label {
+  color: #888;
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+.stat-value {
+  color: #009879;
+  font-size: 2.1rem;
+  font-weight: bold;
+}
+
+/* Chart containers side by side */
+.charts-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.chart-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 24px 18px 12px 18px;
+  flex: 1 1 400px;
+  height: 400px;
+  position: relative;
+  min-width: 0;
+}
+.chart-container canvas {
+  max-height: 350px !important;
+  width: 100% !important;
+}
+
+@media (max-width: 900px) {
+  .statistic-summary { flex-direction: column; gap: 12px; }
+  .stat-card { min-width: 120px; padding: 12px 8px; }
+  .charts-row { 
+    flex-direction: column; 
+    gap: 16px;
+  }
+  .chart-container { 
+    padding: 10px 2px; 
+    height: 300px;
+    flex: 1 1 auto;
+  }
+  .chart-container canvas {
+    max-height: 250px !important;
+  }
+} 
+
+/* Nút hành động */
+.btn-action[style*='background:#6c757d'] {
+  background: #e0e0e0 !important;
+  color: #333 !important;
+}
+.btn-action[style*='background:#6c757d']:hover {
+  background: #bdbdbd !important;
+} 
+
+/* Modal cải tiến cho tư vấn viên */
+#addModal > div, #editModal > div {
+  background: #fff;
+  border-radius: 18px;
+  padding: 36px 32px;
+  min-width: 340px;
+  max-width: 95vw;
+  margin: auto;
+  position: relative;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.18);
+  animation: modalIn 0.2s;
+}
+@media (max-width: 600px) {
+  #addModal > div, #editModal > div {
+    padding: 18px 6px;
+    min-width: 98vw;
+  }
+}
+
+/* Form grid đẹp hơn cho tư vấn viên */
+#addModal form > div, #editModal form > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 700px) {
+  #addModal form > div, #editModal form > div {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Input đẹp hơn cho tư vấn viên */
+.consultant-form-control, select.consultant-form-control, textarea.consultant-form-control {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #cfd8dc;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  background: #f8f9fa;
+  transition: border 0.2s;
+}
+.consultant-form-control:focus, select.consultant-form-control:focus, textarea.consultant-form-control:focus {
+  border: 2px solid #009879;
+  outline: none;
+  background: #fff;
+}
+
+/* Nút hành động cho tư vấn viên */
+.consultant-btn-action {
+  padding: 10px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.consultant-btn-add {
+  background: #009879;
+  color: #fff;
+}
+.consultant-btn-add:hover {
+  background: #007a63;
+}
+.consultant-btn-edit {
+  background: #ffc107;
+  color: #333;
+}
+.consultant-btn-edit:hover {
+  background: #e0a800;
+}
+.consultant-btn-delete {
+  background: #dc3545;
+  color: #fff;
+}
+.consultant-btn-delete:hover {
+  background: #b52a37;
+}
+.consultant-btn-action[style*='background:#6c757d'] {
+  background: #e0e0e0 !important;
+  color: #333 !important;
+}
+.consultant-btn-action[style*='background:#6c757d']:hover {
+  background: #bdbdbd !important;
+} 
+
+.consultant-notes-row {
+  grid-column: 1 / -1;
+} 

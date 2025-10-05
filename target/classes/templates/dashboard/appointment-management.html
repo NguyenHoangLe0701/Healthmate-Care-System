@@ -1,0 +1,51 @@
+<div th:fragment="contentAppointment">
+    <div class="dashboard-title" style="font-size: 2rem; font-weight: bold; margin-bottom: 24px; color: #2c3e50;">Danh sách lịch hẹn</div>
+    <div style="overflow-x:auto;">
+    <table class="appointment-table" style="width:100%; border-collapse:collapse; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.05); border-radius:12px; overflow:hidden;">
+        <thead>
+            <tr style="background:#3498db; color:#fff;">
+                <th style="padding:12px 8px;">Họ tên</th>
+                <th style="padding:12px 8px;">SĐT</th>
+                <th style="padding:12px 8px;">Ngày</th>
+                <th style="padding:12px 8px;">Giờ</th>
+                <th style="padding:12px 8px;">Bác sĩ</th>
+                <th style="padding:12px 8px;">Loại khám</th>
+                <th style="padding:12px 8px;">Triệu chứng</th>
+                <th style="padding:12px 8px;">Ghi chú</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="a : ${appointments}" style="border-bottom:1px solid #eaeaea; transition:background 0.2s;" onmouseover="this.style.background='#f0f8ff'" onmouseout="this.style.background='#fff'">
+                <td style="padding:10px 8px;" th:text="${a.patientName}"></td>
+                <td style="padding:10px 8px;" th:text="${a.patientPhone}"></td>
+                <td style="padding:10px 8px;" th:text="${a.appointmentDate}"></td>
+                <td style="padding:10px 8px;" th:text="${a.appointmentTime}"></td>
+                <td style="padding:10px 8px;" th:text="${a.doctor}"></td>
+                <td style="padding:10px 8px;" th:text="${a.appointmentType}"></td>
+                <td style="padding:10px 8px;" th:text="${a.symptoms}"></td>
+                <td style="padding:10px 8px;" th:text="${a.notes}"></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <style>
+        @media (max-width: 900px) {
+            .appointment-table th, .appointment-table td {
+                font-size: 0.95rem;
+                padding: 8px 4px;
+            }
+            .dashboard-title {
+                font-size: 1.3rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .appointment-table th, .appointment-table td {
+                font-size: 0.85rem;
+                padding: 6px 2px;
+            }
+            .dashboard-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</div> 

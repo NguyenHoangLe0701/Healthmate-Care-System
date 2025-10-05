@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Xác nhận đặt khám</title>
+    <link rel="stylesheet" th:href="@{/css/xac-nhan-dat-kham.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="xac-nhan-stepper">
+        <div class="step active">
+            <div class="dot"></div>
+            <div class="label">Thông tin đặt khám</div>
+        </div>
+        <div class="step">
+            <div class="dot"></div>
+            <div class="label">Thanh toán</div>
+        </div>
+        <div class="step">
+            <div class="dot"></div>
+            <div class="label">Hoàn thành đặt khám</div>
+        </div>
+        <div class="progress-line"></div>
+    </div>
+    <div class="xac-nhan-container">
+        <div class="xac-nhan-card">
+            <!-- Box: Người tới khám -->
+            <div class="xac-nhan-userbox">
+                <span class="xac-nhan-label">Người tới khám</span>
+                <span th:if="${session.userName == null}" class="xac-nhan-warning">Hoàn thành thông tin ngay</span>
+                <span th:if="${session.userName != null}" class="xac-nhan-name" th:text="${session.userName}"></span>
+                <a th:if="${session.userName == null}" href="#" class="xac-nhan-login-link" id="xacNhanLoginBtn">Đăng nhập ngay</a>
+                <span th:if="${session.userName != null}" href="/profile" style="color:rgb(215, 14, 14);">Đăng nhập thành công</span>
+            </div>
+            <!-- Box: Giờ hẹn & dịch vụ -->
+            <div class="xac-nhan-infobox">
+                <div class="xac-nhan-row">
+                    <b>Giờ hẹn:</b>
+                    <span class="xac-nhan-time" th:text="${appointmentTime}"></span>
+                    <span class="xac-nhan-date" th:text="${appointmentDate}"></span>
+                </div>
+                <div class="xac-nhan-servicebox">
+                    <img th:src="@{${serviceImageUrl}}" class="xac-nhan-service-img" alt="logo">
+                    <div>
+                        <div class="xac-nhan-service-name" th:text="${serviceName}"></div>
+                        <div class="xac-nhan-service-location" th:text="${serviceLocation}"></div>
+                    </div>
+                    <div class="xac-nhan-service-price" th:text="${#numbers.formatInteger(servicePrice, 0, 'POINT')} + ' đ'"></div>
+                </div>
+            </div>
+            <!-- Box: Triệu chứng -->
+            <form th:action="@{/appointment-dv/book}" method="post">
+                <input type="hidden" name="serviceId" th:value="${serviceId}" />
+                <input type="hidden" name="appointmentDate" th:value="${appointmentDate}" />
+                <input type="hidden" name="appointmentTime" th:value="${appointmentTime}" />
+                <div class="xac-nhan-symptombox">
+                    <label for="symptom"><b>Triệu chứng *</b></label>
+                    <textarea id="symptom" name="symptom" maxlength="500" placeholder="Mô tả triệu chứng..." required></textarea>
+                    <div class="xac-nhan-symptom-count"><span id="symptomCount">0</span> / 500</div>
+                </div>
+                <button 
+                    type="submit" 
+                    class="xac-nhan-btn"
+                    id="xacNhanDatKhamBtn">
+                    ĐẶT KHÁM
+                </button>
+            </form>
+        </div>
+    </div>
+    <div th:replace="~{fragments/overlay :: overlay}"></div>
+    <script>
+    // Đếm ký tự triệu chứng
+    const symptom = document.getElementById('symptom');
+    const symptomCount = document.getElementById('symptomCount');
+    if(symptom && symptomCount) {
+        symptom.addEventListener('input', function() {
+            symptomCount.textContent = symptom.value.length;
+        });
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+      var btn = document.getElementById("xacNhanDatKhamBtn");
+      var overlay = document.getElementById("authOverlay");
+      var isLoggedIn = [[${session.userName != null}]];
+      if (btn) {
+        btn.addEventListener("click", function (e) {
+          if (!isLoggedIn) {
+            e.preventDefault();
+            if (overlay) {
+              overlay.style.display = "flex";
+              document.body.style.overflow = "hidden";
+            }
+          }
+        });
+      }
+      var loginLink = document.getElementById("xacNhanLoginBtn");
+      if (loginLink && overlay) {
+        loginLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          overlay.style.display = "flex";
+          document.body.style.overflow = "hidden";
+        });
+      }
+    });
+    </script>
+</div>
+</body>
+</html> 

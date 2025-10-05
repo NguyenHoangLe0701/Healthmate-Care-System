@@ -1,0 +1,130 @@
+<div th:fragment="content">
+    <div class="dashboard-title">Dashboard Quản Lý</div>
+    <div class="dashboard-welcome">Chào mừng bạn đến với hệ thống quản lý sức khỏe sinh sản. Hãy chọn module bên dưới để bắt đầu quản lý!</div>
+   
+    <div class="dashboard-modules">
+        <a class="module-card" th:href="@{/dashboard/users}">
+            <div class="module-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="module-title">Quản lý người dùng</div>
+            <div class="module-desc">Thêm, sửa, xóa, tìm kiếm người dùng hệ thống.</div>
+        </a>
+        <a class="module-card" th:href="@{/dashboard/doctors}">
+            <div class="module-icon"><i class="fa-solid fa-user-doctor"></i></div>
+            <div class="module-title">Quản lý bác sĩ</div>
+            <div class="module-desc">Quản lý thông tin, chuyên khoa, lịch làm việc của bác sĩ.</div>
+        </a>
+        <a class="module-card" th:href="@{/dashboard/hospitals}">
+            <div class="module-icon"><i class="fa-solid fa-hospital"></i></div>
+            <div class="module-title">Quản lý cơ sở y tế</div>
+            <div class="module-desc">Thêm, sửa, xóa các cơ sở y tế liên kết.</div>
+        </a>
+        <a class="module-card" th:href="@{/dashboard/services}">
+            <div class="module-icon"><i class="fa-solid fa-notes-medical"></i></div>
+            <div class="module-title">Quản lý dịch vụ</div>
+            <div class="module-desc">Quản lý các dịch vụ chăm sóc sức khỏe, xét nghiệm, tư vấn.</div>
+        </a>
+        <a class="module-card" th:href="@{/dashboard/appointments}">
+            <div class="module-icon"><i class="fa-solid fa-calendar-check"></i></div>
+            <div class="module-title">Lịch hẹn</div>
+            <div class="module-desc">Quản lý lịch hẹn khám, lịch sử đặt lịch của người dùng.</div>
+        </a>
+        <a class="module-card" th:href="@{/dashboard/settings}">
+            <div class="module-icon"><i class="fa-solid fa-gear"></i></div>
+            <div class="module-title">Cài đặt hệ thống</div>
+            <div class="module-desc">Tùy chỉnh thông tin, cấu hình hệ thống.</div>
+        </a>
+        <a class="module-card" th:href="@{/dashboard/statistics}">
+            <div class="module-icon"><i class="fa-solid fa-chart-bar"></i></div>
+            <div class="module-title">Thống kê</div>
+            <div class="module-desc">Xem thống kê tổng quan hệ thống.</div>
+        </a>
+        <a class="module-card" th:href="@{/dashboard/feedback}">
+            <div class="module-icon"><i class="fa-solid fa-comments"></i></div>
+            <div class="module-title">Quản lý Feedback</div>
+            <div class="module-desc">Quản lý phản hồi, góp ý từ người dùng.</div>
+        </a>
+        <a class="module-card" th:href="@{/dashboard/consultants}">
+            <div class="module-icon"><i class="fa-solid fa-user-tie"></i></div>
+            <div class="module-title">Quản lý thông tin tư vấn viên</div>
+            <div class="module-desc">Quản lý danh sách, thông tin tư vấn viên.</div>
+        </a>
+    </div>
+   <!-- <div class="dashboard-chart-section">
+        <div class="dashboard-chart-title">Thống kê truy cập website</div>
+        <canvas id="userAccessChart" height="80"></canvas>
+    </div>  -->
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{/js/chart.js}" defer></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const canvas = document.getElementById('userAccessChart');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+                datasets: [{
+                    label: 'Lượt truy cập',
+                    data: [12, 19, 8, 15, 22, 30, 25],
+                    backgroundColor: 'rgba(0, 150, 136, 0.15)',
+                    borderColor: 'rgba(0, 150, 136, 1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: 'rgba(0, 150, 136, 1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 5 }
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+
+<style>
+
+
+.dashboard-chart-section {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 32px 28px 24px 28px;
+    margin: 36px auto 0 auto;
+    max-width: 650px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.dashboard-chart-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #009688;
+    margin-bottom: 22px;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+#userAccessChart {
+    width: 100% !important;
+    max-width: 600px;
+    height: 320px !important;
+    background: #f8fafb;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px rgba(0,150,136,0.07);
+    padding: 8px;
+}
+</style>

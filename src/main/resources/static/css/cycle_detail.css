@@ -1,0 +1,459 @@
+.cycle-app-bg {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  line-height: 1.15;
+  background: linear-gradient(120deg, #f8f9fa 70%, #ffeaea 100%);
+  min-height: 100vh;
+}
+.cycle-container {
+  margin: 0 auto;
+  max-width: 1100px;
+  background: #fff;
+  padding: 36px 22px 36px 22px;
+  box-shadow: 0 4px 24px rgba(215, 38, 96, 0.09);
+  animation: fadeInUp 0.7s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+.cycle-reminder-form {
+  background: #f8fafd;
+  border-radius: 18px;
+  padding: 32px 28px 24px 28px;
+  max-width: 440px;
+  margin: 0 auto 40px auto;
+  box-shadow: 0 6px 32px rgba(58, 122, 254, 0.1);
+  transition: box-shadow 0.2s;
+}
+.cycle-reminder-form:hover {
+  box-shadow: 0 12px 40px rgba(58, 122, 254, 0.18);
+}
+.cycle-reminder-group {
+  margin-bottom: 24px;
+}
+.cycle-reminder-label {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 10px;
+  color: #255ed6;
+  letter-spacing: 0.2px;
+  font-size: 1.12rem;
+}
+.cycle-reminder-select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 2px solid #d1dbe6;
+  background: #fff;
+  font-size: 17px;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.cycle-reminder-select:focus {
+  border: 2px solid #3a7afe;
+  box-shadow: 0 0 0 2px #e3f2fd;
+  outline: none;
+}
+.cycle-reminder-radio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 17px;
+  color: #2a3b4d;
+  cursor: pointer;
+  margin-bottom: 6px;
+  user-select: none;
+}
+.cycle-reminder-radio input[type="radio"] {
+  accent-color: #3a7afe;
+  width: 22px;
+  height: 22px;
+  margin-right: 8px;
+  transition: box-shadow 0.2s;
+}
+.cycle-reminder-time {
+  margin-left: 36px;
+  margin-top: 10px;
+}
+.cycle-reminder-time-input {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 2px solid #d1dbe6;
+  font-size: 17px;
+  transition: border 0.2s, box-shadow 0.2s;
+  background: #fff;
+}
+.cycle-reminder-time-input:focus {
+  border: 2px solid #3a7afe;
+  box-shadow: 0 0 0 2px #e3f2fd;
+  outline: none;
+}
+.cycle-reminder-btn {
+  background: linear-gradient(90deg, #3a7afe 60%, #255ed6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 0;
+  width: 100%;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(58, 122, 254, 0.13);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  letter-spacing: 0.5px;
+}
+.cycle-reminder-btn:hover,
+.cycle-reminder-btn:focus {
+  background: linear-gradient(90deg, #255ed6 60%, #3a7afe 100%);
+  box-shadow: 0 6px 24px rgba(58, 122, 254, 0.18);
+  transform: translateY(-2px) scale(1.03);
+}
+@media (max-width: 600px) {
+  .cycle-reminder-form {
+    padding: 14px 4px 18px 4px;
+    max-width: 99vw;
+  }
+  .cycle-reminder-time {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  .cycle-reminder-btn {
+    font-size: 16px;
+    padding: 12px 0;
+  }
+}
+.cycle-title {
+  font-size: 2.6rem;
+  color: #d72660;
+  margin-bottom: 14px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  text-align: center;
+}
+.cycle-title::before {
+  content: "";
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  background: url("/images/sinhsan/calendar.svg") no-repeat center/contain;
+  filter: drop-shadow(0 1px 2px #d72660);
+}
+.cycle-section-title {
+  font-size: 1.25rem;
+  color: #444;
+  margin-bottom: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.cycle-info-list {
+  margin: 0 0 20px 0;
+  padding: 0;
+  list-style: none;
+}
+.cycle-info-list li {
+  margin-bottom: 7px;
+  font-size: 1.12rem;
+}
+.cycle-highlight {
+  color: #d72660;
+  font-weight: bold;
+}
+.cycle-month-nav {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.cycle-month-link {
+  text-decoration: none;
+  font-size: 22px;
+  margin: 0 12px;
+  color: #d72660;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 10px;
+  transition: color 0.2s, background 0.2s;
+  background: #fff;
+  border: 1px solid transparent;
+  display: inline-block;
+}
+.cycle-month-link:hover {
+  color: #fff;
+  background: #d72660;
+  border: 1px solid #d72660;
+}
+.cycle-month-title {
+  font-size: 22px;
+  color: #d72660;
+  font-weight: bold;
+  margin: 0 10px;
+  letter-spacing: 1px;
+}
+.cycle-disabled {
+  color: #ccc !important;
+  pointer-events: none;
+  cursor: default;
+  background: #f3f3f3;
+}
+.cycle-calendar-table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: transparent;
+  margin-bottom: 28px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(215, 38, 96, 0.06);
+}
+.cycle-calendar-header {
+  background: #f0f0f0;
+  color: #5b5b5b;
+  font-weight: 700;
+}
+.cycle-calendar-cell {
+  border: 1px solid #dee2e6;
+  text-align: center;
+  padding: 6px;
+  position: relative;
+  height: 60px;
+  min-width: 60px;
+  font-size: 16px;
+  background: #fff;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  cursor: pointer;
+}
+.cycle-calendar-cell:hover {
+  box-shadow: 0 2px 12px rgba(215, 38, 96, 0.13);
+  z-index: 2;
+  transform: scale(1.04);
+  border-color: #d72660;
+}
+.cycle-calendar-cell.selected {
+  outline: 2px solid #2196f3;
+  z-index: 3;
+  background: #e3f2fd !important;
+}
+/* trạng thái ngày */
+.cycle-bg-menstruation {
+  background: #ffeaea !important;
+}
+.cycle-bg-fertile-start {
+  background: #fff3e0 !important;
+}
+.cycle-bg-fertile-2 {
+  background: #ffe7b3 !important;
+}
+.cycle-bg-fertile-3 {
+  background: #ffd699 !important;
+}
+.cycle-bg-fertile-high {
+  background: #ffc266 !important;
+}
+.cycle-bg-ovulation {
+  background: #ffb84d !important;
+}
+.cycle-bg-test {
+  background: #e3eafd !important;
+}
+.cycle-bg-safe {
+  background: #e8fbe8 !important;
+}
+.cycle-bg-safe-absolute {
+  background: #d0f5d8 !important;
+}
+.cycle-bg-default {
+  background: #fff !important;
+}
+.cycle-day-number {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  font-size: 13px;
+  color: #222;
+  font-weight: bold;
+  user-select: none;
+  transition: color 0.2s;
+}
+.cycle-calendar-cell:hover .cycle-day-number {
+  color: #d72660;
+}
+.cycle-icon-wrapper {
+  margin-top: 18px;
+}
+.cycle-calendar-icon {
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+  margin-top: 12px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08));
+  transition: transform 0.2s;
+}
+.cycle-calendar-cell:hover .cycle-calendar-icon {
+  transform: scale(1.15) rotate(-6deg);
+}
+.cycle-legend {
+  margin-top: 28px;
+  margin-bottom: 28px;
+  background: linear-gradient(90deg, #fff 80%, #ffeaea 100%);
+  border-radius: 10px;
+  padding: 18px;
+  border: 1px solid #eee;
+  max-width: 700px;
+  box-shadow: 0 2px 12px rgba(215, 38, 96, 0.07);
+  border-left: 4px solid #d72660;
+}
+.cycle-legend-title {
+  font-size: 1.3rem;
+  color: #d72660;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.cycle-legend-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.cycle-legend-list li {
+  margin-bottom: 8px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  padding: 6px 10px;
+  transition: background 0.2s;
+}
+.cycle-legend-list li:hover {
+  background: #fbe9f0;
+}
+.cycle-legend-icon {
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+.cycle-pill-title {
+  font-size: 1.2rem;
+  color: #2196f3;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.cycle-pill-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 18px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.cycle-pill-list li {
+  background: #e3f2fd;
+  border-radius: 6px;
+  margin-bottom: 0;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+  min-width: 120px;
+}
+.cycle-pill-list li:hover {
+  background: #bbdefb;
+}
+.cycle-pill-icon {
+  color: #2196f3;
+  font-size: 20px;
+  margin-right: 8px;
+  filter: drop-shadow(0 1px 2px #90caf9);
+}
+.cycle-back-link {
+  display: inline-block;
+  margin-top: 28px;
+  color: #d72660;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #d72660;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-size: 1.08rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 1px 6px rgba(215, 38, 96, 0.08);
+  transition: background 0.2s, color 0.2s;
+}
+.cycle-back-link:hover {
+  background: #d72660;
+  color: #fff;
+}
+
+/* Responsive cho mobile và tablet */
+@media (max-width: 767px) {
+  .cycle-container {
+    padding: 10px 2px;
+  }
+  .cycle-calendar-table,
+  .cycle-legend {
+    font-size: 14px;
+  }
+  .cycle-month-title {
+    font-size: 18px;
+  }
+  .cycle-calendar-cell {
+    min-width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+  .cycle-calendar-icon,
+  .cycle-legend-icon {
+    width: 18px;
+    height: 18px;
+  }
+  .cycle-reminder-form {
+    padding: 12px 2vw 12px 2vw;
+    max-width: 99vw;
+  }
+  .cycle-reminder-time {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  .cycle-reminder-btn {
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 0;
+  }
+}
+@media (max-width: 500px) {
+  .cycle-title {
+    font-size: 1.5rem;
+  }
+  .cycle-section-title {
+    font-size: 1rem;
+  }
+  .cycle-pill-title {
+    font-size: 1rem;
+  }
+  .cycle-reminder-form {
+    padding: 8px 1vw 10px 1vw;
+    max-width: 100vw;
+  }
+}
+.cycle-reminder-delete-btn {
+  background-color: #ff4d4f;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.cycle-reminder-delete-btn:hover {
+  background-color: #d9363e;
+}

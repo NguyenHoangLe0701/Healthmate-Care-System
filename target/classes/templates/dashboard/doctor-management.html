@@ -1,0 +1,71 @@
+<div th:fragment="contentDoctor">
+  <link rel="stylesheet" href="/css/doctor_management.css" />
+  <div class="dashboard-title">Quản lý bác sĩ</div>
+  <div class="dashboard-welcome">
+    Quản lý, thêm mới, chỉnh sửa và xóa bác sĩ trong hệ thống.
+  </div>
+
+  <div style="margin-bottom: 18px; text-align: right">
+    <a
+      th:href="@{/dashboard/doctors/add}"
+      style="
+        background: #009879;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 18px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+      "
+    >
+      <i class="fa fa-plus"></i> Thêm bác sĩ
+    </a>
+  </div>
+
+  <div class="doctor-table-container">
+    <table class="doctor-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Họ tên</th>
+          <th>Chuyên khoa</th>
+          <th>Email</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="doctor, iterStat : ${doctors}">
+          <td>[[${doctor.id}]]</td>
+          <td>[[${doctor.name}]]</td>
+          <td>[[${doctor.specialty}]]</td>
+          <td>[[${doctor.email}]]</td>
+          <td>
+            <a
+              th:href="@{'/dashboard/doctors/edit/' + ${doctor.id}}"
+              class="btn-action btn-edit"
+            >
+              <i class="fa fa-edit"></i> Sửa
+            </a>
+            <a
+              th:href="@{'/dashboard/doctors/delete/' + ${doctor.id}}"
+              class="btn-action btn-delete"
+              onclick="return confirm('Bạn có chắc muốn xóa?')"
+            >
+              <i class="fa fa-trash"></i> Xóa
+            </a>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(doctors)}">
+          <td
+            colspan="5"
+            style="text-align: center; color: #888; padding: 20px"
+          >
+            Chưa có bác sĩ nào.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

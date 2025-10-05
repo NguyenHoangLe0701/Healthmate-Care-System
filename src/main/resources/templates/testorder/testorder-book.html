@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Đặt lịch xét nghiệm STIs</title>
+    <link rel="stylesheet" href="/static/css/testorder-book.css?v=2" />
+    <link rel="stylesheet" th:href="@{/css/testorder-book.css}" />
+  </head>
+  <body class="stis-body">
+    <div layout:fragment="content">
+      <h2 class="stis-title">Đặt lịch xét nghiệm STIs</h2>
+      <div
+        class="stis-toast-login-alert"
+        id="toast-login-alert"
+        onclick="this.style.opacity=0;setTimeout(()=>this.style.display='none',300);"
+        title="Bấm để đóng"
+      >
+        <i
+          class="fa-solid fa-circle-exclamation"
+          style="color: #f44336; font-size: 1.5em; flex-shrink: 0"
+        ></i>
+        <span style="flex: 1" id="toast-login-message">
+          Vui lòng đăng nhập để sử dụng chức năng này.
+        </span>
+        <button
+          onclick="this.parentElement.style.opacity=0;setTimeout(()=>this.parentElement.style.display='none',300);event.stopPropagation();"
+          style="
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 0 4px 0 8px;
+          "
+          aria-label="Đóng"
+          title="Đóng"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <style>
+        @keyframes toast-in {
+          from {
+            opacity: 0;
+            transform: translateY(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      </style>
+      <form
+        th:action="@{/test-orders/book}"
+        method="post"
+        th:object="${testOrder}"
+        class="stis-form"
+      >
+        <!--
+          ... Toàn bộ nội dung form đặt lịch xét nghiệm STIs ở đây ...
+          (bao gồm các input, radio, select, script, style, button, v.v. như trước)
+        -->
+        <label class="stis-label">Chọn loại xét nghiệm:</label>
+        <div
+          class="stis-testtype-group"
+          id="testType-group"
+          style="display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 12px"
+        >
+          <!-- HIV -->
+          <div
+            class="stis-service-card"
+            style="
+              flex: 1 1 350px;
+              min-width: 320px;
+              background: #fff;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px #eee;
+              display: flex;
+              align-items: center;
+              gap: 18px;
+              margin-bottom: 18px;
+              padding: 16px 18px;
+              border: 1.5px solid #e0e0e0;
+            "
+          >
+            <input
+              type="radio"
+              name="testType"
+              id="testTypeHIV"
+              value="HIV"
+              th:field="*{testType}"
+              required
+              onchange="updateLocations()"
+              style="
+                margin-top: 3px;
+                accent-color: #1976d2;
+                width: 22px;
+                height: 22px;
+                cursor: pointer;
+                flex-shrink: 0;
+              "
+            />
+            <img
+              src="/static/images/xetnghiem/hiv.png"
+              alt="HIV"
+              style="
+                width: 64px;
+                height: 64px;
+                object-fit: cover;
+                border-radius: 8px;
+                background: #f7f7f7;
+              "
+              onerror="this.style.display='none'"
+            />
+            <div style="flex: 1">
+              <b style="font-size: 1.1em; color: #1976d2">HIV</b><br />
+              <span style="font-size: 0.97em; color: #555"
+                >Phát hiện virus HIV gây suy giảm miễn dịch.<br /><b
+                  >Phương pháp:</b
+                >
+                Xét nghiệm máu (ELISA, test nhanh, PCR).<br /><b>Loại mẫu:</b>
+                Máu.</span
+              ><br />
+              <span style="color: #388e3c; font-weight: bold; font-size: 1.08em"
+                >500.000 đ</span
+              >
+            </div>
+          </div>
+          <!-- Giang mai -->
+          <div
+            class="stis-service-card"
+            style="
+              flex: 1 1 350px;
+              min-width: 320px;
+              background: #fff;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px #eee;
+              display: flex;
+              align-items: center;
+              gap: 18px;
+              margin-bottom: 18px;
+              padding: 16px 18px;
+              border: 1.5px solid #e0e0e0;
+            "
+          >
+            <input
+              type="radio"
+              name="testType"
+              id="testTypeGiangMai"
+              value="Giang mai"
+              th:field="*{testType}"
+              required
+              onchange="updateLocations()"
+              style="
+                margin-top: 3px;
+                accent-color: #1976d2;
+                width: 22px;
+                height: 22px;
+                cursor: pointer;
+                flex-shrink: 0;
+              "
+            />
+            <img
+              src="/static/images/xetnghiem/giangmai.png"
+              alt="Giang mai"
+              style="
+                width: 64px;
+                height: 64px;
+                object-fit: cover;
+                border-radius: 8px;
+                background: #f7f7f7;
+              "
+              onerror="this.style.display='none'"
+            />
+            <div style="flex: 1">
+              <b style="font-size: 1.1em; color: #1976d2"
+                >Giang mai (Syphilis)</b
+              ><br />
+              <span style="font-size: 0.97em; color: #555"
+                >Phát hiện xoắn khuẩn Treponema pallidum gây bệnh giang mai.<br /><b
+                  >Phương pháp:</b
+                >
+                VDRL, RPR, TPHA, PCR.<br /><b>Loại mẫu:</b> Máu.</span
+              ><br />
+              <span style="color: #388e3c; font-weight: bold; font-size: 1.08em"
+                >700.000 đ</span
+              >
+            </div>
+          </div>
+          <!-- Lậu -->
+          <div
+            class="stis-service-card"
+            style="
+              flex: 1 1 350px;
+              min-width: 320px;
+              background: #fff;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px #eee;
+              display: flex;
+              align-items: center;
+              gap: 18px;
+              margin-bottom: 18px;
+              padding: 16px 18px;
+              border: 1.5px solid #e0e0e0;
+            "
+          >
+            <input
+              type="radio"
+              name="testType"
+              id="testTypeLau"
+              value="Lậu"
+              th:field="*{testType}"
+              required
+              onchange="updateLocations()"
+              style="
+                margin-top: 3px;
+                accent-color: #1976d2;
+                width: 22px;
+                height: 22px;
+                cursor: pointer;
+                flex-shrink: 0;
+              "
+            />
+            <img
+              src="/static/images/xetnghiem/lau.png"
+              alt="Lậu"
+              style="
+                width: 64px;
+                height: 64px;
+                object-fit: cover;
+                border-radius: 8px;
+                background: #f7f7f7;
+              "
+              onerror="this.style.display='none'"
+            />
+            <div style="flex: 1">
+              <b style="font-size: 1.1em; color: #1976d2">Lậu (Gonorrhea)</b
+              ><br />
+              <span style="font-size: 0.97em; color: #555"
+                >Phát hiện vi khuẩn Neisseria gonorrhoeae gây bệnh lậu.<br /><b
+                  >Phương pháp:</b
+                >
+                Nhuộm Gram, Nuôi cấy, PCR, test nhanh.<br /><b>Loại mẫu:</b> Máu
+                hoặc dịch tiết.</span
+              ><br />
+              <span style="color: #388e3c; font-weight: bold; font-size: 1.08em"
+                >700.000 đ</span
+              >
+            </div>
+          </div>
+          <!-- Chlamydia -->
+          <div
+            class="stis-service-card"
+            style="
+              flex: 1 1 350px;
+              min-width: 320px;
+              background: #fff;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px #eee;
+              display: flex;
+              align-items: center;
+              gap: 18px;
+              margin-bottom: 18px;
+              padding: 16px 18px;
+              border: 1.5px solid #e0e0e0;
+            "
+          >
+            <input
+              type="radio"
+              name="testType"
+              id="testTypeChlamydia"
+              value="Chlamydia"
+              th:field="*{testType}"
+              required
+              onchange="updateLocations()"
+              style="
+                margin-top: 3px;
+                accent-color: #1976d2;
+                width: 22px;
+                height: 22px;
+                cursor: pointer;
+                flex-shrink: 0;
+              "
+            />
+            <img
+              src="/static/images/xetnghiem/chlamydia.png"
+              alt="Chlamydia"
+              style="
+                width: 64px;
+                height: 64px;
+                object-fit: cover;
+                border-radius: 8px;
+                background: #f7f7f7;
+              "
+              onerror="this.style.display='none'"
+            />
+            <div style="flex: 1">
+              <b style="font-size: 1.1em; color: #1976d2">Chlamydia</b><br />
+              <span style="font-size: 0.97em; color: #555"
+                >Phát hiện vi khuẩn Chlamydia trachomatis gây bệnh lây qua đường
+                tình dục.<br /><b>Phương pháp:</b> PCR, Nuôi cấy, test nhanh.<br /><b
+                  >Loại mẫu:</b
+                >
+                Máu hoặc dịch tiết.</span
+              ><br />
+              <span style="color: #388e3c; font-weight: bold; font-size: 1.08em"
+                >800.000 đ</span
+              >
+            </div>
+          </div>
+          <!-- Herpes -->
+          <div
+            class="stis-service-card"
+            style="
+              flex: 1 1 350px;
+              min-width: 320px;
+              background: #fff;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px #eee;
+              display: flex;
+              align-items: center;
+              gap: 18px;
+              margin-bottom: 18px;
+              padding: 16px 18px;
+              border: 1.5px solid #e0e0e0;
+            "
+          >
+            <input
+              type="radio"
+              name="testType"
+              id="testTypeHerpes"
+              value="Herpes"
+              th:field="*{testType}"
+              required
+              onchange="updateLocations()"
+              style="
+                margin-top: 3px;
+                accent-color: #1976d2;
+                width: 22px;
+                height: 22px;
+                cursor: pointer;
+                flex-shrink: 0;
+              "
+            />
+            <img
+              src="/static/images/xetnghiem/herpes.png"
+              alt="Herpes"
+              style="
+                width: 64px;
+                height: 64px;
+                object-fit: cover;
+                border-radius: 8px;
+                background: #f7f7f7;
+              "
+              onerror="this.style.display='none'"
+            />
+            <div style="flex: 1">
+              <b style="font-size: 1.1em; color: #1976d2">Herpes</b><br />
+              <span style="font-size: 0.97em; color: #555"
+                >Phát hiện virus Herpes simplex (HSV) gây mụn rộp sinh dục.<br /><b
+                  >Phương pháp:</b
+                >
+                Xét nghiệm máu, Nuôi cấy, PCR.<br /><b>Loại mẫu:</b> Máu hoặc
+                dịch tiết.</span
+              ><br />
+              <span style="color: #388e3c; font-weight: bold; font-size: 1.08em"
+                >1.000.000 đ</span
+              >
+            </div>
+          </div>
+          <!-- Trichomonas -->
+          <div
+            class="stis-service-card"
+            style="
+              flex: 1 1 350px;
+              min-width: 320px;
+              background: #fff;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px #eee;
+              display: flex;
+              align-items: center;
+              gap: 18px;
+              margin-bottom: 18px;
+              padding: 16px 18px;
+              border: 1.5px solid #e0e0e0;
+            "
+          >
+            <input
+              type="radio"
+              name="testType"
+              id="testTypeTrichomonas"
+              value="Trichomonas"
+              th:field="*{testType}"
+              required
+              onchange="updateLocations()"
+              style="
+                margin-top: 3px;
+                accent-color: #1976d2;
+                width: 22px;
+                height: 22px;
+                cursor: pointer;
+                flex-shrink: 0;
+              "
+            />
+            <img
+              src="/static/images/xetnghiem/trichomonas.png"
+              alt="Trichomonas"
+              style="
+                width: 64px;
+                height: 64px;
+                object-fit: cover;
+                border-radius: 8px;
+                background: #f7f7f7;
+              "
+              onerror="this.style.display='none'"
+            />
+            <div style="flex: 1">
+              <b style="font-size: 1.1em; color: #1976d2">Trichomonas</b><br />
+              <span style="font-size: 0.97em; color: #555"
+                >Phát hiện ký sinh trùng Trichomonas vaginalis gây viêm
+                nhiễm.<br /><b>Phương pháp:</b> Nuôi cấy, PCR.<br /><b
+                  >Loại mẫu:</b
+                >
+                Máu hoặc dịch tiết.</span
+              ><br />
+              <span style="color: #388e3c; font-weight: bold; font-size: 1.08em"
+                >600.000 đ</span
+              >
+            </div>
+          </div>
+          <!-- HPV -->
+          <div
+            class="stis-service-card"
+            style="
+              flex: 1 1 350px;
+              min-width: 320px;
+              background: #fff;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px #eee;
+              display: flex;
+              align-items: center;
+              gap: 18px;
+              margin-bottom: 18px;
+              padding: 16px 18px;
+              border: 1.5px solid #e0e0e0;
+            "
+          >
+            <input
+              type="radio"
+              name="testType"
+              id="testTypeHPV"
+              value="HPV"
+              th:field="*{testType}"
+              required
+              onchange="updateLocations()"
+              style="
+                margin-top: 3px;
+                accent-color: #1976d2;
+                width: 22px;
+                height: 22px;
+                cursor: pointer;
+                flex-shrink: 0;
+              "
+            />
+            <img
+              src="/static/images/xetnghiem/hpv.png"
+              alt="HPV"
+              style="
+                width: 64px;
+                height: 64px;
+                object-fit: cover;
+                border-radius: 8px;
+                background: #f7f7f7;
+              "
+              onerror="this.style.display='none'"
+            />
+            <div style="flex: 1">
+              <b style="font-size: 1.1em; color: #1976d2">HPV</b><br />
+              <span style="font-size: 0.97em; color: #555"
+                >Phát hiện virus Human papillomavirus (HPV) gây sùi mào gà, ung
+                thư cổ tử cung.<br /><b>Phương pháp:</b> Pap, HPV DNA.<br /><b
+                  >Loại mẫu:</b
+                >
+                Tế bào cổ tử cung.</span
+              ><br />
+              <span style="color: #388e3c; font-weight: bold; font-size: 1.08em"
+                >1.500.000 đ</span
+              >
+            </div>
+          </div>
+        </div>
+        <label for="location" class="stis-label">Địa điểm xét nghiệm:</label>
+        <select
+          id="location"
+          name="location"
+          th:field="*{location}"
+          required
+          class="stis-select"
+        ></select>
+        <br />
+        <script th:inline="javascript">
+          /*<![CDATA[*/
+          var locationMap = /*[[${locationMap}]]*/ {};
+          function updateLocations() {
+            var radios = document.getElementsByName("testType");
+            var testType = null;
+            for (var i = 0; i < radios.length; i++) {
+              if (radios[i].checked) {
+                testType = radios[i].value;
+                break;
+              }
+            }
+            var locSelect = document.getElementById("location");
+            locSelect.innerHTML = "";
+            if (testType && locationMap[testType]) {
+              locationMap[testType].forEach(function (loc) {
+                var opt = document.createElement("option");
+                opt.value = loc;
+                opt.text = loc;
+                locSelect.appendChild(opt);
+              });
+            }
+          }
+          document.addEventListener("DOMContentLoaded", function () {
+            var radios = document.getElementsByName("testType");
+            radios.forEach(function (radio) {
+              radio.addEventListener("change", updateLocations);
+            });
+            updateLocations();
+          });
+          /*]]>*/
+        </script>
+        <label for="appointmentDate" class="stis-label"
+          >Lịch khám tại viện:</label
+        >
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+          "
+        >
+          <input
+            type="date"
+            id="appointmentDate"
+            name="appointmentDate"
+            class="stis-date"
+            required
+          />
+          <span id="selectedDateLabel" class="stis-selected-date-label"></span>
+        </div>
+        <div id="time-slots" class="stis-time-slots">
+          <div style="margin-bottom: 8px; font-weight: bold">Buổi sáng</div>
+          <div
+            id="morning-slots"
+            style="
+              display: flex;
+              flex-wrap: wrap;
+              gap: 10px;
+              margin-bottom: 16px;
+            "
+          ></div>
+          <div style="margin-bottom: 8px; font-weight: bold">Buổi chiều</div>
+          <div
+            id="afternoon-slots"
+            style="display: flex; flex-wrap: wrap; gap: 10px"
+          ></div>
+        </div>
+        <input
+          type="hidden"
+          id="appointmentTime"
+          name="appointmentTime"
+          th:field="*{appointmentTime}"
+          required
+        />
+        <script>
+          // Các khung giờ mẫu
+          const morningTimes = [
+            "08:00",
+            "08:30",
+            "09:00",
+            "09:30",
+            "10:00",
+            "10:30",
+            "11:00",
+            "11:30",
+          ];
+          const afternoonTimes = [
+            "12:00",
+            "12:30",
+            "13:00",
+            "13:30",
+            "14:00",
+            "14:30",
+            "15:00",
+            "15:30",
+            "16:00",
+            "16:30",
+            "17:00",
+            "17:30",
+            "18:00",
+            "18:30",
+          ];
+          function renderTimeSlots() {
+            const mDiv = document.getElementById("morning-slots");
+            const aDiv = document.getElementById("afternoon-slots");
+            mDiv.innerHTML = "";
+            aDiv.innerHTML = "";
+            morningTimes.forEach((t) => mDiv.appendChild(createTimeBtn(t)));
+            afternoonTimes.forEach((t) => aDiv.appendChild(createTimeBtn(t)));
+          }
+          function createTimeBtn(time) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.textContent = time;
+            btn.className = "stis-slot-btn";
+            btn.style =
+              "padding:8px 18px;border:1.5px solid #1abc9c;background:#fff;color:#1976d2;font-weight:500;border-radius:7px;cursor:pointer;transition:all 0.15s;font-size:1.08em;";
+            btn.onclick = function () {
+              document
+                .querySelectorAll(".stis-slot-btn.selected")
+                .forEach((b) => b.classList.remove("selected"));
+              btn.classList.add("selected");
+              const date = document.getElementById("appointmentDate").value;
+              // Đảm bảo format ngày luôn là yyyy-MM-dd
+              let formattedDate = date;
+              if (date && date.includes("/")) {
+                // Nếu user dùng flatpickr hoặc nhập tay dạng dd/MM/yyyy thì chuyển lại yyyy-MM-dd
+                const [d, m, y] = date.split("/");
+                formattedDate = `${y}-${m.padStart(2, "0")}-${d.padStart(
+                  2,
+                  "0"
+                )}`;
+              }
+              document.getElementById("appointmentTime").value = formattedDate
+                ? formattedDate + "T" + time
+                : "";
+            };
+            return btn;
+          }
+          document.addEventListener("DOMContentLoaded", function () {
+            renderTimeSlots();
+            // Gán ngày hôm nay mặc định
+            const dateInput = document.getElementById("appointmentDate");
+            const today = new Date();
+            dateInput.value = today.toISOString().slice(0, 10);
+            // Hiển thị đúng format dd/MM/yyyy
+            document.getElementById("selectedDateLabel").textContent =
+              "Ngày " + formatVNDate(dateInput.value);
+            function formatVNDate(val) {
+              if (!val) return "";
+              if (val.includes("/")) {
+                // Nếu đã là dd/MM/yyyy thì trả về luôn
+                return val;
+              }
+              const [y, m, d] = val.split("-");
+              return `${d}/${m}/${y}`;
+            }
+            dateInput.addEventListener("change", function () {
+              document.getElementById("selectedDateLabel").textContent =
+                "Ngày " + formatVNDate(this.value);
+              // Reset chọn giờ khi đổi ngày
+              document.getElementById("appointmentTime").value = "";
+              document
+                .querySelectorAll(".stis-slot-btn.selected")
+                .forEach((b) => b.classList.remove("selected"));
+            });
+
+            // Hiển thị tổng tiền khi chọn loại xét nghiệm
+            const priceMap = {
+              HIV: 500000,
+              "Giang mai": 700000,
+              Lậu: 700000,
+              Chlamydia: 800000,
+              Herpes: 1000000,
+              Trichomonas: 600000,
+              HPV: 1500000,
+            };
+            function updateTotalPrice() {
+              var radios = document.getElementsByName("testType");
+              var selected = Array.from(radios).find((r) => r.checked);
+              var price = selected ? priceMap[selected.value] : 0;
+              document.getElementById("totalPrice").textContent = price
+                ? `Tổng tiền: ${price.toLocaleString()} đ`
+                : "";
+            }
+            var radios = document.getElementsByName("testType");
+            radios.forEach((r) =>
+              r.addEventListener("change", updateTotalPrice)
+            );
+            updateTotalPrice();
+          });
+        </script>
+        <style>
+          .stis-slot-btn.selected {
+            background: #00bfae !important;
+            color: #fff !important;
+            border-color: #00bfae !important;
+          }
+          .stis-time-slots {
+            margin-bottom: 18px;
+          }
+        </style>
+        <button type="submit" id="submitBtn" class="stis-submit-btn">
+          Đặt lịch
+        </button>
+        <div
+          id="totalPrice"
+          class="stis-total-price"
+          style="
+            font-size: 1.15em;
+            font-weight: bold;
+            color: #00bfae;
+            margin: 18px 0 0 0;
+            text-align: right;
+          "
+        ></div>
+      </form>
+    </div>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      document.addEventListener("DOMContentLoaded", function () {
+        var btn = document.getElementById("submitBtn");
+        var form = btn && btn.form;
+        var notLoggedIn = /*[[${notLoggedIn}]]*/ false;
+        // Nếu chưa đăng nhập, chặn submit và hiện toast
+        if (btn && form) {
+          btn.addEventListener("click", function (e) {
+            if (notLoggedIn) {
+              e.preventDefault();
+              var toast = document.getElementById("toast-login-alert");
+              if (toast) {
+                toast.style.opacity = 1;
+                toast.style.display = "flex";
+                setTimeout(function () {
+                  toast.style.opacity = 0;
+                  setTimeout(function () {
+                    toast.style.display = "none";
+                  }, 300);
+                }, 3500);
+              }
+            }
+          });
+        }
+        // Nếu đã đăng nhập, đảm bảo toast luôn ẩn khi vào trang
+        if (!notLoggedIn) {
+          var toast = document.getElementById("toast-login-alert");
+          if (toast) {
+            toast.style.display = "none";
+            toast.style.opacity = 0;
+          }
+        }
+      });
+      /*]]>*/
+    </script>
+  </body>
+</html>

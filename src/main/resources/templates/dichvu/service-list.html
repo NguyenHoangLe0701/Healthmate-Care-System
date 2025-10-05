@@ -1,0 +1,16 @@
+<!-- dichvu/service-list.html -->
+<div class="row" id="serviceList" th:fragment="serviceList">
+    <div class="col-md-6 mb-4" th:each="service : ${services}">
+        <a th:href="@{'/dichvu/' + ${service.id}}" style="text-decoration: none; color: inherit; display: block; width: 100%; height: 100%;">
+            <div class="service-card w-100">
+                <img th:src="@{${service.imageUrl}}" class="service-img" th:alt="${service.name}">
+                <div class="service-info">
+                    <div class="service-title" th:text="${service.name}"></div>
+                    <div class="service-location" th:if="${service.location != null}" th:text="${service.location.address}"></div>
+                    <div class="service-price" th:text="${#numbers.formatInteger(service.price, 0, 'POINT')} + ' đ'"></div>
+                </div>
+                <span class="arrow-right">&#8594;</span>
+            </div>
+        </a>
+    </div>
+</div> 

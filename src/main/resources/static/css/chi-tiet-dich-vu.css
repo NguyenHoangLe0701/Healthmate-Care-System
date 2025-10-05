@@ -1,0 +1,91 @@
+/* Chi tiết dịch vụ - Giao diện hiện đại */
+
+.chi-tiet-container {
+    padding-top: 32px;
+    padding-bottom: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.chi-tiet-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 32px 28px 24px 28px;
+    max-width: 900px;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+.chi-tiet-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 32px;
+}
+
+.chi-tiet-img {
+    max-width: 320px;
+    max-height: 220px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.chi-tiet-info {
+    flex: 1;
+}
+
+.chi-tiet-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.chi-tiet-price {
+    color: #007bff;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+.chi-tiet-address {
+    color: #444;
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.chi-tiet-card-detail {
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin-top: 18px;
+    padding: 24px 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.chi-tiet-card-detail .card-header {
+    background: #f1f3f6;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-bottom: none;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .chi-tiet-row {
+        flex-direction: column;
+        gap: 18px;
+    }
+    .chi-tiet-card {
+        padding: 18px 6px 12px 6px;
+    }
+    .chi-tiet-img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+
+
+
+

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHĂM SÓC MẸ SAU SINH</title>
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/s_experiences.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/centered_content.css}" />
+    <style>
+        .page-title {
+            color: #13a97b;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center; 
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+        .page-desc {
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            color: #222;
+        }
+        .page-list {
+            margin-left: 32px;
+            margin-bottom: 12px;
+        }
+        .page-list li {
+            margin-bottom: 6px;
+            font-size: 1em;
+        }
+        .page-highlight {
+            color: #d42c71;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .page-video {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .page-video video {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/header :: siteHeader(showTopBar=${false})}"></div>
+
+    <div class="centered-content">
+        <div class="page-title">
+            CHĂM SÓC MẸ SAU SINH
+        </div>
+        <div class="page-desc">
+            CHĂM SÓC NGƯỜI MẸ SAU KHI SINH – CẢ VỀ THỂ CHẤT LẪN TINH THẦN! 
+        </div>
+        <ul class="page-list">
+            <li>Sau khi sinh con, sự quan tâm và chú ý thường được dành cho em bé, mà có lẽ nhiều người quên mất rằng: NGƯỜI MẸ rất cần được QUAN TÂM và CHĂM SÓC sau khi sinh.</li>
+            <li>KIÊNG KHÔNG ĐƯỢC TẮM THỜI GIAN DÀI SAU KHI SINH? – Câu trả lời là KHÔNG!</li>
+            <li>Người mẹ được tắm gội NGAY HÀNG NGÀY, nhất là về mùa hè.</li>
+            <li>CHÚ Ý: tắm nơi kín gió, tắm nhanh, không ngâm mình trong bồn tắm.</li>
+            <li>Bà mẹ sau sinh vừa trải qua một cuộc vượt cạn, hao tổn nhiều về sức lực, lại vừa phải chăm sóc trẻ sơ sinh, trong khi đó giai đoạn sau sinh tiềm ẩn nhiều yếu tố nguy cơ, chính vì vậy sự quan tâm, chăm sóc của gia đình đối với bà mẹ sau sinh là hết sức quan trọng.</li>
+            <li>Các GIA ĐÌNH hãy cùng xem để biết những điều lưu ý khi CHĂM SÓC NGƯỜI MẸ SAU SINH nhé!</li>
+        </ul>
+        <div class="page-video">
+            <video controls poster="/images/support/page_s_2.png">
+                <source src="/video/video_s/video_page_s_2.mp4" type="video/mp4">
+                Trình duyệt của bạn không hỗ trợ video.
+            </video>
+        </div>
+    </div>
+    
+    <div th:replace="~{fragments/footer :: siteFooter}"></div>
+    <div th:replace="~{fragments/chatbox :: chatBox}"></div>
+    <div th:replace="~{fragments/overlay :: overlay}"></div>
+</body>
+</html>

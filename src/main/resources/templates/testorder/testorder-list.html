@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Danh sách đơn xét nghiệm</title>
+    <link rel="stylesheet" href="/static/css/testorder-book.css?v=2" />
+    <style>
+      .order-body {
+        font-family: "Inter", "Segoe UI", "Roboto", Arial, sans-serif;
+        background: linear-gradient(120deg, #e0fcf8 0%, #f8fcff 100%);
+        margin: 0;
+        padding: 0;
+      }
+      .order-title {
+        color: #00bfae;
+        text-align: center;
+        margin-top: 32px;
+        margin-bottom: 24px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-shadow: 0 2px 8px #b2f5ea;
+        font-size: 1.18em;
+      }
+      .order-table-container {
+        max-width: 1100px;
+        margin: 0 auto 36px auto;
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 6px 36px 0 rgba(0, 191, 174, 0.13);
+        padding: 40px 44px 32px 44px;
+        border: 1.5px solid #b2f5ea;
+      }
+      .order-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px #b2f5ea22;
+      }
+      .order-table th,
+      .order-table td {
+        padding: 11px 10px;
+        border-bottom: 1px solid #e0fcf8;
+        text-align: left;
+        font-size: 0.98em;
+      }
+      .order-table th {
+        background: #e0fcf8;
+        color: #00bfae;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-top: 1.5px solid #b2f5ea;
+      }
+      .order-table tr:last-child td {
+        border-bottom: none;
+      }
+      .order-status {
+        font-weight: 600;
+        color: #009879;
+      }
+      .order-result {
+        font-weight: 600;
+        color: #1976d2;
+      }
+      .order-link {
+        color: #fff;
+        background: linear-gradient(90deg, #00bfae 60%, #1abc9c 100%);
+        padding: 6px 14px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.97em;
+        transition: background 0.18s, box-shadow 0.18s;
+        box-shadow: 0 2px 8px #b2f5ea44;
+      }
+      .order-link:hover {
+        background: linear-gradient(90deg, #1abc9c 10%, #00bfae 100%);
+        box-shadow: 0 6px 24px #00bfae44;
+      }
+      @media (max-width: 900px) {
+        .order-table-container {
+          padding: 18px 6vw 18px 6vw;
+        }
+      }
+      @media (max-width: 600px) {
+        .order-table-container {
+          padding: 8px 2vw 8px 2vw;
+        }
+        .order-title {
+          font-size: 1.2em;
+        }
+        .order-table th,
+        .order-table td {
+          font-size: 0.98em;
+          padding: 8px 6px;
+        }
+      }
+    </style>
+  </head>
+  <body class="order-body">
+    <div layout:fragment="content">
+      <h2 class="order-title">Danh sách đơn xét nghiệm của bạn</h2>
+      <div class="order-table-container">
+        <div
+          th:if="${#lists.isEmpty(orders)}"
+          style="
+            text-align: center;
+            color: #888;
+            font-size: 1.13em;
+            margin: 32px 0;
+          "
+        >
+          <p>Bạn chưa có đơn xét nghiệm nào.</p>
+        </div>
+        <table class="order-table" th:if="${not #lists.isEmpty(orders)}">
+          <tr>
+            <th>Mã đơn</th>
+            <th>Loại xét nghiệm</th>
+            <th>Trạng thái</th>
+            <th>Thời gian đặt</th>
+            <th>Ngày hẹn</th>
+            <th>Khung giờ</th>
+            <th>Địa điểm</th>
+            <th>Giá tiền</th>
+            <th>Kết quả</th>
+            <th>Chi tiết</th>
+          </tr>
+          <tr
+            th:each="order : ${orders}"
+            th:if="${order.userId == sessionUserId}"
+          >
+            <td th:text="${order.customerCode}"></td>
+            <td th:text="${order.testType}"></td>
+            <td class="order-status">
+              <span th:switch="${order.status}">
+                <span th:case="'BOOKED'">Đã đặt lịch</span>
+                <span th:case="'CHECKED_IN'">Đã đến cơ sở</span>
+                <span th:case="'SAMPLE_COLLECTED'">Đã lấy mẫu</span>
+                <span th:case="'TESTING'">Đang xét nghiệm</span>
+                <span th:case="'RESULT_READY'">Có kết quả</span>
+                <span th:case="'RESULT_DELIVERED'">Đã trả kết quả</span>
+                <span th:case="'CONSULTED'">Đã tư vấn</span>
+                <span th:case="*">[[${order.status}]]</span>
+              </span>
+            </td>
+            <td th:text="${order.bookingTime}"></td>
+            <td
+              th:text="${order.appointmentTime != null ? #strings.substring(order.appointmentTime, 0, 10) : ''}"
+            ></td>
+            <td
+              th:text="${order.appointmentTime != null ? #strings.substring(order.appointmentTime, 11, 16) : ''}"
+            ></td>
+            <td th:text="${order.location}"></td>
+            <td
+              th:text="${order.price != null ? #numbers.formatInteger(order.price, 0, 'POINT') + ' đ' : ''}"
+            ></td>
+            <td
+              th:text="${order.result != null ? order.result : 'Chưa có'}"
+              class="order-result"
+            ></td>
+            <td>
+              <a
+                th:href="@{'/test-orders/detail/' + ${order.id}}"
+                class="order-link"
+                >Xem</a
+              >
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

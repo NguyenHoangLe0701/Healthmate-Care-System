@@ -1,0 +1,205 @@
+<div th:fragment="contentService">
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" th:href="@{/css/service.css}" />
+    <link rel="stylesheet" th:href="@{/css/health-record.css}" />
+    <div class="dashboard-title">Quản lý hồ sơ sức khỏe người dùng</div>
+    
+    <!-- Nút thêm mới -->
+    <div style="margin-bottom: 20px;">
+        <button class="health-btn-action health-btn-add" type="button" onclick="openAddModal()">
+            <i class="fa fa-plus"></i> Thêm hồ sơ mới
+        </button>
+    </div>
+    
+    <div class="user-table-container">
+        <table class="user-table health-record-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User ID</th>
+                    <th>Tên User</th>
+                    <th>Chiều cao (cm)</th>
+                    <th>Cân nặng (kg)</th>
+                    <th>Huyết áp</th>
+                    <th>Nhịp tim</th>
+                    <th>Nhóm máu</th>
+                    <th>Dị ứng</th>
+                    <th>Thuốc</th>
+                    <th>Tiền sử bệnh</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="record : ${healthRecords}">
+                    <td th:text="${record.id}"></td>
+                    <td th:text="${record.user != null ? record.user.id : 'N/A'}"></td>
+                    <td th:text="${record.user != null ? record.user.name : 'N/A'}"></td>
+                    <td th:text="${record.height}"></td>
+                    <td th:text="${record.weight}"></td>
+                    <td th:text="${record.bloodPressure}"></td>
+                    <td th:text="${record.heartRate}"></td>
+                    <td th:text="${record.bloodType}"></td>
+                    <td th:text="${record.allergies}"></td>
+                    <td th:text="${record.medications}"></td>
+                    <td th:text="${record.medicalHistory}"></td>
+                    <td style="text-align:center;">
+                        <button class="btn-action btn-edit" type="button" onclick="openEditModal(this)" 
+                            th:data-id="${record.id}" 
+                            th:data-userid="${record.user != null ? record.user.id : ''}"
+                            th:data-height="${record.height}"
+                            th:data-weight="${record.weight}"
+                            th:data-bloodpressure="${record.bloodPressure}"
+                            th:data-heartrate="${record.heartRate}"
+                            th:data-bloodtype="${record.bloodType}"
+                            th:data-allergies="${record.allergies}"
+                            th:data-medications="${record.medications}"
+                            th:data-medicalhistory="${record.medicalHistory}">
+                            <i class="fa fa-edit"></i> Sửa
+                        </button>
+                        <button class="btn-action btn-delete" type="button" onclick="deleteHealthRecord(this)" th:data-id="${record.id}"><i class="fa fa-trash"></i> Xóa</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Thêm mới -->
+    <div id="addModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:9999; align-items:center; justify-content:center;">
+        <div style="background:#fff; border-radius:10px; padding:32px 28px; min-width:340px; max-width:95vw; margin:auto; position:relative;">
+            <h2 style="margin-bottom:18px; color:#009879;">Thêm hồ sơ sức khỏe mới</h2>
+            <form id="addForm">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div><label>Chọn người dùng</label>
+                        <select id="addUserId" class="health-form-control" required>
+                            <option value="">-- Chọn người dùng --</option>
+                            <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.id + ' - ' + user.name}"></option>
+                        </select>
+                    </div>
+                    <div><label>Chiều cao (cm)</label><input type="number" id="addHeight" class="health-form-control" step="0.1"></div>
+                    <div><label>Cân nặng (kg)</label><input type="number" id="addWeight" class="health-form-control" step="0.1"></div>
+                    <div><label>Huyết áp</label><input type="text" id="addBloodPressure" class="health-form-control" placeholder="VD: 120/80"></div>
+                    <div><label>Nhịp tim</label><input type="number" id="addHeartRate" class="health-form-control"></div>
+                    <div><label>Nhóm máu</label><input type="text" id="addBloodType" class="health-form-control" placeholder="VD: A+, B-, O+"></div>
+                    <div><label>Dị ứng</label><input type="text" id="addAllergies" class="health-form-control" placeholder="VD: Không có, Dị ứng penicillin"></div>
+                    <div><label>Thuốc</label><input type="text" id="addMedications" class="health-form-control" placeholder="VD: Vitamin D, Thuốc huyết áp"></div>
+                    <div class="health-modal-notes-row"><label>Tiền sử bệnh</label><textarea id="addMedicalHistory" class="health-form-control" rows="3" placeholder="Mô tả tiền sử bệnh..."></textarea></div>
+                </div>
+                <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:24px;">
+                    <button type="button" class="health-btn-action health-btn-cancel" onclick="closeAddModal()">Hủy</button>
+                    <button type="submit" class="health-btn-action health-btn-add">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Sửa -->
+    <div id="editModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:9999; align-items:center; justify-content:center;">
+        <div style="background:#fff; border-radius:10px; padding:32px 28px; min-width:340px; max-width:95vw; margin:auto; position:relative;">
+            <h2 style="margin-bottom:18px; color:#009879;">Sửa hồ sơ sức khỏe</h2>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div><label>Chiều cao (cm)</label><input type="number" id="editHeight" class="form-control"></div>
+                    <div><label>Cân nặng (kg)</label><input type="number" id="editWeight" class="form-control"></div>
+                    <div><label>Huyết áp</label><input type="text" id="editBloodPressure" class="form-control"></div>
+                    <div><label>Nhịp tim</label><input type="number" id="editHeartRate" class="form-control"></div>
+                    <div><label>Nhóm máu</label><input type="text" id="editBloodType" class="form-control"></div>
+                    <div><label>Dị ứng</label><input type="text" id="editAllergies" class="form-control"></div>
+                    <div><label>Thuốc</label><input type="text" id="editMedications" class="form-control"></div>
+                    <div><label>Tiền sử bệnh</label><input type="text" id="editMedicalHistory" class="form-control"></div>
+                </div>
+                <div style="margin-top:18px; text-align:right;">
+                    <button type="button" onclick="closeEditModal()" style="background:#eee; color:#333; border:none; border-radius:6px; padding:8px 18px; margin-right:8px;">Hủy</button>
+                    <button type="submit" class="btn-action btn-edit"><i class="fa fa-save"></i> Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+    // Mở modal thêm mới
+    function openAddModal() {
+        document.getElementById('addModal').style.display = 'flex';
+        document.getElementById('addForm').reset();
+    }
+    
+    function closeAddModal() {
+        document.getElementById('addModal').style.display = 'none';
+    }
+    
+    // Xử lý submit form thêm mới
+    document.getElementById('addForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const userId = document.getElementById('addUserId').value;
+        if (!userId) {
+            alert('Vui lòng chọn người dùng');
+            return;
+        }
+        
+        axios.post('/api/health-records', {
+            user: { id: userId },
+            height: document.getElementById('addHeight').value || null,
+            weight: document.getElementById('addWeight').value || null,
+            bloodPressure: document.getElementById('addBloodPressure').value || null,
+            heartRate: document.getElementById('addHeartRate').value || null,
+            bloodType: document.getElementById('addBloodType').value || null,
+            allergies: document.getElementById('addAllergies').value || null,
+            medications: document.getElementById('addMedications').value || null,
+            medicalHistory: document.getElementById('addMedicalHistory').value || null
+        }).then(function(response) {
+            alert('Thêm hồ sơ thành công!');
+            location.reload();
+        }).catch(function(error) {
+            alert('Lỗi: ' + (error.response?.data?.message || 'Không thể thêm hồ sơ'));
+        });
+    });
+    
+    // Mở modal sửa
+    function openEditModal(btn) {
+        document.getElementById('editModal').style.display = 'flex';
+        document.getElementById('editId').value = btn.getAttribute('data-id');
+        document.getElementById('editHeight').value = btn.getAttribute('data-height');
+        document.getElementById('editWeight').value = btn.getAttribute('data-weight');
+        document.getElementById('editBloodPressure').value = btn.getAttribute('data-bloodpressure');
+        document.getElementById('editHeartRate').value = btn.getAttribute('data-heartrate');
+        document.getElementById('editBloodType').value = btn.getAttribute('data-bloodtype');
+        document.getElementById('editAllergies').value = btn.getAttribute('data-allergies');
+        document.getElementById('editMedications').value = btn.getAttribute('data-medications');
+        document.getElementById('editMedicalHistory').value = btn.getAttribute('data-medicalhistory');
+    }
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+    // Xử lý submit form sửa
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = document.getElementById('editId').value;
+        const userId = document.querySelector(`button[data-id="${id}"]`).getAttribute('data-userid');
+        
+        axios.put('/api/health-records/' + id, {
+            user: { id: userId },
+            height: document.getElementById('editHeight').value,
+            weight: document.getElementById('editWeight').value,
+            bloodPressure: document.getElementById('editBloodPressure').value,
+            heartRate: document.getElementById('editHeartRate').value,
+            bloodType: document.getElementById('editBloodType').value,
+            allergies: document.getElementById('editAllergies').value,
+            medications: document.getElementById('editMedications').value,
+            medicalHistory: document.getElementById('editMedicalHistory').value
+        }).then(function() {
+            location.reload();
+        });
+    });
+    // Xóa health record
+    function deleteHealthRecord(btn) {
+        if(confirm('Bạn có chắc chắn muốn xóa hồ sơ này?')) {
+            const id = btn.getAttribute('data-id');
+            axios.delete('/api/health-records/' + id).then(function() {
+                location.reload();
+            });
+        }
+    }
+    </script>
+</div> 

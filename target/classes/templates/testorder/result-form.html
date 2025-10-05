@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kết quả Xét nghiệm [[${order.testType}]]</title>
+    <style>
+      body {
+        font-family: "Inter", "Segoe UI", "Roboto", Arial, sans-serif;
+        background: linear-gradient(120deg, #e0fcf8 0%, #f8fcff 100%);
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 6px 36px 0 rgba(0, 191, 174, 0.13);
+        padding: 40px 44px 32px 44px;
+        border: 1.5px solid #b2f5ea;
+      }
+      h1 {
+        color: #00bfae;
+        text-align: center;
+        margin-top: 32px;
+        margin-bottom: 24px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-shadow: 0 2px 8px #b2f5ea;
+        font-size: 1.35em;
+      }
+      h2 {
+        color: #1976d2;
+        font-size: 1.13em;
+        font-weight: 700;
+        margin-top: 28px;
+        margin-bottom: 18px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px #b2f5ea22;
+        margin-bottom: 24px;
+      }
+      th,
+      td {
+        padding: 12px 14px;
+        border-bottom: 1px solid #e0fcf8;
+        text-align: left;
+        font-size: 1em;
+      }
+      th {
+        background: #e0fcf8;
+        color: #00bfae;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-top: 1.5px solid #b2f5ea;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      .form-group {
+        margin-bottom: 18px;
+      }
+      label {
+        font-weight: 700;
+        color: #00bfae;
+        margin-bottom: 8px;
+        display: block;
+        font-size: 1.08em;
+      }
+      select,
+      input[type="text"],
+      textarea,
+      input[type="file"] {
+        padding: 10px 14px;
+        border-radius: 9px;
+        border: 1.5px solid #b2f5ea;
+        font-size: 1.08em;
+        margin-bottom: 6px;
+        background: #fafdff;
+        transition: border 0.18s, box-shadow 0.18s;
+        box-shadow: 0 1px 4px #b2f5ea;
+        width: 100%;
+        resize: vertical;
+      }
+      select:focus,
+      input[type="text"]:focus,
+      textarea:focus {
+        border: 1.5px solid #00bfae;
+        outline: none;
+        background: #e0fcf8;
+        box-shadow: 0 2px 8px #00bfae44;
+      }
+      button[type="submit"],
+      button[type="button"] {
+        background: linear-gradient(90deg, #00bfae 60%, #1abc9c 100%);
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.08em;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 36px;
+        margin-top: 12px;
+        margin-right: 10px;
+        box-shadow: 0 2px 12px #b2f5ea;
+        cursor: pointer;
+        transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+        letter-spacing: 0.5px;
+      }
+      button[type="submit"]:hover,
+      button[type="button"]:hover {
+        background: linear-gradient(90deg, #1abc9c 10%, #00bfae 100%);
+        box-shadow: 0 6px 24px #00bfae44;
+        transform: translateY(-1px) scale(1.02);
+      }
+      @media (max-width: 900px) {
+        .container {
+          padding: 18px 6vw 18px 6vw;
+        }
+      }
+      @media (max-width: 600px) {
+        .container {
+          padding: 8px 2vw 8px 2vw;
+        }
+        h1 {
+          font-size: 1.1em;
+        }
+        th,
+        td {
+          font-size: 0.98em;
+          padding: 8px 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 th:switch="${order.testType}">
+        <span th:case="'HIV'">Kết quả Xét nghiệm HIV</span>
+        <span th:case="'Trichomonas'">Kết quả Xét nghiệm Trichomonas</span>
+        <span th:case="'HPV'">Kết quả Xét nghiệm HPV</span>
+        <span th:case="'Herpes'">Kết quả Xét nghiệm Herpes</span>
+        <span th:case="'Chlamydia'">Kết quả Xét nghiệm Chlamydia</span>
+        <span th:case="'Giang mai'"
+          >Kết quả Xét nghiệm Giang mai (Syphilis)</span
+        >
+        <span th:case="'Lậu'">Kết quả Xét nghiệm Lậu (Gonorrhea)</span>
+        <span th:case="*">Kết quả Xét nghiệm [[${order.testType}]]</span>
+      </h1>
+      <h2>Thông tin chung</h2>
+      <table>
+        <tr>
+          <th>Họ tên</th>
+          <td th:text="${order.fullName}">[Họ tên]</td>
+        </tr>
+        <tr>
+          <th>Mã khách hàng</th>
+          <td
+            th:text="${order.customerCode != null ? order.customerCode : 'IVIE-000000'}"
+          >
+            [Mã khách hàng]
+          </td>
+        </tr>
+        <tr>
+          <th>Ngày sinh</th>
+          <td th:text="${order.birthDate}">[Ngày sinh]</td>
+        </tr>
+        <tr>
+          <th>Giới tính</th>
+          <td th:text="${order.gender}">[Giới tính]</td>
+        </tr>
+        <tr>
+          <th>Địa điểm xét nghiệm</th>
+          <td th:text="${order.location}">[Địa điểm xét nghiệm]</td>
+        </tr>
+        <tr>
+          <th>Ngày lấy mẫu</th>
+          <td th:text="${order.appointmentTime}">[Ngày lấy mẫu]</td>
+        </tr>
+        <tr>
+          <th>Ngày trả kết quả cho bệnh nhân</th>
+          <td th:text="${#dates.format(order.resultDate, 'dd/MM/yyyy HH:mm')}">
+            [Ngày trả kết quả cho bệnh nhân]
+          </td>
+        </tr>
+      </table>
+
+      <h2>Thông tin xét nghiệm</h2>
+      <table th:switch="${order.testType}">
+        <tbody th:case="'HIV'">
+          <tr>
+            <th>Phương pháp</th>
+            <td>ELISA, Western Blot</td>
+          </tr>
+          <tr>
+            <th>Loại mẫu</th>
+            <td>Máu</td>
+          </tr>
+        </tbody>
+        <tbody th:case="'Trichomonas'">
+          <tr>
+            <th>Phương pháp</th>
+            <td>Nuôi cấy, Xét nghiệm PCR</td>
+          </tr>
+          <tr>
+            <th>Loại mẫu</th>
+            <td>Máu hoặc dịch tiết</td>
+          </tr>
+        </tbody>
+        <tbody th:case="'HPV'">
+          <tr>
+            <th>Phương pháp</th>
+            <td>Xét nghiệm Pap, Xét nghiệm HPV DNA</td>
+          </tr>
+          <tr>
+            <th>Loại mẫu</th>
+            <td>Tế bào cổ tử cung</td>
+          </tr>
+        </tbody>
+        <tbody th:case="'Herpes'">
+          <tr>
+            <th>Phương pháp</th>
+            <td>Xét nghiệm máu, Nuôi cấy, PCR</td>
+          </tr>
+          <tr>
+            <th>Loại mẫu</th>
+            <td>Máu hoặc dịch tiết</td>
+          </tr>
+        </tbody>
+        <tbody th:case="'Chlamydia'">
+          <tr>
+            <th>Phương pháp</th>
+            <td>PCR, Nuôi cấy, Xét nghiệm kháng nguyên nhanh</td>
+          </tr>
+          <tr>
+            <th>Loại mẫu</th>
+            <td>Máu hoặc dịch tiết</td>
+          </tr>
+        </tbody>
+        <tbody th:case="'Giang mai'">
+          <tr>
+            <th>Phương pháp</th>
+            <td>VDRL, RPR, TPHA, Xét nghiệm PCR</td>
+          </tr>
+          <tr>
+            <th>Loại mẫu</th>
+            <td>Máu</td>
+          </tr>
+        </tbody>
+        <tbody th:case="'Lậu'">
+          <tr>
+            <th>Phương pháp</th>
+            <td>Nhuộm Gram, Nuôi cấy, PCR, Xét nghiệm kháng nguyên nhanh</td>
+          </tr>
+          <tr>
+            <th>Loại mẫu</th>
+            <td>Máu hoặc dịch tiết</td>
+          </tr>
+        </tbody>
+        <tbody th:case="*">
+          <tr>
+            <th>Phương pháp</th>
+            <td>Khác</td>
+          </tr>
+          <tr>
+            <th>Loại mẫu</th>
+            <td>Khác</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <form
+        th:action="@{'/test-orders/enter-result/' + ${order.id}}"
+        method="post"
+        enctype="multipart/form-data"
+        style="margin-top: 18px"
+      >
+        <div class="form-group">
+          <label for="result">Kết quả:</label>
+          <select
+            id="result-select"
+            name="result"
+            onchange="toggleCustomResult()"
+            required
+          >
+            <option value="" th:if="${order.result == null}">
+              --Chọn kết quả--
+            </option>
+            <option value="Âm tính" th:selected="${order.result == 'Âm tính'}">
+              Âm tính
+            </option>
+            <option
+              value="Dương tính"
+              th:selected="${order.result == 'Dương tính'}"
+            >
+              Dương tính
+            </option>
+            <option
+              value="Khác"
+              th:selected="${order.result != null and order.result != 'Âm tính' and order.result != 'Dương tính'}"
+            >
+              Khác
+            </option>
+          </select>
+          <input
+            type="text"
+            id="custom-result"
+            name="customResult"
+            placeholder="Nhập kết quả khác"
+            style="display: none; margin-top: 8px"
+            th:value="${order.result != 'Âm tính' and order.result != 'Dương tính' ? order.result : ''}"
+          />
+        </div>
+        <script>
+          function toggleCustomResult() {
+            var select = document.getElementById("result-select");
+            var custom = document.getElementById("custom-result");
+            if (select.value === "Khác") {
+              custom.style.display = "inline-block";
+              custom.required = true;
+            } else {
+              custom.style.display = "none";
+              custom.required = false;
+              custom.value = "";
+            }
+          }
+          // Hiển thị ô nhập nếu đã chọn "Khác" khi load lại form
+          window.onload = function () {
+            toggleCustomResult();
+          };
+        </script>
+        <div class="form-group">
+          <label for="note">Ghi chú/Tư vấn bác sĩ:</label>
+          <textarea
+            id="note"
+            name="note"
+            rows="3"
+            style="width: 100%"
+            th:text="${order.note}"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="pdfFile">Upload file PDF kết quả:</label>
+          <input
+            type="file"
+            id="pdfFile"
+            name="pdfFile"
+            accept="application/pdf"
+          />
+        </div>
+        <button type="submit">Lưu kết quả</button>
+        <button type="button" onclick="window.print()">In form</button>
+      </form>
+
+      <h2>Thông tin bác sĩ</h2>
+      <table style="margin-bottom: 0">
+        <tr>
+          <th>Chữ ký bác sĩ</th>
+          <td th:text="${order.doctorSignature}">[Chữ ký]</td>
+        </tr>
+        <tr>
+          <th>Thông tin cơ sở</th>
+          <td th:text="${order.location}">[Thông tin cơ sở]</td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - HealthMate</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+</head>
+<body>
+<div class="dashboard-layout">
+    <nav class="sidebar">
+        <div class="sidebar-header">HealthMate</div>
+        <div class="sidebar-menu">
+            <a href="#" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a href="#"><i class="fa-solid fa-users"></i> Quản lý người dùng</a>
+            <a href="#"><i class="fa-solid fa-user-doctor"></i> Quản lý bác sĩ</a>
+            <a href="#"><i class="fa-solid fa-hospital"></i> Quản lý cơ sở y tế</a>
+            <a href="#"><i class="fa-solid fa-notes-medical"></i> Quản lý dịch vụ</a>
+            <a href="#"><i class="fa-solid fa-calendar-check"></i> Lịch hẹn</a>
+            <a href="/dashboard/settings"><i class="fa-solid fa-gear"></i> Cài đặt</a>
+        </div>
+        <div class="sidebar-footer">&copy; 2025 HealthMate</div>
+    </nav>
+    <div class="main-content">
+        <div class="dashboard-header">
+            <div class="user-info">Xin chào, <b>[[${session.userName}]]</b></div>
+            <a th:href="@{/}" class="back-home-btn"><i class="fa-solid fa-house"></i> Về trang chủ</a>
+        </div>
+        <div class="dashboard-main">
+            <div class="dashboard-title">Dashboard Quản Lý</div>
+            <div class="dashboard-welcome">Chào mừng bạn đến với hệ thống quản lý sức khỏe sinh sản. Hãy chọn module bên dưới để bắt đầu quản lý!</div>
+            <div class="dashboard-modules">
+                <div class="module-card">
+                    <div class="module-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="module-title">Quản lý người dùng</div>
+                    <div class="module-desc">Thêm, sửa, xóa, tìm kiếm người dùng hệ thống.</div>
+                </div>
+                <div class="module-card">
+                    <div class="module-icon"><i class="fa-solid fa-user-doctor"></i></div>
+                    <div class="module-title">Quản lý bác sĩ</div>
+                    <div class="module-desc">Quản lý thông tin, chuyên khoa, lịch làm việc của bác sĩ.</div>
+                </div>
+                <div class="module-card">
+                    <div class="module-icon"><i class="fa-solid fa-hospital"></i></div>
+                    <div class="module-title">Quản lý cơ sở y tế</div>
+                    <div class="module-desc">Thêm, sửa, xóa các cơ sở y tế liên kết.</div>
+                </div>
+                <div class="module-card">
+                    <div class="module-icon"><i class="fa-solid fa-notes-medical"></i></div>
+                    <div class="module-title">Quản lý dịch vụ</div>
+                    <div class="module-desc">Quản lý các dịch vụ chăm sóc sức khỏe, xét nghiệm, tư vấn.</div>
+                </div>
+                <div class="module-card">
+                    <div class="module-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                    <div class="module-title">Lịch hẹn</div>
+                    <div class="module-desc">Quản lý lịch hẹn khám, lịch sử đặt lịch của người dùng.</div>
+                </div>
+                <div class="module-card">
+                    <div class="module-icon"><i class="fa-solid fa-gear"></i></div>
+                    <div class="module-title">Cài đặt hệ thống</div>
+                    <div class="module-desc">Tùy chỉnh thông tin, cấu hình hệ thống.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html> 

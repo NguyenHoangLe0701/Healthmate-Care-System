@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Lịch sử chu kỳ</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/cycle.css}" />
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="cycle-bg">
+        <div class="cycle-container">
+          <div class="cycle-left">
+            <h1>Công cụ tính ngày rụng trứng</h1>
+            <p>
+              Khám phá công cụ tính ngày rụng trứng online chính xác và tiện
+              lợi, xem chu kỳ kinh nguyệt và ngày an toàn, giúp bạn lên kế hoạch
+              mang thai hiệu quả.
+            </p>
+            <div class="doctor">
+              Thông tin được kiểm chứng bởi<br />
+              <a href="#" style="color: #1976d2; text-decoration: underline"
+                >Bác sĩ Trương Vĩnh Thái</a
+              >
+            </div>
+            <img
+              src="https://www.medigoapp.com/assets/images-html/safe-day-tool/safe-day-bg.png"
+              alt="Lịch chu kỳ"
+            />
+          </div>
+          <div class="cycle-right">
+            <div class="cycle-form-section">
+              <h2>Nhập thông tin của bạn</h2>
+              <form th:action="@{/cycles/add}" method="post">
+                <div class="cycle-form-group">
+                  <label class="cycle-method-label">
+                    Chọn phương pháp tính toán
+                    <span style="color: #e83e8c">*</span>
+                  </label>
+                  <div class="cycle-method-desc">
+                    Lựa chọn phương pháp tính toán phù hợp với bạn
+                  </div>
+                  <div class="cycle-method-select">
+                    <input
+                      type="radio"
+                      id="method1"
+                      name="method"
+                      value="regular"
+                      th:field="*{cycle.method}"
+                      checked
+                    />
+                    <label for="method1" class="cycle-method-box">
+                      <img
+                        src="https://www.medigoapp.com/assets/images-html/due_date_method_1.png"
+                        alt="Đều đặn"
+                      />
+                      <div>Chu kì kinh nguyệt đều đặn</div>
+                    </label>
+                    <input
+                      type="radio"
+                      id="method2"
+                      name="method"
+                      value="irregular"
+                      th:field="*{cycle.method}"
+                    />
+                    <label for="method2" class="cycle-method-box">
+                      <img
+                        src="https://www.medigoapp.com/assets/images-html/due_date_method_2.png"
+                        alt="Không đều"
+                      />
+                      <div>Chu kì kinh nguyệt không đều</div>
+                    </label>
+                  </div>
+                </div>
+                <div class="cycle-form-group">
+                  <label class="cycle-label"
+                    >Ngày đầu tiên của chu kỳ kinh nguyệt gần nhất
+                    <span style="color: #e83e8c">*</span></label
+                  >
+                  <input
+                    type="date"
+                    th:field="*{cycle.startDate}"
+                    class="cycle-input"
+                    required
+                  />
+                </div>
+                <div class="cycle-form-group">
+                  <label class="cycle-label"
+                    >Độ dài chu kỳ kinh của bạn
+                    <span style="color: #e83e8c">*</span></label
+                  >
+                  <select
+                    th:field="*{cycle.cycleLength}"
+                    class="cycle-select"
+                    required
+                  >
+                    <option th:value="20" th:text="'20 ngày'"></option>
+                    <option th:value="21" th:text="'21 ngày'"></option>
+                    <option th:value="22" th:text="'22 ngày'"></option>
+                    <option th:value="23" th:text="'23 ngày'"></option>
+                    <option th:value="24" th:text="'24 ngày'"></option>
+                    <option th:value="25" th:text="'25 ngày'"></option>
+                    <option th:value="26" th:text="'26 ngày'"></option>
+                    <option th:value="27" th:text="'27 ngày'"></option>
+                    <option th:value="28" th:text="'28 ngày'"></option>
+                    <option th:value="29" th:text="'29 ngày'"></option>
+                    <option th:value="30" th:text="'30 ngày'"></option>
+                    <option th:value="31" th:text="'31 ngày'"></option>
+                    <option th:value="32" th:text="'32 ngày'"></option>
+                    <option th:value="33" th:text="'33 ngày'"></option>
+                    <option th:value="34" th:text="'34 ngày'"></option>
+                    <option th:value="35" th:text="'35 ngày'"></option>
+                    <option th:value="36" th:text="'36 ngày'"></option>
+                    <option th:value="37" th:text="'37 ngày'"></option>
+                    <option th:value="38" th:text="'38 ngày'"></option>
+                    <option th:value="39" th:text="'39 ngày'"></option>
+                    <option th:value="40" th:text="'40 ngày'"></option>
+                  </select>
+                </div>
+                <div class="cycle-form-group">
+                  <label class="cycle-label"
+                    >Số ngày hành kinh
+                    <span style="color: #e83e8c">*</span></label
+                  >
+                  <select
+                    th:field="*{cycle.periodLength}"
+                    class="cycle-select"
+                    required
+                  >
+                    <option th:value="3" th:text="'3 ngày'"></option>
+                    <option th:value="4" th:text="'4 ngày'"></option>
+                    <option th:value="5" th:text="'5 ngày'"></option>
+                    <option th:value="6" th:text="'6 ngày'"></option>
+                    <option th:value="7" th:text="'7 ngày'"></option>
+                  </select>
+                </div>
+                <button type="submit" class="cycle-btn">
+                  Tính chỉ số ngay
+                </button>
+              </form>
+            </div>
+            <div class="cycle-form-section">
+              <h2>Lịch sử chu kỳ</h2>
+              <table border="1" style="width: 100%; border-collapse: collapse">
+                <tr>
+                  <th>Ngày bắt đầu</th>
+                  <th>Độ dài chu kỳ</th>
+                  <th>Số ngày hành kinh</th>
+                  <th>Chi tiết</th>
+                </tr>
+                <tr th:each="c : ${cycles}">
+                  <td th:text="${c.startDate}"></td>
+                  <td th:text="${c.cycleLength}"></td>
+                  <td th:text="${c.periodLength}"></td>
+                  <td>
+                    <a th:href="@{/cycles/details/{id}(id=${c.id})}">Xem</a>
+                  </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(cycles)}">
+                  <td colspan="4" style="text-align: center; color: #888">
+                    Không có dữ liệu chu kỳ nào.
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="cycle-note">
+              <span class="icon">ℹ️</span>
+              Công cụ này dựa trên thông tin mà bạn cung cấp và chỉ mang tính
+              chất tham khảo. Nếu bạn đang cố gắng thụ thai hay tránh thai, hãy
+              liên hệ tư vấn với các bác sĩ của chúng tôi qua ứng dụng Medigo.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Đặt Lịch Khám | HealthMate</title>
+    <link rel="stylesheet" th:href="@{/css/appointment.css}" />
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div th:fragment="appointmentSection">
+        <!-- Section đặt khám hẹn giờ -->
+        <div class="appointment-section">
+          <div class="page-header">
+            <h1><i class="fas fa-calendar-check"></i> Đặt Lịch Khám</h1>
+            <p>Đặt lịch khám với bác sĩ chuyên khoa</p>
+          </div>
+
+          <div class="appointment-grid">
+            <!-- Form đặt lịch -->
+            <div class="appointment-form-section">
+              <h2 class="section-title">
+                <i class="fas fa-calendar-plus"></i>
+                Thông Tin Đặt Lịch
+              </h2>
+              <form
+                th:action="@{/appointments}"
+                th:object="${appointment}"
+                method="post"
+              >
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="patientName">Họ và tên</label>
+                    <input
+                      type="text"
+                      th:field="*{patientName}"
+                      id="patientName"
+                      class="form-control"
+                      placeholder="Nhập họ và tên"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="patientPhone">Số điện thoại</label>
+                    <input
+                      type="tel"
+                      th:field="*{patientPhone}"
+                      id="patientPhone"
+                      class="form-control"
+                      placeholder="0123456789"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="appointmentDate">Ngày khám</label>
+                    <input
+                      type="date"
+                      th:field="*{appointmentDate}"
+                      id="appointmentDate"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="appointmentTime">Giờ khám</label>
+                    <select
+                      th:field="*{appointmentTime}"
+                      id="appointmentTime"
+                      class="form-control"
+                    >
+                      <option value="">Chọn giờ khám</option>
+                      <option value="08:00">08:00</option>
+                      <option value="08:30">08:30</option>
+                      <option value="09:00">09:00</option>
+                      <option value="09:30">09:30</option>
+                      <option value="10:00">10:00</option>
+                      <option value="10:30">10:30</option>
+                      <option value="14:00">14:00</option>
+                      <option value="14:30">14:30</option>
+                      <option value="15:00">15:00</option>
+                      <option value="15:30">15:30</option>
+                      <option value="16:00">16:00</option>
+                      <option value="16:30">16:30</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="doctorSelect">Chọn bác sĩ</label>
+                  <select
+                    th:field="*{doctor}"
+                    id="doctorSelect"
+                    class="form-control"
+                  >
+                    <option value="">Chọn bác sĩ</option>
+                    <option
+                      value="BS TS. BSCKII Lê Quốc Việt - Chuyên khoa Tim mạch"
+                    >
+                      BS TS. BSCKII Lê Quốc Việt - Chuyên khoa Tim mạch
+                    </option>
+                    <option
+                      value="BS NGuyễn Hoàng Giang - Chuyên khoa Nội tiết"
+                    >
+                      BS NGuyễn Hoàng Giang - Chuyên khoa Nội tiết
+                    </option>
+                    <option
+                      value="Ths BSNT Phạm Thị Quỳnh - Chuyên khoa Tiêu hóa"
+                    >
+                      Ths BSNT Phạm Thị Quỳnh - Chuyên khoa Tiêu hóa
+                    </option>
+                    <option value="BS Nguyễn Khánh Ngọc - Chuyên khoa Da liễu">
+                      BS Nguyễn Khánh Ngọc - Chuyên khoa Da liễu
+                    </option>
+                    <option
+                      value="BS Phạm Thị Hồng Nhung- Chuyên khoa Thần kinh"
+                    >
+                      BS Phạm Thị Hồng Nhung- Chuyên khoa Thần kinh
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="appointmentType">Loại khám</label>
+                  <select
+                    th:field="*{appointmentType}"
+                    id="appointmentType"
+                    class="form-control"
+                  >
+                    <option value="">Chọn loại khám</option>
+                    <option value="Khám tổng quát">Khám tổng quát</option>
+                    <option value="Khám chuyên khoa">Khám chuyên khoa</option>
+                    <option value="Tái khám">Tái khám</option>
+                    <option value="Tư vấn">Tư vấn</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="symptoms">Triệu chứng</label>
+                  <textarea
+                    th:field="*{symptoms}"
+                    id="symptoms"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Mô tả triệu chứng của bạn"
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="notes">Ghi chú thêm</label>
+                  <textarea
+                    th:field="*{notes}"
+                    id="notes"
+                    class="form-control"
+                    rows="2"
+                    placeholder="Ghi chú thêm (nếu có)"
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn-primary">
+                  <i class="fas fa-calendar-check"></i> Đặt Lịch Khám
+                </button>
+              </form>
+            </div>
+            <!-- Hiển thị lịch đã đặt -->
+            <div class="appointment-display-section">
+              <h2 class="section-title">
+                <i class="fas fa-calendar-alt"></i>
+                Lịch Khám Của Bạn
+              </h2>
+              <div id="appointmentList"></div>
+              <div
+                id="emptyAppointments"
+                class="empty-state"
+                style="display: none"
+              >
+                <i class="fas fa-calendar-times"></i>
+                <h3>Chưa có lịch khám</h3>
+                <p>Đặt lịch khám đầu tiên của bạn ngay hôm nay</p>
+              </div>
+              <!-- Thống kê lịch khám -->
+              <div class="appointment-stats">
+                <h3 class="stats-title">Thống Kê Lịch Khám</h3>
+                <div class="stats-grid">
+                  <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Tổng lịch khám</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Đã hoàn thành</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Sắp tới</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  </body>
+</html>

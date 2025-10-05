@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Hiếm Muộn</title>
+    <link rel="stylesheet" th:href="@{/css/hiemmuon.css}" />
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <!-- Nội dung riêng của trang Hiếm Muộn -->
+      <main>
+        <div class="container_hiemmuon">
+          <div class="main-banner">
+            <img th:src="@{/images/banner/hero-image.png}" alt="banner" />
+          </div>
+        </div>
+      </main>
+      <main>
+        <div class="intro-wrapper container">
+          <!-- Cột ảnh -->
+          <div>
+            <img
+              width="562"
+              height="329"
+              th:src="@{/images/hiemmuon/main.png}"
+              alt="Vạch đích của mẹ"
+            />
+          </div>
+
+          <!-- Cột nội dung -->
+          <div>
+            <h2 class="text-pink text-inter">
+              Khoa Hiếm Muộn - Bệnh viện Từ Dũ TP.HCM
+            </h2>
+            <p>
+              <span class="intro-address">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clip-path="url(#clip0_2_125)">
+                    <path
+                      d="M3.5 7.5V13.5C3.5 14.4428 3.5 14.9142 3.79289 15.2071C4.08579 15.5 4.55719 15.5 5.5 15.5H12.5C13.4428 15.5 13.9142 15.5 14.2071 15.2071C14.5 14.9142 14.5 14.4428 14.5 13.5V7.5"
+                      stroke="black"
+                    ></path>
+                    <path
+                      d="M2.5 8.5L7.58579 3.41421C8.25245 2.74755 8.58579 2.41421 9 2.41421C9.41421 2.41421 9.74755 2.74755 10.4142 3.41421L15.5 8.5"
+                      stroke="black"
+                      stroke-linecap="round"
+                    ></path>
+                    <path
+                      d="M7 13C7 12.0572 7 11.5858 7.29289 11.2929C7.58579 11 8.05719 11 9 11C9.94281 11 10.4142 11 10.7071 11.2929C11 11.5858 11 12.0572 11 13V16H7V13Z"
+                      fill="black"
+                    ></path>
+                    <path
+                      d="M12 4C12 3.5286 12 3.29289 12.1464 3.14645C12.2929 3 12.5286 3 13 3C13.4714 3 13.7071 3 13.8536 3.14645C14 3.29289 14 3.5286 14 4V7L12.5858 5.58579C12.2968 5.29676 12.1522 5.15224 12.0761 4.96847C12 4.7847 12 4.58032 12 4.17157V4Z"
+                      fill="black"
+                    ></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_2_125">
+                      <rect width="18" height="18" fill="white"></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+                284 Cống Quỳnh, Quận 1. Lầu 8 khu H.
+              </span>
+              <br />
+              <span class="intro-address">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clip-path="url(#clip0_2_125)">
+                    <path
+                      d="M3.5 7.5V13.5C3.5 14.4428 3.5 14.9142 3.79289 15.2071C4.08579 15.5 4.55719 15.5 5.5 15.5H12.5C13.4428 15.5 13.9142 15.5 14.2071 15.2071C14.5 14.9142 14.5 14.4428 14.5 13.5V7.5"
+                      stroke="black"
+                    ></path>
+                    <path
+                      d="M2.5 8.5L7.58579 3.41421C8.25245 2.74755 8.58579 2.41421 9 2.41421C9.41421 2.41421 9.74755 2.74755 10.4142 3.41421L15.5 8.5"
+                      stroke="black"
+                      stroke-linecap="round"
+                    ></path>
+                    <path
+                      d="M7 13C7 12.0572 7 11.5858 7.29289 11.2929C7.58579 11 8.05719 11 9 11C9.94281 11 10.4142 11 10.7071 11.2929C11 11.5858 11 12.0572 11 13V16H7V13Z"
+                      fill="black"
+                    ></path>
+                    <path
+                      d="M12 4C12 3.5286 12 3.29289 12.1464 3.14645C12.2929 3 12.5286 3 13 3C13.4714 3 13.7071 3 13.8536 3.14645C14 3.29289 14 3.5286 14 4V7L12.5858 5.58579C12.2968 5.29676 12.1522 5.15224 12.0761 4.96847C12 4.7847 12 4.58032 12 4.17157V4Z"
+                      fill="black"
+                    ></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_2_125">
+                      <rect width="18" height="18" fill="white"></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+                227 Cống Quỳnh, Quận 1. Lầu 3 khu M.
+              </span>
+            </p>
+
+            <ul class="intro-list">
+              <li class="intro-list-selected">
+                Hơn <span class="text-pink text-dancing">25 năm</span> hình
+                thành và phát triển
+              </li>
+              <li>
+                Hơn <span class="text-pink text-dancing">16.300</span> em bé thụ
+                tinh ống nghiệm đã chào đời.
+              </li>
+              <li class="intro-list-selected">
+                Đạt tiêu chuẩn quản lý chất lượng quốc tế về sinh sản RTAC liên
+                tục 6 năm từ 2017.
+              </li>
+              <li>Lấy bệnh nhân làm trung tâm trong mọi hoạt động</li>
+            </ul>
+          </div>
+        </div>
+      </main>
+      <h2 class="text-dancing text-pink block-header">Chia sẻ yêu thương</h2>
+      <div class="sharing-container">
+        <div class="posts-flex">
+          <!-- Bài viết lớn -->
+          <div class="post-wrapper">
+            <a
+              href="https://hiemmuon.tudu.com.vn/chia-se-yeu-thuong/chuyen-phoi-thanh-cong/"
+              class="post-container"
+            >
+              <div class="image-container">
+                <div class="image-holder">
+                  <img
+                    th:src="@{/images/hiemmuon/chuyen-phoi-thanh-cong-6.jpg}"
+                    alt="Chuyển phôi thành công"
+                  />
+                </div>
+              </div>
+              <div class="post-body">
+                <div class="post-time">
+                  <span class="author">BS. Nguyễn Đạt Nguyên</span> | 15:02
+                  06-02-2024
+                </div>
+                <h3 class="post-title">Chú bé cầu lông</h3>
+                <p class="post-excerpt">
+                  Để tăng tỉ lệ chuyển phôi thành công, ba mẹ cần chuẩn bị sẵn
+                  sàng về sức khỏe và tâm lý. Một trong số đó là việc duy trì
+                  thói quen tập thể dục và vận động. Sau đây là một trường hợp
+                  mẹ may mắn đón con yêu nhờ việc kiên trì vận động mà Bác sĩ
+                  muốn chia sẻ đến với mọi người.
+                </p>
+              </div>
+            </a>
+          </div>
+          <!-- Danh sách bài viết nhỏ -->
+          <div class="post-scroll custom-scroll">
+            <ul>
+              <li class="post-list-wrapper">
+                <a
+                  href="https://hiemmuon.tudu.com.vn/chia-se-yeu-thuong/thu-tinh-ong-nghiem-sinh-doi/"
+                  class="post-container"
+                >
+                  <div class="image-container">
+                    <div class="image-holder">
+                      <img
+                        th:src="@{/images/hiemmuon/chuyen-phoi-thanh-cong-6.jpg}"
+                        alt="Chú bé cầu lông"
+                      />
+                    </div>
+                  </div>
+                  <div class="post-body">
+                    <div class="post-time">
+                      <span class="author">BS. Nguyễn Đạt Nguyên</span> | 15:02
+                      06-02-2024
+                    </div>
+                    <h3 class="post-title">Chú bé cầu lông</h3>
+                    <p class="post-excerpt">
+                      Để tăng tỉ lệ chuyển phôi thành công, ba mẹ cần chuẩn bị
+                      sẵn sàng về sức khỏe và tâm lý. Một trong số đó là việc
+                      duy trì thói quen tập thể dục và vận động. Sau đây là một
+                      trường hợp mẹ may mắn đón con yêu nhờ việc kiên trì vận
+                      động mà Bác sĩ muốn chia sẻ đến với mọi người.
+                    </p>
+                  </div>
+                </a>
+              </li>
+              <li class="post-list-wrapper">
+                <a
+                  href="https://hiemmuon.tudu.com.vn/chia-se-yeu-thuong/thu-tinh-ong-nghiem-sinh-doi/"
+                  class="post-container"
+                >
+                  <div class="image-container">
+                    <div class="image-holder">
+                      <img
+                        th:src="@{/images/hiemmuon/thu-tinh-ong-nghiem-sinh-doi-3.jpg}"
+                        alt="Thụ tinh ống nghiệm sinh đôi"
+                      />
+                    </div>
+                  </div>
+                  <div class="post-body">
+                    <div class="post-time">
+                      <span class="author">BS. Nguyễn Đạt Nguyên</span> | 15:02
+                      06-02-2024
+                    </div>
+                    <h3 class="post-title">Thụ tinh ống nghiệm sinh đôi</h3>
+                    <p class="post-excerpt">
+                      Câu hỏi mà rất nhiều mẹ sắp có bầu ước mơ đặt cho bác sĩ
+                      khi làm thụ tinh ống nghiệm chính là: “Bác ơi, em ước mơ
+                      làm thụ tinh ống nghiệm sẽ được song thai 1 trai 1 gái có
+                      được không ạ?”
+                    </p>
+                  </div>
+                </a>
+              </li>
+              <li class="post-list-wrapper">
+                <a
+                  href="https://hiemmuon.tudu.com.vn/chia-se-yeu-thuong/thu-tinh-ong-nghiem-sinh-doi/"
+                  class="post-container"
+                >
+                  <div class="image-container">
+                    <div class="image-holder">
+                      <img
+                        th:src="@{/images/hiemmuon/thu-tinh-ong-nghiem-3.jpg}"
+                        alt="Thụ tinh ống nghiệm sinh đôi"
+                      />
+                    </div>
+                  </div>
+                  <div class="post-body">
+                    <div class="post-time">
+                      <span class="author">BS. Nguyễn Đạt Nguyên</span> | 15:02
+                      06-02-2024
+                    </div>
+                    <h3 class="post-title">
+                      Ước mơ nhân đôi với thụ tinh ống nghiệm
+                    </h3>
+                    <p class="post-excerpt">
+                      Có lẽ câu nói “Hãy cứ ước mơ đi, không ai đánh thuế giấc
+                      mơ của bạn đâu!” thực sự đúng với chị H. Hơn 5 năm tìm con
+                      đầy những vất vả cũng như tốn kém và buồn phiền không ít.
+                      Nhưng có lẽ chưa lúc nào chị H. từ bỏ niềm tin là mình sẽ
+                      có con. Chị vẫn kiên nhẫn theo đuổi việc tìm con năm này
+                      qua năm khác. Có lúc mệt mỏi nản lòng, chị tự cho mình tạm
+                      nghỉ 1-2 tháng rồi lại tiếp tục hành trình tìm con.
+                    </p>
+                  </div>
+                </a>
+              </li>
+              <li class="post-list-wrapper">
+                <a
+                  href="https://hiemmuon.tudu.com.vn/chia-se-yeu-thuong/thu-tinh-ong-nghiem-sinh-doi/"
+                  class="post-container"
+                >
+                  <div class="image-container">
+                    <div class="image-holder">
+                      <img
+                        th:src="@{/images/hiemmuon/thu-tinh-nhan-tao-sinh-con-gai-3.jpg}"
+                        alt="Thụ tinh nhân tạo sinh con gái như mơ ước"
+                      />
+                    </div>
+                  </div>
+                  <div class="post-body">
+                    <div class="post-time">
+                      <span class="author">BS. Nguyễn Đạt Nguyên</span> | 15:02
+                      06-02-2024
+                    </div>
+                    <h3 class="post-title">
+                      Thụ tinh nhân tạo sinh con gái như mơ ước
+                    </h3>
+                    <p class="post-excerpt">
+                      Năm 2023, khi có dịp rảnh rỗi đọc lại nhật ký của mình,
+                      chị Ch. bỗng cảm thấy ngập tràn yêu thương và chị nở một
+                      nụ cười hạnh phúc. Thời gian trôi nhanh quá, 7 năm trước,
+                      khi còn là một cô gái trẻ vui tươi mơ mộng, chị đã tình cờ
+                      nhìn thấy tấm hình một bé gái xinh như thiên thần: mái tóc
+                      nâu xoăn, đôi mắt to tròn và nụ cười tỏa nắng.
+                    </p>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <section id="specialist" class="specialist-background">
+        <div class="container">
+          <h2 class="text-dancing text-pink block-header">
+            Chuyên gia - Chuyên môn
+          </h2>
+          <div class="relative">
+            <div class="swiper">
+              <div class="swiper-wrapper">
+                <!-- Slide 1 -->
+                <div class="swiper-slide">
+                  <div class="post-block">
+                    <a href="LINK_BAI_VIET_1" class="post-container">
+                      <div class="image-container">
+                        <div class="image-holder">
+                          <img
+                            th:src="@{/images/hiemmuon/sau-chuyen-phoi-4.jpg}"
+                            alt="Tiêu đề bài viết 1"
+                          />
+                        </div>
+                      </div>
+                      <div class="post-body">
+                        <div class="post-time">
+                          <span class="author">Tác giả 1</span> | 15:02
+                          06-02-2024
+                        </div>
+                        <h3 class="post-title">
+                          Sau chuyển phôi: Làm thế nào để vượt qua khoảng thời
+                          gian chờ đợi kết quả?
+                        </h3>
+                        <p class="post-excerpt">
+                          Sau nhiều ngày bận rộn với quá trình điều trị thụ tinh
+                          ống nghiệm, các cặp vợ chồng sẽ bước vào giai đoạn chờ
+                          đợi kết quả sau chuyển phôi, kéo dài trong khoảng hai
+                          tuần. Đối với nhiều cặp vợ chồng, đây có thể là thời
+                          điểm căng thẳng nhất.
+                        </p>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="swiper-slide">
+                  <div class="post-block">
+                    <a href="LINK_BAI_VIET_2" class="post-container">
+                      <div class="image-container">
+                        <div class="image-holder">
+                          <img
+                            th:src="@{/images/hiemmuon/xin-trung-2.jpg}"
+                            alt="Tiêu đề bài viết 2"
+                          />
+                        </div>
+                      </div>
+                      <div class="post-body">
+                        <div class="post-time">
+                          <span class="author">Tác giả 2</span> | 15:02
+                          06-02-2024
+                        </div>
+                        <h3 class="post-title">
+                          Xin trứng làm IVF – Giải pháp cho phụ nữ suy giảm chức
+                          năng buồng trứng
+                        </h3>
+                        <p class="post-excerpt">
+                          Lập gia đình, có thai, sinh con là ước mơ của tất cả
+                          các cặp vợ chồng. Tuy nhiên, không phải gia đình nào
+                          cũng có thể thực hiện được ước mơ bình dị này. Những
+                          người phụ nữ, những người vợ, sau khi lập gia đình vì
+                          nhiều lý do khách quan không thể có thai.
+                        </p>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+                <!-- Thêm các slide khác tương tự -->
+                <div class="swiper-slide">
+                  <div class="post-block">
+                    <a href="LINK_BAI_VIET_2" class="post-container">
+                      <div class="image-container">
+                        <div class="image-holder">
+                          <img
+                            th:src="@{/images/hiemmuon/thai-nghen-that-bai-som-3.jpg}"
+                            alt="Tiêu đề bài viết 2"
+                          />
+                        </div>
+                      </div>
+                      <div class="post-body">
+                        <div class="post-time">
+                          <span class="author">Tác giả 2</span> | 15:02
+                          06-02-2024
+                        </div>
+                        <h3 class="post-title">
+                          Thai nghén thất bại sớm: Dấu hiệu lâm sàng và siêu âm
+                          mà bệnh nhân hiếm muộn cần biết
+                        </h3>
+                        <p class="post-excerpt">
+                          Tiếp theo bài “Những khái niệm về thai, thai nghén
+                          thất bại sớm mà bệnh nhân thụ tinh trong ống nghiệm
+                          cần biết”, chúng tôi trân trọng giới thiệu bài: “Thai
+                          nghén thất bại sớm: dấu hiệu lâm sàng và siêu âm mà
+                          bệnh nhân hiếm muộn cần biết”
+                        </p>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+                <div class="swiper-slide">
+                  <div class="post-block">
+                    <a href="LINK_BAI_VIET_2" class="post-container">
+                      <div class="image-container">
+                        <div class="image-holder">
+                          <img
+                            th:src="@{/images/hiemmuon/thoi-quen-gay-vo-sinh-6.jpg}"
+                            alt="Tiêu đề bài viết 2"
+                          />
+                        </div>
+                      </div>
+                      <div class="post-body">
+                        <div class="post-time">
+                          <span class="author">Tác giả 2</span> | 15:02
+                          06-02-2024
+                        </div>
+                        <h3 class="post-title">
+                          6 thói quen gây vô sinh, khó có con nam giới cần tránh
+                          ngay
+                        </h3>
+                        <p class="post-excerpt">
+                          Ngày nay, các cặp vợ chồng bị hiếm muộn vô sinh ngày
+                          càng trẻ hơn. Một trong những nguyên nhân chính lấy đi
+                          niềm hạnh phúc làm cha xuất phát từ những thói quen
+                          xấu làm giảm chất lượng “tinh binh”. Từ đó khiến cho
+                          nam giới tự đánh mất cơ hội có con của mình.
+                        </p>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+                <div class="swiper-slide">
+                  <div class="post-block">
+                    <a href="LINK_BAI_VIET_2" class="post-container">
+                      <div class="image-container">
+                        <div class="image-holder">
+                          <img
+                            th:src="@{/images/hiemmuon/tang-kha-nang-thu-thai-10.jpg}"
+                            alt="Tiêu đề bài viết 2"
+                          />
+                        </div>
+                      </div>
+                      <div class="post-body">
+                        <div class="post-time">
+                          <span class="author">Tác giả 2</span> | 15:02
+                          06-02-2024
+                        </div>
+                        <h3 class="post-title">
+                          10 cách giúp tăng khả năng thụ thai của nam giới
+                        </h3>
+                        <p class="post-excerpt">
+                          Khi có vấn đề về hiếm muộn thì người ta thường nghĩ
+                          nguyên nhân là do nữ. Nhưng sự thật nam giới cũng góp
+                          một phần lớn trong đó. Nếu người chồng có thể thay đổi
+                          hành vi và lối sống, ví dụ như bỏ thuốc lá, thì số
+                          lượng tinh trùng sẽ tăng lên rõ rệt sau 3 tháng, từ đó
+                          cải thiện khả năng thụ thai
+                        </p>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- Pagination và navigation -->
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="events" class="events-background">
+        <div class="container">
+          <h2 class="text-dancing text-pink block-header">
+            Quy trình - Sự kiện – Thành Tựu
+          </h2>
+          <div class="post-list">
+            <!-- Bài viết 1 -->
+            <a href="LINK_BAI_VIET_1" class="post-container">
+              <div class="image-container">
+                <div class="image-holder">
+                  <img
+                    th:src="@{/images/hiemmuon/quy-trinh-thu-tinh-ong-nghiem-6.jpg}"
+                    alt="Tiêu đề bài viết 1"
+                  />
+                </div>
+              </div>
+              <div class="post-body">
+                <div class="post-time">
+                  <span class="author">Tác giả 1</span> | 15:02 06-02-2024
+                </div>
+                <h3 class="post-title">
+                  6 bước đơn giản trong quy trình thụ tinh ống nghiệm
+                </h3>
+                <p class="post-excerpt">
+                  Trên đây là 6 bước cụ thể trong quy trình thụ tinh ống nghiệm.
+                  Hãy giữ tinh thần thoải mái và tuân thủ theo hướng dẫn của các
+                  bác sĩ để thực hiện các bước trong quy trình này. Chúc các bạn
+                  thành công thật sớm.
+                </p>
+              </div>
+            </a>
+            <!-- Bài viết 2 -->
+            <a href="LINK_BAI_VIET_2" class="post-container">
+              <div class="image-container">
+                <div class="image-holder">
+                  <img
+                    th:src="@{/images/hiemmuon/em-be-thu-tinh-ong-nghiem-10.jpg}"
+                    alt="Tiêu đề bài viết 2"
+                  />
+                </div>
+              </div>
+              <div class="post-body">
+                <div class="post-time">
+                  <span class="author">Tác giả 2</span> | 15:02 06-02-2024
+                </div>
+                <h3 class="post-title">
+                  Những em bé thụ tinh ống nghiệm tại Bệnh viện Từ Dũ
+                </h3>
+                <p class="post-excerpt">
+                  Ngày 30 tháng 4 năm 1998, ngày chào đón sự ra đời của ba em bé
+                  thụ tinh ống nghiệm (TTON) đầu tiên của nước ta. Đây là một
+                  trong những thành tựu xuất sắc của nền y học Việt Nam. Ba em
+                  bé được đặt tên là Phạm Tường Lan Thy, Lưu Tuyết Trân và Mai
+                  Quốc Bảo.
+                </p>
+              </div>
+            </a>
+            <!-- Thêm các bài viết khác tương tự -->
+            <a href="LINK_BAI_VIET_2" class="post-container">
+              <div class="image-container">
+                <div class="image-holder">
+                  <img
+                    th:src="@{/images/hiemmuon/baby.jpg}"
+                    alt="Tiêu đề bài viết 2"
+                  />
+                </div>
+              </div>
+              <div class="post-body">
+                <div class="post-time">
+                  <span class="author">Tác giả 2</span> | 15:02 06-02-2024
+                </div>
+                <h3 class="post-title">
+                  Thụ tinh ống nghiệm tại Bệnh viện Từ Dũ
+                </h3>
+                <p class="post-excerpt">
+                  Bệnh viện Từ Dũ cũng là một trong những đơn vị đi đầu trong
+                  đào tạo, chuyển giao công nghệ trong lĩnh vực Hỗ trợ sinh sản.
+                  Từ năm 2002, bệnh viện đã bắt đầu tổ chức các khóa học về hỗ
+                  trợ sinh sản.
+                </p>
+              </div>
+            </a>
+            <!-- 4 -->
+            <a href="LINK_BAI_VIET_2" class="post-container">
+              <div class="image-container">
+                <div class="image-holder">
+                  <img
+                    th:src="@{/images/hiemmuon/rtac-1.jpg}"
+                    alt="Tiêu đề bài viết 2"
+                  />
+                </div>
+              </div>
+              <div class="post-body">
+                <div class="post-time">
+                  <span class="author">Tác giả 2</span> | 15:02 06-02-2024
+                </div>
+                <h3 class="post-title">
+                  Khoa Hiếm muộn – Bệnh viện Từ Dũ đã đạt chứng nhận RTAC như
+                  thế nào?
+                </h3>
+                <p class="post-excerpt">
+                  Trên tinh thần cầu tiến và muốn cải thiện chất lượng phục vụ
+                  cho bệnh nhân, tập thể nhân viên khoa Hiếm muộn bệnh viện Từ
+                  Dũ đã quyết tâm nỗ lực hết sức mình để đạt được chứng nhận
+                  RTAC. Vào năm 2018, kế hoạch được lập và khởi động bởi bác sĩ
+                  trưởng khoa Lê Thị Minh Châu
+                </p>
+              </div>
+            </a>
+            <!-- 5 -->
+            <a href="LINK_BAI_VIET_2" class="post-container">
+              <div class="image-container">
+                <div class="image-holder">
+                  <img
+                    th:src="@{/images/hiemmuon/rtac-2-1.jpg}"
+                    alt="Tiêu đề bài viết 2"
+                  />
+                </div>
+              </div>
+              <div class="post-body">
+                <div class="post-time">
+                  <span class="author">Tác giả 2</span> | 15:02 06-02-2024
+                </div>
+                <h3 class="post-title">
+                  Chứng chỉ quản lý chất lượng RTAC và khoa Hiếm muộn, Bệnh viện
+                  Từ Dũ
+                </h3>
+                <p class="post-excerpt">
+                  Bộ tiêu chuẩn ban đầu biên soạn bởi Hiệp hội sinh sản Úc có
+                  tên là “Hướng dẫn dành cho các trung tâm Hỗ trợ sinh sản tại
+                  Úc và New Zealand”, được giới thiệu lần đầu tiên vào năm 1986.
+                  Đến năm 1987, RTAC được thành lập và bổ sung thêm các ghi chú
+                  để giải thích cho các tiêu chuẩn ban đầu do Hội soạn thảo.
+                </p>
+              </div>
+            </a>
+            <!-- 6 -->
+            <a href="LINK_BAI_VIET_2" class="post-container">
+              <div class="image-container">
+                <div class="image-holder">
+                  <img
+                    th:src="@{/images/hiemmuon/khoa-hiem-muon-benh-vien-tu-du-6.jpg}"
+                    alt="Tiêu đề bài viết 2"
+                  />
+                </div>
+              </div>
+              <div class="post-body">
+                <div class="post-time">
+                  <span class="author">Tác giả 2</span> | 15:02 06-02-2024
+                </div>
+                <h3 class="post-title">
+                  Tập thể nhân viên khoa Hiếm muộn bệnh viện Từ Dũ
+                </h3>
+                <p class="post-excerpt">
+                  Và cuối cùng vào năm 2019, sau rất nhiều nỗ lực của khoa Hiếm
+                  muộn, cùng với sự hỗ trợ hết mình từ Ban giám đốc và các khoa
+                  phòng liên quan, tập thể khoa đã hoàn thành xuất sắc buổi thẩm
+                  định của một tổ chức kiểm toán quốc tế. “Quả ngọt nhất là quả
+                  được hái từ cây nỗ lực”, khoa Hiếm muộn đã chính thức được
+                  nhận chứng nhận Quản lý chất lượng RTAC vào tháng 10 năm 2019,
+                  tự hào là Trung tâm hỗ trợ sinh sản đạt chuẩn quốc tế.
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script>
+      var swiper = new Swiper(".swiper", {
+        slidesPerView: 3,
+        spaceBetween: 16,
+        loop: true,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        breakpoints: {
+          900: { slidesPerView: 3 },
+          600: { slidesPerView: 2 },
+          0: { slidesPerView: 1 },
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+<div th:fragment="contentStatistics">
+    <div class="dashboard-title" style="text-align:center; margin-bottom:32px;">Thống kê người dùng hệ thống</div>
+    <div class="statistic-summary" style="justify-content:center;">
+        <div class="stat-card">
+            <div class="stat-label">Tổng số người dùng</div>
+            <div class="stat-value" id="totalUser">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Tổng số Admin</div>
+            <div class="stat-value" id="totalAdmin">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Tổng số Bác sĩ</div>
+            <div class="stat-value" id="totalDoctor">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Tổng số User</div>
+            <div class="stat-value" id="totalNormalUser">0</div>
+        </div>
+    </div>
+    <div class="charts-row">
+        <div class="chart-container">
+            <div style="text-align:center; font-weight:600; margin-bottom:8px; color:#009879;">Biểu đồ số lượng người dùng theo vai trò</div>
+            <canvas id="roleBarChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <div style="text-align:center; font-weight:600; margin-bottom:8px; color:#009879;">Tỉ lệ người dùng theo vai trò</div>
+            <canvas id="rolePieChart"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // Đảm bảo users là JS array đúng kiểu
+        const users = [[${users}]];
+        console.log('Users data:', users); // Debug log
+        
+        // Thống kê số lượng theo role
+        const roleCount = { 'ADMIN': 0, 'DOCTOR': 0, 'USER': 0 };
+        users.forEach(u => {
+            if (roleCount[u.role]) roleCount[u.role]++;
+            else roleCount[u.role] = 1;
+        });
+        
+        console.log('Role count:', roleCount); // Debug log
+        
+        document.getElementById('totalUser').innerText = users.length;
+        document.getElementById('totalAdmin').innerText = roleCount['ADMIN'] || 0;
+        document.getElementById('totalDoctor').innerText = roleCount['DOCTOR'] || 0;
+        document.getElementById('totalNormalUser').innerText = roleCount['USER'] || 0;
+        
+        // Bar chart
+        const barCtx = document.getElementById('roleBarChart');
+        if (barCtx) {
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(roleCount),
+                    datasets: [{
+                        label: 'Số lượng',
+                        data: Object.values(roleCount),
+                        backgroundColor: ['#009879', '#ffc107', '#28a745'],
+                    }]
+                },
+                options: {
+                    plugins: { 
+                        legend: { display: false } 
+                    },
+                    scales: { 
+                        y: { 
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        } 
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    aspectRatio: 2
+                }
+            });
+        }
+        
+        // Pie chart
+        const pieCtx = document.getElementById('rolePieChart');
+        if (pieCtx) {
+            new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(roleCount),
+                    datasets: [{
+                        data: Object.values(roleCount),
+                        backgroundColor: ['#009879', '#ffc107', '#28a745'],
+                    }]
+                },
+                options: {
+                    plugins: { 
+                        legend: { position: 'bottom' } 
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    aspectRatio: 2
+                }
+            });
+        }
+        /*]]>*/
+    </script>
+</div> 

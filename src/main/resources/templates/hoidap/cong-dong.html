@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Cộng đồng hỏi đáp Bác Sĩ IVIE</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/congdong.css}" />
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="main-wrap">
+        <div class="questions-list">
+          <h1
+            style="
+              color: #166950;
+              font-size: 2.2rem;
+              font-weight: bold;
+              text-align: left;
+              margin-bottom: 24px;
+            "
+          >
+            Hỏi đáp miễn phí với Bác sĩ
+          </h1>
+          <!-- Bộ lọc chuyên khoa & tìm kiếm chủ đề cho USER -->
+          <div th:if="${session.role} == 'USER'" class="hm-filter-bar">
+            <label for="userSpecializationFilter">Chuyên khoa:</label>
+            <select id="userSpecializationFilter">
+              <option value="">Tất cả</option>
+              <option value="Phụ khoa">Chuyên khoa Phụ khoa</option>
+              <option value="Nam Học">Nam Học</option>
+              <option value="Sản">Chuyên khoa Sản</option>
+              <option value="Nội nhi">Chuyên khoa Nội nhi</option>
+              <!-- Thêm các chuyên khoa khác nếu cần -->
+            </select>
+            <input
+              id="userKeywordSearch"
+              type="text"
+              placeholder="Tìm kiếm chủ đề..."
+              style="flex: 1; min-width: 180px"
+            />
+            <button onclick="filterUserQuestions()">Lọc</button>
+          </div>
+          <div th:each="q : ${questions}" class="question-card">
+            <div class="question-title">
+              <a
+                th:href="@{'/cong-dong/question/' + ${q.id}}"
+                th:text="${q.title}"
+                style="color: #166950; text-decoration: none"
+              ></a>
+            </div>
+            <div
+              class="question-content"
+              style="
+                color: #222;
+                font-size: 1.04rem;
+                margin-bottom: 8px;
+                line-height: 1.6;
+              "
+            >
+              <span th:text="${q.content}"></span>
+            </div>
+            <div class="question-meta">
+              <span
+                th:if="${session.role} == 'DOCTOR' or ${session.role} == 'ADMIN'"
+                th:text="${q.user != null ? q.user.name : 'Ẩn danh'}"
+              ></span>
+              <span
+                th:if="${session.role} == 'DOCTOR' or ${session.role} == 'ADMIN'"
+                >|</span
+              >
+              <span
+                th:text="${#temporals.format(q.createdAt, 'dd/MM/yyyy')}"
+              ></span>
+              <span
+                class="question-specialist"
+                th:if="${q.specialization != null}"
+                th:text="'Chuyên khoa ' + ${q.specialization}"
+              ></span>
+            </div>
+            <div class="question-actions">
+              <span
+                th:if="${q.closed == true}"
+                class="question-status"
+                style="color: red"
+                ><i class="fa-solid fa-lock"></i> Đã đóng</span
+              >
+              <span
+                th:if="${q.rejected == true}"
+                class="question-status"
+                style="color: red"
+                ><i class="fa-solid fa-ban"></i> Bị từ chối</span
+              >
+              <span
+                th:if="${q.answeredAt != null and (q.closed == null or q.closed == false) and (q.rejected == null or q.rejected == false)}"
+                class="question-status"
+                style="color: #16a34a"
+                ><i class="fa-solid fa-check-circle"></i> Đã trả lời</span
+              >
+              <span
+                th:if="${q.answeredAt == null and (q.closed == null or q.closed == false) and (q.rejected == null or q.rejected == false)}"
+                class="question-status"
+                style="color: orange"
+                ><i class="fa-regular fa-clock"></i> Chưa trả lời</span
+              >
+            </div>
+            <!-- PHÂN CÔNG BÁC SĨ (ADMIN) -->
+            <div th:if="${session.role} == 'ADMIN'" style="margin-top: 10px">
+              <div th:if="${q.assignedDoctor != null}">
+                <span style="color: #166950; font-weight: 600">
+                  <i class="fa-solid fa-user-doctor"></i> Bác sĩ phụ trách:
+                </span>
+                <span th:text="${q.assignedDoctor.name}"></span>
+                <span style="margin-left: 12px; color: #86899b">
+                  <i class="fa-regular fa-clock"></i> Phân công lúc:
+                </span>
+                <span
+                  th:text="${#temporals.format(q.assignedAt, 'dd/MM/yyyy HH:mm')}"
+                ></span>
+                <span
+                  style="margin-left: 12px; color: #16a34a; font-weight: 500"
+                  th:if="${q.answeredAt != null}"
+                >
+                  <i class="fa-solid fa-check"></i> Đã trả lời
+                </span>
+                <span
+                  style="margin-left: 12px; color: orange; font-weight: 500"
+                  th:if="${q.answeredAt == null}"
+                >
+                  <i class="fa-regular fa-clock"></i> Đang chờ trả lời
+                </span>
+              </div>
+              <form
+                th:if="${q.assignedDoctor == null}"
+                th:action="@{/cong-dong/assign}"
+                method="post"
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  margin-top: 4px;
+                  flex-wrap: wrap;
+                "
+              >
+                <input type="hidden" name="questionId" th:value="${q.id}" />
+                <label
+                  style="font-weight: 600; color: #166950; margin-right: 6px"
+                  >Chọn bác sĩ:</label
+                >
+                <select
+                  name="doctorId"
+                  required
+                  style="
+                    padding: 6px 10px;
+                    border-radius: 6px;
+                    border: 1px solid #cbd5e1;
+                    min-width: 140px;
+                  "
+                >
+                  <option value="" disabled selected>Chọn bác sĩ...</option>
+                  <option
+                    th:each="d : ${doctors}"
+                    th:value="${d.id}"
+                    th:text="${d.name}"
+                  ></option>
+                </select>
+                <label
+                  style="
+                    font-weight: 600;
+                    color: #166950;
+                    margin-left: 12px;
+                    margin-right: 6px;
+                  "
+                  >Giờ trực:</label
+                >
+                <input
+                  type="datetime-local"
+                  name="shiftTime"
+                  style="
+                    padding: 6px 10px;
+                    border-radius: 6px;
+                    border: 1px solid #cbd5e1;
+                    min-width: 180px;
+                  "
+                  required
+                />
+                <button
+                  type="submit"
+                  style="
+                    background: #10b981;
+                    color: #fff;
+                    border: none;
+                    border-radius: 6px;
+                    padding: 7px 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background 0.18s;
+                    margin-left: 8px;
+                  "
+                >
+                  Phân công
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="ask-form-wrap">
+          <div class="ask-form-box">
+            <div class="ask-form-title" th:if="${session.role} == 'USER'">
+              GỬI CÂU HỎI TỚI BÁC SĨ
+            </div>
+            <div class="ask-form-title" th:if="${session.role} == 'DOCTOR'">
+              <span
+                id="tabPublic"
+                style="
+                  cursor: pointer;
+                  padding: 6px 18px;
+                  border-radius: 8px 8px 0 0;
+                  background: #e0f2fe;
+                  color: #166950;
+                  font-weight: 600;
+                  margin-right: 2px;
+                "
+                onclick="showTab('public')"
+                >Bác sĩ trực</span
+              >
+              <span
+                id="tabAssigned"
+                style="
+                  cursor: pointer;
+                  padding: 6px 18px;
+                  border-radius: 8px 8px 0 0;
+                  background: #b9fbc0;
+                  color: #166950;
+                  font-weight: 600;
+                "
+                onclick="showTab('assigned')"
+                >Phân công</span
+              >
+            </div>
+            <!-- PHÂN CÔNG GIỜ TRỰC (ADMIN) -->
+            <div
+              th:if="${session.role} == 'ADMIN'"
+              style="
+                margin: 18px 0 18px 0;
+                padding: 18px 12px;
+                background: #f8fafc;
+                border-radius: 10px;
+                border: 1px solid #e2e8f0;
+              "
+            >
+              <h3
+                style="
+                  color: #166950;
+                  font-size: 1.13em;
+                  font-weight: 600;
+                  margin-bottom: 10px;
+                "
+              >
+                Phân công giờ trực cho bác sĩ
+              </h3>
+              <form
+                th:action="@{/cong-dong/assign-shift}"
+                method="post"
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                  flex-wrap: wrap;
+                "
+              >
+                <label style="font-weight: 600; color: #166950"
+                  >Chọn bác sĩ:</label
+                >
+                <select
+                  name="doctorId"
+                  required
+                  style="
+                    padding: 6px 10px;
+                    border-radius: 6px;
+                    border: 1px solid #cbd5e1;
+                    min-width: 140px;
+                  "
+                >
+                  <option value="" disabled selected>Chọn bác sĩ...</option>
+                  <option
+                    th:each="d : ${doctors}"
+                    th:value="${d.id}"
+                    th:text="${d.name} + ' (' + d.specialization + ')'"
+                  ></option>
+                </select>
+                <label style="font-weight: 600; color: #166950"
+                  >Giờ trực:</label
+                >
+                <input
+                  type="datetime-local"
+                  name="shiftTime"
+                  required
+                  style="
+                    padding: 6px 10px;
+                    border-radius: 6px;
+                    border: 1px solid #cbd5e1;
+                    min-width: 180px;
+                  "
+                />
+                <button
+                  type="submit"
+                  style="
+                    background: #10b981;
+                    color: #fff;
+                    border: none;
+                    border-radius: 6px;
+                    padding: 7px 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background 0.18s;
+                  "
+                >
+                  Phân công giờ trực
+                </button>
+              </form>
+              <div style="margin-top: 10px; width: 100%">
+                <span style="font-weight: 600; color: #166950"
+                  >Danh sách bác sĩ:</span
+                >
+                <ul
+                  style="
+                    margin: 6px 0 0 0;
+                    padding: 0 0 0 18px;
+                    color: #166950;
+                    font-size: 1em;
+                  "
+                >
+                  <li
+                    th:each="d : ${doctors}"
+                    th:text="${d.specialization != null && !#strings.isEmpty(d.specialization) ? d.name + ' (' + d.specialization + ')' : d.name}"
+                    style="margin-bottom: 2px"
+                  ></li>
+                </ul>
+              </div>
+            </div>
+            <!-- TAB: BÁC SĨ TRỰC (PUBLIC) -->
+            <div th:if="${session.role} == 'DOCTOR'" id="tabPublicContent">
+              <div style="margin-bottom: 12px">
+                <label
+                  for="specializationFilter"
+                  style="font-weight: 600; color: #166950"
+                  >Lọc theo chuyên khoa:</label
+                >
+                <select
+                  id="specializationFilter"
+                  style="
+                    padding: 6px 12px;
+                    border-radius: 6px;
+                    border: 1px solid #cbd5e1;
+                    margin-left: 8px;
+                    font-size: 1em;
+                  "
+                >
+                  <option value="">Tất cả</option>
+                  <option value="Phụ khoa">Chuyên khoa Phụ khoa</option>
+                  <option value="Nam Học">Nam Học</option>
+                  <option value="Sản">Chuyên khoa Sản</option>
+                  <option value="Nội nhi">Chuyên khoa Nội nhi</option>
+                </select>
+              </div>
+              <div th:if="${#lists.isEmpty(publicQuestions)}">
+                <div
+                  style="
+                    color: #86899b;
+                    text-align: center;
+                    margin: 18px 0 8px 0;
+                    font-size: 1.05em;
+                  "
+                >
+                  Hiện chưa có câu hỏi nào chờ bác sĩ trực trả lời.
+                </div>
+              </div>
+              <div th:if="${!#lists.isEmpty(publicQuestions)}">
+                <table
+                  id="publicQuestionsTable"
+                  style="
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 10px;
+                    background: #f8fafc;
+                    border-radius: 10px;
+                    overflow: hidden;
+                  "
+                >
+                  <thead style="background: #10b981; color: #fff">
+                    <tr>
+                      <th style="padding: 8px 6px; font-weight: 600">
+                        Tiêu đề
+                      </th>
+                      <th style="padding: 8px 6px; font-weight: 600">
+                        Người hỏi
+                      </th>
+                      <th style="padding: 8px 6px; font-weight: 600">
+                        Chuyên khoa
+                      </th>
+                      <th style="padding: 8px 6px; font-weight: 600">
+                        Thời gian
+                      </th>
+                      <th style="padding: 8px 6px; font-weight: 600">
+                        Trạng thái
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      th:each="q : ${publicQuestions}"
+                      style="border-bottom: 1px solid #e2e8f0"
+                      th:attr="data-specialization=${q.specialization}"
+                    >
+                      <td style="padding: 8px 6px">
+                        <a
+                          th:href="@{'/cong-dong/question/' + ${q.id}}"
+                          th:text="${q.title}"
+                          style="
+                            color: #166950;
+                            font-weight: 500;
+                            text-decoration: none;
+                          "
+                        ></a>
+                      </td>
+                      <td style="padding: 8px 6px">
+                        <span
+                          th:text="${q.user != null ? q.user.name : 'Ẩn danh'}"
+                          style="font-weight: 500"
+                        ></span>
+                      </td>
+                      <td style="padding: 8px 6px">
+                        <span
+                          th:text="${q.specialization != null ? q.specialization : 'Chưa chọn'}"
+                          style="font-size: 0.98em"
+                        ></span>
+                      </td>
+                      <td style="padding: 8px 6px">
+                        <span
+                          th:text="${#temporals.format(q.createdAt, 'dd/MM/yyyy HH:mm')}"
+                          style="font-size: 0.98em"
+                        ></span>
+                      </td>
+                      <td style="padding: 8px 6px">
+                        <span
+                          th:if="${q.answeredAt != null}"
+                          style="color: #16a34a; font-weight: 500"
+                          ><i class="fa-solid fa-check"></i> Đã trả lời</span
+                        >
+                        <span
+                          th:if="${q.answeredAt == null}"
+                          style="color: orange; font-weight: 500"
+                          ><i class="fa-regular fa-clock"></i> Đang chờ trả
+                          lời</span
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <script>
+                // Lọc chuyên khoa cho bảng bác sĩ trực
+                document.addEventListener("DOMContentLoaded", function () {
+                  var filter = document.getElementById("specializationFilter");
+                  var table = document.getElementById("publicQuestionsTable");
+                  if (filter && table) {
+                    filter.addEventListener("change", function () {
+                      var value = this.value;
+                      var rows = table.querySelectorAll("tbody tr");
+                      rows.forEach(function (row) {
+                        var spec =
+                          row.getAttribute("data-specialization") || "";
+                        if (!value || spec === value) {
+                          row.style.display = "";
+                        } else {
+                          row.style.display = "none";
+                        }
+                      });
+                    });
+                  }
+                });
+              </script>
+            </div>
+            <!-- TAB: PHÂN CÔNG (ASSIGNED) -->
+            <div
+              th:if="${session.role} == 'DOCTOR'"
+              id="tabAssignedContent"
+              style="display: none"
+            >
+              <div th:if="${#lists.isEmpty(assignedQuestions)}">
+                <div
+                  style="
+                    color: #86899b;
+                    text-align: center;
+                    margin: 18px 0 8px 0;
+                    font-size: 1.05em;
+                  "
+                >
+                  Hiện chưa có câu hỏi nào được phân công cho bạn.
+                </div>
+              </div>
+              <div th:if="${!#lists.isEmpty(assignedQuestions)}">
+                <table
+                  style="
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 10px;
+                    background: #f8fafc;
+                    border-radius: 10px;
+                    overflow: hidden;
+                  "
+                >
+                  <thead style="background: #b9fbc0; color: #166950">
+                    <tr>
+                      <th style="padding: 8px 6px; font-weight: 600">
+                        Tiêu đề
+                      </th>
+                      <th style="padding: 8px 6px; font-weight: 600">
+                        Người hỏi
+                      </th>
+                      <th style="padding: 8px 6px; font-weight: 600">
+                        Thời gian phân công
+                      </th>
+                      <th style="padding: 8px 6px; font-weight: 600">
+                        Trạng thái
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      th:each="q : ${assignedQuestions}"
+                      style="border-bottom: 1px solid #e2e8f0"
+                    >
+                      <td style="padding: 8px 6px">
+                        <a
+                          th:href="@{'/cong-dong/question/' + ${q.id}}"
+                          th:text="${q.title}"
+                          style="
+                            color: #166950;
+                            font-weight: 500;
+                            text-decoration: none;
+                          "
+                        ></a>
+                      </td>
+                      <td
+                        style="padding: 8px 6px"
+                        th:text="${q.user != null ? q.user.name : 'Ẩn danh'}"
+                      ></td>
+                      <td
+                        style="padding: 8px 6px"
+                        th:text="${#temporals.format(q.assignedAt, 'dd/MM/yyyy HH:mm')}"
+                      ></td>
+                      <td style="padding: 8px 6px">
+                        <span
+                          th:if="${q.answeredAt != null}"
+                          style="color: #16a34a; font-weight: 500"
+                          ><i class="fa-solid fa-check"></i> Đã trả lời</span
+                        >
+                        <span
+                          th:if="${q.answeredAt == null}"
+                          style="color: orange; font-weight: 500"
+                          ><i class="fa-regular fa-clock"></i> Đang chờ trả
+                          lời</span
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- BẢNG PHÂN CÔNG CHO DOCTOR -->
+            <div th:if="${session.role} == 'DOCTOR'">
+              <div
+                th:if="${assignedQuestions != null and #lists.size(assignedQuestions) > 0}"
+              >
+                <table
+                  style="
+                    width: 100%;
+                    margin-top: 12px;
+                    background: #fff;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 8px #10b98122;
+                    font-size: 1.01rem;
+                    overflow: hidden;
+                  "
+                >
+                  <thead
+                    style="
+                      background: #e0f2fe;
+                      color: #166950;
+                      font-weight: 600;
+                    "
+                  >
+                    <tr>
+                      <th style="padding: 8px 6px; text-align: left">
+                        Tiêu đề
+                      </th>
+                      <th style="padding: 8px 6px; text-align: left">
+                        Người hỏi
+                      </th>
+                      <th style="padding: 8px 6px; text-align: left">
+                        Thời gian phân công
+                      </th>
+                      <th style="padding: 8px 6px; text-align: left">
+                        Trạng thái
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="q : ${assignedQuestions}">
+                      <td style="padding: 7px 6px">
+                        <a
+                          th:href="@{'/cong-dong/question/' + ${q.id}}"
+                          th:text="${q.title}"
+                          style="
+                            color: #166950;
+                            text-decoration: none;
+                            font-weight: 500;
+                          "
+                        ></a>
+                      </td>
+                      <td
+                        style="padding: 7px 6px"
+                        th:text="${q.user != null ? q.user.name : 'Ẩn danh'}"
+                      ></td>
+                      <td
+                        style="padding: 7px 6px"
+                        th:text="${#temporals.format(q.assignedAt, 'dd/MM/yyyy HH:mm')}"
+                      ></td>
+                      <td style="padding: 7px 6px">
+                        <span
+                          th:if="${q.answeredAt != null}"
+                          style="color: #16a34a; font-weight: 500"
+                          ><i class="fa-solid fa-check"></i> Đã trả lời</span
+                        >
+                        <span
+                          th:if="${q.answeredAt == null}"
+                          style="color: orange; font-weight: 500"
+                          ><i class="fa-regular fa-clock"></i> Đang chờ trả
+                          lời</span
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                th:if="${assignedQuestions == null or #lists.size(assignedQuestions) == 0}"
+                style="
+                  margin: 16px 0;
+                  color: #86899b;
+                  text-align: center;
+                  font-style: italic;
+                "
+              >
+                Không có câu hỏi nào được phân công cho bạn.
+              </div>
+            </div>
+            <div th:if="${session.role} == 'USER'">
+              <form
+                th:action="@{/cong-dong/ask}"
+                method="post"
+                enctype="multipart/form-data"
+                class="ask-form"
+                id="askForm"
+              >
+                <div class="ask-form-row">
+                  <img
+                    src="https://lh3.googleusercontent.com/a/ACg8ocIq4RXRTqIud49CLvJtqBbu76PPxJmposFsVLZAmV0_MUk6OcU=s96-c"
+                    alt="avatar-user"
+                    class="ask-form-avatar"
+                  />
+                  <input
+                    name="age"
+                    type="number"
+                    placeholder="Tuổi*"
+                    required
+                    class="ask-form-age ask-form-input"
+                  />
+                  <div class="ask-form-gender">
+                    <label
+                      ><input type="radio" name="gender" value="Nam" />
+                      Nam</label
+                    >
+                    <label
+                      ><input type="radio" name="gender" value="Nữ" checked />
+                      Nữ</label
+                    >
+                  </div>
+                </div>
+                <select name="specialization" class="ask-form-input" required>
+                  <option value="">Chọn chuyên khoa</option>
+                  <option value="Phụ khoa">Chuyên khoa Phụ khoa</option>
+                  <option value="Nam Học">Nam Học</option>
+                  <option value="Sản">Chuyên khoa Sản</option>
+                  <option value="Nội nhi">Chuyên khoa Nội nhi</option>
+                  <!-- Thêm các chuyên khoa khác nếu cần -->
+                </select>
+                <input
+                  name="title"
+                  maxlength="150"
+                  placeholder="Tiêu đề (vd: Mọc mụn nước ở lòng bàn tay)"
+                  required
+                  class="ask-form-input"
+                />
+                <textarea
+                  name="content"
+                  rows="4"
+                  placeholder="Nội dung câu hỏi (vd: Mỗi khi sử dụng hóa chất lòng bàn tay tôi bị đỏ và mọc mụn nước. Nhờ bác sĩ tư vấn cho tôi nên sử dụng thuốc gì?) "
+                  required
+                ></textarea>
+                <label class="ask-form-image">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/1828/1828925.png"
+                    alt="Thêm ảnh"
+                  />
+                  <span>Thêm ảnh</span>
+                  <input
+                    type="file"
+                    name="imageFile"
+                    accept="image/*"
+                    style="display: none"
+                    onchange="showImagePreview(event)"
+                  />
+                </label>
+                <img
+                  id="imagePreview"
+                  class="ask-form-image-preview"
+                  style="display: none"
+                />
+                <div class="ask-form-note">
+                  * Câu trả lời của bạn sẽ được hiển thị công khai
+                </div>
+                <button type="submit" class="ask-form-btn">GỬI</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // UX: Hiển thị ảnh preview khi chọn file
+      function showImagePreview(event) {
+        const input = event.target;
+        const preview = document.getElementById("imagePreview");
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = "block";
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          preview.src = "";
+          preview.style.display = "none";
+        }
+      }
+      // Tab switching for doctor view
+      function showTab(tab) {
+        var publicTab = document.getElementById("tabPublic");
+        var assignedTab = document.getElementById("tabAssigned");
+        var publicContent = document.getElementById("tabPublicContent");
+        var assignedContent = document.getElementById("tabAssignedContent");
+        if (tab === "public") {
+          publicTab.style.background = "#e0f2fe";
+          assignedTab.style.background = "#b9fbc0";
+          publicContent.style.display = "";
+          assignedContent.style.display = "none";
+        } else {
+          publicTab.style.background = "#b9fbc0";
+          assignedTab.style.background = "#e0f2fe";
+          publicContent.style.display = "none";
+          assignedContent.style.display = "";
+        }
+      }
+      // Mặc định hiển thị tab trực
+      window.addEventListener("DOMContentLoaded", function () {
+        var titleInput = document.querySelector('input[name="title"]');
+        if (titleInput) titleInput.focus();
+        showTab("public");
+      });
+      // UI: highlight dòng khi hover
+      document.querySelectorAll(".question-card").forEach(function (card) {
+        card.addEventListener("mouseenter", function () {
+          card.style.boxShadow = "0 4px 16px rgba(22,105,80,0.13)";
+          card.style.border = "1.5px solid #10b981";
+        });
+        card.addEventListener("mouseleave", function () {
+          card.style.boxShadow = "0 2px 8px rgba(0,0,0,0.06)";
+          card.style.border = "1px solid #e2e8f0";
+        });
+      });
+      // Lọc chuyên khoa & tìm kiếm chủ đề cho USER
+      function filterUserQuestions() {
+        var spec = document.getElementById("userSpecializationFilter").value;
+        var keyword = document.getElementById("userKeywordSearch").value;
+        fetch(
+          `/api/questions/public?specialization=${encodeURIComponent(
+            spec
+          )}&keyword=${encodeURIComponent(keyword)}`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            var list = document.querySelector(".questions-list");
+            // Xóa các card cũ (giữ lại phần filter)
+            list.querySelectorAll(".question-card").forEach((e) => e.remove());
+            // Nếu không có filter nào (tất cả) và không có keyword, render lại toàn bộ danh sách mặc định từ server (nếu data rỗng)
+            if (
+              (!spec || spec === "") &&
+              (!keyword || keyword === "") &&
+              (!data || data.length === 0)
+            ) {
+              window.location.reload();
+              return;
+            }
+            // Render lại danh sách (KHÔNG hiển thị tên người đăng cho USER)
+            data.forEach((q) => {
+              var card = document.createElement("div");
+              card.className = "question-card";
+              card.innerHTML = `
+              <div class="question-title">
+                <a href="/cong-dong/question/${
+                  q.id
+                }" style="color: #166950; text-decoration: none;">${q.title}</a>
+              </div>
+              <div class="question-content">${q.content}</div>
+              <div class="question-meta">
+                <span>${
+                  q.createdAt
+                    ? new Date(q.createdAt).toLocaleDateString("vi-VN")
+                    : ""
+                }</span>
+                <span class="question-specialist">${
+                  q.specialization || ""
+                }</span>
+              </div>
+              <div class="question-actions">
+                ${
+                  q.closed
+                    ? '<span class="question-status" style="color: red"><i class="fa-solid fa-lock"></i> Đã đóng</span>'
+                    : ""
+                }
+                ${
+                  q.rejected
+                    ? '<span class="question-status" style="color: red"><i class="fa-solid fa-ban"></i> Bị từ chối</span>'
+                    : ""
+                }
+                ${
+                  q.answeredAt && !q.closed && !q.rejected
+                    ? '<span class="question-status" style="color: #16a34a"><i class="fa-solid fa-check-circle"></i> Đã trả lời</span>'
+                    : ""
+                }
+                ${
+                  !q.answeredAt && !q.closed && !q.rejected
+                    ? '<span class="question-status" style="color: orange"><i class="fa-regular fa-clock"></i> Chưa trả lời</span>'
+                    : ""
+                }
+              </div>
+            `;
+              list.appendChild(card);
+            });
+          });
+      }
+      // Gợi ý: realtime filter khi thay đổi select/input
+      document.addEventListener("DOMContentLoaded", function () {
+        var spec = document.getElementById("userSpecializationFilter");
+        var kw = document.getElementById("userKeywordSearch");
+        if (spec) spec.addEventListener("change", filterUserQuestions);
+        if (kw)
+          kw.addEventListener("input", function (e) {
+            if (e.target.value.length === 0 || e.target.value.length > 2)
+              filterUserQuestions();
+          });
+      });
+    </script>
+  </body>
+</html>

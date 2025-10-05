@@ -1,0 +1,226 @@
+.ivie-footer-demo {
+  background: #2ec49c;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+.ivie-footer-logo-row {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 48px 180px 0 180px;
+  max-width: 1600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.ivie-footer-logo {
+  width: 180px;
+  margin-bottom: 0;
+}
+.ivie-footer-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1600px;
+  /* margin: 0 auto; */
+  margin:0 auto;
+  padding: 0 180px 24px 180px;
+  font-size: 16px;
+  gap: 40px;
+  row-gap: 24px;
+  box-sizing: border-box;
+}
+.ivie-footer-col {
+  flex: 1;
+  min-width: 220px;
+}
+.ivie-footer-company-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  flex: 1;
+}
+.ivie-footer-company {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 18px;
+  margin-top: 0;
+}
+.ivie-footer-address {
+  font-size: 16px;
+  margin-bottom: 18px;
+  line-height: 1.7;
+}
+.ivie-footer-address > div {
+  margin-bottom: 8px;
+}
+.ivie-footer-icon {
+  margin-right: 6px;
+}
+.ivie-footer-badges {
+  margin: 18px 0 0 0;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.ivie-footer-badges img {
+  height: 38px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 2px 8px;
+}
+.ivie-footer-links {
+  display: flex;
+  gap: 12px;
+  font-size: 16px;
+  justify-content: center;
+  padding-left: 24px;
+}
+.ivie-footer-links > div {
+  min-width: 170px;
+}
+.ivie-footer-links > div:first-child {
+  margin-left: 32px;
+}
+.ivie-footer-links > div:nth-child(2),
+.ivie-footer-links > div:nth-child(3) {
+  margin-left: -12px;
+}
+.ivie-footer-links strong {
+  font-size: 1.08em;
+  margin-bottom: 8px;
+  display: block;
+}
+.ivie-footer-links > div > div {
+  margin-bottom: 7px;
+}
+.ivie-footer-links > div > div:last-child {
+  margin-bottom: 0;
+}
+.ivie-footer-star {
+  color: #ffe066;
+  font-size: 1.1em;
+  vertical-align: middle;
+}
+.ivie-footer-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 220px;
+}
+.ivie-footer-app-title {
+  font-family: "Pacifico", cursive, Arial, sans-serif;
+  font-size: 22px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.ivie-footer-app-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 10px;
+}
+.ivie-footer-app-badge {
+  height: 48px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 2px 0;
+}
+.ivie-footer-qr {
+  height: 60px;
+  width: 60px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 4px;
+}
+.ivie-footer-app-caption {
+  margin: 18px 0 8px 0;
+  font-size: 16px;
+  text-align: center;
+}
+.ivie-footer-book-btn {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid #fff;
+  border-radius: 8px;
+  padding: 10px 38px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background 0.2s, color 0.2s;
+}
+.ivie-footer-book-btn:hover {
+  background: #fff;
+  color: #2ec49c;
+}
+.ivie-footer-bottom {
+  background: #27b18e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 180px 10px 180px;
+  font-size: 16px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+.ivie-footer-bottom-left {
+  flex: 1;
+  min-width: 300px;
+}
+.ivie-footer-bottom-right {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+.ivie-footer-bottom-right img {
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border-radius: 50%;
+  padding: 4px;
+  transition: box-shadow 0.2s;
+}
+.ivie-footer-bottom-right img:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+@media (max-width: 1400px) {
+  .ivie-footer-logo-row,
+  .ivie-footer-main,
+  .ivie-footer-bottom {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+@media (max-width: 1100px) {
+  .ivie-footer-logo-row {
+    padding: 32px 16px 0 16px;
+  }
+  .ivie-footer-main {
+    flex-direction: column;
+    gap: 28px;
+    padding: 0 16px 16px 16px;
+  }
+  .ivie-footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 10px 8px 10px;
+    font-size: 0.93em;
+  }
+}
+@media (max-width: 700px) {
+  .ivie-footer-logo-row {
+    padding: 18px 4vw 0 4vw;
+  }
+  .ivie-footer-main {
+    padding: 0 4vw 10px 4vw;
+    gap: 16px;
+  }
+  .ivie-footer-bottom {
+    font-size: 0.9em;
+    padding: 10px 2vw 6px 2vw;
+  }
+}

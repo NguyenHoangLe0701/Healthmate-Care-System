@@ -1,0 +1,31 @@
+<!--/* Fragment cho phần chatbot */-->
+<div th:fragment="chatBox">
+    <button class="chat-toggle-btn">
+        <img th:src="@{https://static.xx.fbcdn.net/rsrc.php/yb/r/M8rOX7S5AN3.svg}" alt="Chat" />
+    </button>
+    
+    <div class="chat-box">
+        <div class="chat-header">
+            <h3>IVIE Chat</h3>
+            <div>
+                <button class="chat-clear-btn" title="Xóa tin nhắn">🗑️</button>
+                <button class="chat-close-btn" title="Đóng">✕</button>
+            </div>
+        </div>
+        
+        <div class="chat-content">
+            <div class="chat-messages">
+                <p>Chào bạn! Hãy chọn một tùy chọn hoặc nhập câu hỏi về sức khỏe sinh sản:</p>
+            </div>
+            <ul>
+                <li><a href="#" class="chat-option" data-action="schedule">Đặt lịch tư vấn trực tuyến</a></li>
+                <li><a href="#" class="chat-option" data-action="question">Đặt câu hỏi</a></li>
+            </ul>
+        </div>
+        
+        <div class="chat-footer">
+            <input type="text" class="chat-input" placeholder="Nhập tin nhắn của bạn...">
+            <button class="chat-send-btn">Gửi</button>
+        </div>
+    </div>
+</div> 

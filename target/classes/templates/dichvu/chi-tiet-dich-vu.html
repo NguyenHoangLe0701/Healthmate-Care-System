@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${service.name}">Chi tiết dịch vụ</title>
+    <link rel="stylesheet" th:href="@{/css/chi-tiet-dich-vu.css}">
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="chi-tiet-container">
+            <div class="chi-tiet-card">
+                <div class="chi-tiet-row">
+                    <img th:src="@{${service.imageUrl}}" class="chi-tiet-img" th:alt="${service.name}">
+                    <div class="chi-tiet-info">
+                        <div class="chi-tiet-title" th:text="${service.name}"></div>
+                        <div class="chi-tiet-price">
+                            Giá dịch vụ: <span th:text="${#numbers.formatInteger(service.price, 0, 'POINT')} + ' đ'" style="color:#007bff;"></span>
+                        </div>
+                        <div class="chi-tiet-address" th:if="${service.location != null}">
+                            <i class="fa fa-map-marker-alt"></i>
+                            <span th:text="${service.location.address}"></span>
+                        </div>
+                    </div>
+                </div>
+                                <!-- BẮT ĐẦU: Đặt lịch khám -->
+                <div class="chi-tiet-card-detail mt-4" style="background:#f6fcff;">
+                    <div class="card-header">LỊCH KHÁM TẠI VIỆN</div>
+                    <div class="card-body" style="padding:0;">
+                        <form id="bookingForm" th:action="@{/appointment-dv/confirm}" method="get" style="margin-bottom:0;">
+                            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                                <label for="appointmentDate" style="font-weight:500;">Chọn ngày:</label>
+                                <input type="date" id="appointmentDate" name="appointmentDate" required style="padding:4px 8px;border-radius:4px;border:1px solid #ccc;">
+                            </div>
+                            <div style="margin-bottom:12px;">
+                                <label style="font-weight:500;">Chọn giờ:</label>
+                                <div id="timeSlots" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '07:30')">07:30</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '08:00')">08:00</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '08:30')">08:30</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '09:00')">09:00</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '09:30')">09:30</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '10:00')">10:00</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '10:30')">10:30</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '11:00')">11:00</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '11:30')">11:30</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '13:00')">13:00</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '13:30')">13:30</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '14:00')">14:00</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '14:30')">14:30</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '15:00')">15:00</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '15:30')">15:30</button>
+                                    <button type="button" class="slot-btn" onclick="selectTime(this, '16:00')">16:00</button>
+                                </div>
+                                <input type="hidden" id="appointmentTime" name="appointmentTime" required>
+                            </div>
+                            <input type="hidden" name="serviceId" th:value="${service.id}" />
+                            <div id="bookingBtnWrap" style="display:none;margin-top:12px;">
+                                <button type="submit" class="btn btn-primary">Đặt khám</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="chi-tiet-card-detail mt-4">
+                    <div class="card-header">CHI TIẾT DỊCH VỤ</div>
+                    <div class="card-body" style="padding:0;">
+                        <div th:utext="${service.description}"></div>
+                    </div>
+                </div>
+
+                <script src="/js/chi-tiet-dich-vu.js"></script>
+                <style>
+                .slot-btn {
+                    border: 1px solid #00bfae;
+                    background: #fff;
+                    color: #00bfae;
+                    border-radius: 6px;
+                    padding: 6px 18px;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    transition: background 0.2s, color 0.2s;
+                }
+                .slot-btn.active, .slot-btn:hover {
+                    background: #00bfae;
+                    color: #fff;
+                }
+                .btn.btn-primary {
+                    background: #00bfae;
+                    border: none;
+                    border-radius: 6px;
+                    padding: 10px 32px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                }
+                </style>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

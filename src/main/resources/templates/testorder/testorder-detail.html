@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết đơn xét nghiệm</title>
+    <link rel="stylesheet" href="/static/css/testorder-book.css?v=2" />
+    <style>
+      .testorder-detail-body {
+        font-family: "Inter", "Segoe UI", "Roboto", Arial, sans-serif;
+        background: linear-gradient(120deg, #e0fcf8 0%, #f8fcff 100%);
+        margin: 0;
+        padding: 0;
+      }
+      .testorder-detail-title {
+        color: #00bfae;
+        text-align: center;
+        font-weight: 800;
+        margin-bottom: 28px;
+        letter-spacing: 1px;
+        text-shadow: 0 2px 8px #b2f5ea;
+        font-size: 1.35em;
+      }
+      .testorder-detail-section-title {
+        color: #00bfae;
+        font-size: 1.13em;
+        margin: 28px 0 18px 0;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+      .testorder-detail-container {
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 6px 36px 0 rgba(0, 191, 174, 0.13);
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 36px 32px 28px 32px;
+        border: 1.5px solid #b2f5ea;
+      }
+      .testorder-detail-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px #b2f5ea22;
+        margin: 20px 0;
+      }
+      .testorder-detail-table th,
+      .testorder-detail-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #e0fcf8;
+        text-align: left;
+        font-size: 1.03em;
+      }
+      .testorder-detail-table th {
+        background: #e0fcf8;
+        color: #00bfae;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-top: 1.5px solid #b2f5ea;
+      }
+      .testorder-detail-table tr:last-child td {
+        border-bottom: none;
+      }
+      .testorder-detail-status {
+        font-weight: 600;
+        color: #009879;
+      }
+      .testorder-detail-result {
+        font-weight: 600;
+        color: #1976d2;
+      }
+      .testorder-detail-link {
+        color: #fff;
+        background: linear-gradient(90deg, #00bfae 60%, #1abc9c 100%);
+        padding: 7px 18px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.05em;
+        transition: background 0.18s, box-shadow 0.18s;
+        box-shadow: 0 2px 8px #b2f5ea44;
+      }
+      .testorder-detail-link:hover {
+        background: linear-gradient(90deg, #1abc9c 10%, #00bfae 100%);
+        box-shadow: 0 6px 24px #00bfae44;
+      }
+      @media (max-width: 900px) {
+        .testorder-detail-container {
+          padding: 18px 6vw 18px 6vw;
+        }
+      }
+      @media (max-width: 600px) {
+        .testorder-detail-container {
+          padding: 8px 2vw 8px 2vw;
+        }
+        .testorder-detail-title {
+          font-size: 1.1em;
+        }
+        .testorder-detail-section-title {
+          font-size: 1em;
+        }
+        .testorder-detail-table th,
+        .testorder-detail-table td {
+          font-size: 0.98em;
+          padding: 8px 6px;
+        }
+      }
+    </style>
+  </head>
+  <body class="testorder-detail-body">
+    <div layout:fragment="content">
+      <div class="testorder-detail-container">
+        <h1 th:switch="${order.testType}" class="testorder-detail-title">
+          <span th:case="'HIV'">Kết quả Xét nghiệm HIV</span>
+          <span th:case="'Trichomonas'">Kết quả Xét nghiệm Trichomonas</span>
+          <span th:case="'HPV'">Kết quả Xét nghiệm HPV</span>
+          <span th:case="'Herpes'">Kết quả Xét nghiệm Herpes</span>
+          <span th:case="'Chlamydia'">Kết quả Xét nghiệm Chlamydia</span>
+          <span th:case="'Giang mai'"
+            >Kết quả Xét nghiệm Giang mai (Syphilis)</span
+          >
+          <span th:case="'Lậu'">Kết quả Xét nghiệm Lậu (Gonorrhea)</span>
+          <span th:case="*">Kết quả Xét nghiệm [[${order.testType}]]</span>
+        </h1>
+        <div
+          th:if="${order == null}"
+          style="
+            text-align: center;
+            color: #888;
+            font-size: 1.2em;
+            margin: 32px 0;
+          "
+        >
+          <p>Không tìm thấy đơn xét nghiệm.</p>
+        </div>
+        <div th:if="${order != null}">
+          <div
+            th:if="${param.success}"
+            style="
+              color: #00bfae;
+              text-align: center;
+              font-size: 1.2em;
+              margin-bottom: 18px;
+            "
+          >
+            Thanh toán thành công! Lịch xét nghiệm của bạn đã được xác nhận.<br />
+            Bạn vui lòng đến đúng lịch hẹn để lấy mẫu xét nghiệm.
+          </div>
+          <h2
+            class="testorder-detail-section-title"
+            style="margin-bottom: 18px"
+          >
+            Thông tin đơn xét nghiệm
+          </h2>
+          <table class="testorder-detail-table">
+            <tr>
+              <th>Họ tên</th>
+              <td th:text="${order.fullName}"></td>
+            </tr>
+            <tr>
+              <th>Mã khách hàng</th>
+              <td
+                th:text="${order.customerCode != null ? order.customerCode : 'IVIE-000000'}"
+              ></td>
+            </tr>
+            <tr>
+              <th>Ngày sinh</th>
+              <td th:text="${order.birthDate}"></td>
+            </tr>
+            <tr>
+              <th>Giới tính</th>
+              <td th:text="${order.gender}"></td>
+            </tr>
+            <tr>
+              <th>Địa điểm xét nghiệm</th>
+              <td th:text="${order.location}"></td>
+            </tr>
+            <tr>
+              <th>Ngày lấy mẫu</th>
+              <td th:text="${order.appointmentTime}"></td>
+            </tr>
+            <tr>
+              <th>Giá tiền</th>
+              <td
+                th:text="${order.price != null ? #numbers.formatInteger(order.price, 0, 'POINT') + ' đ' : ''}"
+              ></td>
+            </tr>
+            <tr>
+              <th>Ngày trả kết quả</th>
+              <td
+                th:text="${#dates.format(order.resultDate, 'dd/MM/yyyy HH:mm')}"
+              ></td>
+            </tr>
+            <tr>
+              <th>Trạng thái</th>
+              <td
+                th:text="${#strings.equals(order.status, 'BOOKED') ? 'Đã đặt lịch' : (#strings.equals(order.status, 'CHECKED_IN') ? 'Đã đến cơ sở' : (#strings.equals(order.status, 'SAMPLE_COLLECTED') ? 'Đã lấy mẫu' : (#strings.equals(order.status, 'TESTING') ? 'Đang xét nghiệm' : (#strings.equals(order.status, 'RESULT_READY') ? 'Có kết quả' : (#strings.equals(order.status, 'RESULT_DELIVERED') ? 'Đã trả kết quả' : order.status)))))}"
+              ></td>
+            </tr>
+          </table>
+          <h2
+            class="testorder-detail-section-title"
+            style="margin: 28px 0 18px 0"
+          >
+            Kết quả xét nghiệm
+          </h2>
+          <div
+            th:if="${order.result == null}"
+            style="text-align: center; padding: 32px 0 12px 0"
+          >
+            <img
+              src="/static/images/health-empty.svg"
+              alt="Chưa có kết quả"
+              style="width: 120px; margin-bottom: 18px"
+            />
+            <div style="font-size: 1.15rem; color: #888; margin-bottom: 8px">
+              Chưa có kết quả xét nghiệm
+            </div>
+            <div style="color: #aaa">
+              Vui lòng quay lại sau hoặc liên hệ cơ sở y tế để biết thêm chi
+              tiết.
+            </div>
+          </div>
+          <div th:if="${order.result != null}">
+            <div
+              style="
+                background: #e0fcf8;
+                border-radius: 10px;
+                padding: 18px 22px;
+                margin-bottom: 18px;
+                color: #00897b;
+                font-size: 1.09em;
+              "
+            >
+              <b>Kết quả:</b> <span th:text="${order.result}"></span>
+              <div
+                th:if="${order.note != null}"
+                style="margin-top: 10px; color: #888"
+              >
+                <b>Ghi chú bác sĩ:</b> <span th:text="${order.note}"></span>
+              </div>
+              <div
+                th:if="${order.pdfPath != null && !#strings.isEmpty(order.pdfPath)}"
+                style="margin-top: 12px"
+              >
+                <a
+                  th:href="@{'/uploads/pdf/' + ${order.pdfPath}}"
+                  target="_blank"
+                  style="
+                    color: #00bfae;
+                    font-weight: 600;
+                    text-decoration: underline;
+                  "
+                  >Tải file PDF kết quả</a
+                >
+              </div>
+            </div>
+          </div>
+          <h2
+            class="testorder-detail-section-title"
+            style="margin: 28px 0 18px 0"
+          >
+            Thông tin bác sĩ & cơ sở
+          </h2>
+          <table class="testorder-detail-table">
+            <tr>
+              <th>Chữ ký bác sĩ</th>
+              <td th:text="${order.doctorSignature}"></td>
+            </tr>
+            <tr>
+              <th>Thông tin cơ sở</th>
+              <td th:text="${order.location}"></td>
+            </tr>
+          </table>
+          <div style="margin-top: 32px; text-align: center">
+            <button
+              type="button"
+              onclick="downloadPDF()"
+              style="
+                background: linear-gradient(90deg, #00bfae 60%, #1abc9c 100%);
+                color: #fff;
+                font-weight: 700;
+                font-size: 1.1em;
+                border: none;
+                border-radius: 8px;
+                padding: 12px 38px;
+                margin-right: 18px;
+                cursor: pointer;
+              "
+            >
+              Tải kết quả về dạng PDF
+            </button>
+            <a
+              th:href="@{'/test-orders/list?userId=' + ${order.userId}}"
+              style="
+                background: #e0f7f5;
+                color: #00bfae;
+                font-weight: 700;
+                font-size: 1.1em;
+                border: none;
+                border-radius: 8px;
+                padding: 12px 38px;
+                text-decoration: none;
+              "
+              >Quay lại danh sách</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+      function downloadPDF() {
+        const content = document.querySelector(".result-container");
+        const opt = {
+          margin: 0.5,
+          filename: "ket-qua-xet-nghiem.pdf",
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+          pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+        };
+        html2pdf().set(opt).from(content).save();
+      }
+    </script>
+  </body>
+</html>

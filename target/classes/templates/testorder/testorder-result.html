@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Kết quả xét nghiệm</title>
+    <style>
+      body {
+        font-family: "Inter", Arial, sans-serif;
+        background: #fafdff;
+        margin: 0;
+        padding: 0;
+      }
+      .result-container {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 2px 16px #00bfae22;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 36px 32px 28px 32px;
+      }
+      .result-title {
+        color: #00bfae;
+        font-size: 2rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 28px;
+      }
+      .result-info {
+        margin-bottom: 24px;
+        font-size: 1.13em;
+      }
+      .result-info .row {
+        display: flex;
+        margin-bottom: 10px;
+      }
+      .result-info .label {
+        width: 180px;
+        color: #00bfae;
+        font-weight: 600;
+      }
+      .result-info .value {
+        flex: 1;
+        color: #222;
+        font-weight: 500;
+      }
+      .result-section {
+        background: #e0fcf8;
+        border-radius: 10px;
+        padding: 18px 22px;
+        margin-bottom: 18px;
+        color: #00897b;
+        font-size: 1.09em;
+      }
+      .result-pdf {
+        margin-top: 18px;
+        text-align: center;
+      }
+      .result-pdf a {
+        color: #00bfae;
+        font-weight: 600;
+        text-decoration: underline;
+      }
+      .result-note {
+        margin-top: 12px;
+        color: #888;
+        font-style: italic;
+      }
+      .result-btn {
+        margin-top: 24px;
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+      }
+      .result-btn a {
+        background: linear-gradient(90deg, #00bfae, #43e97b);
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.1em;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 38px;
+        text-decoration: none;
+        box-shadow: 0 2px 12px #b2f5ea;
+        cursor: pointer;
+        transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+      }
+      .result-btn a:hover {
+        background: #00bfae;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="result-container">
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          margin-bottom: 18px;
+        "
+      >
+        <img
+          class="avatar"
+          style="
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 3px solid #00bfae;
+            object-fit: cover;
+          "
+          th:src="${order.avatarUrl != null ? order.avatarUrl : '/static/images/default-avatar.png'}"
+          alt="avatar"
+        />
+        <div
+          style="font-size: 1.25rem; font-weight: 600; color: #222"
+          th:text="${order.fullName}"
+        >
+          Tên bệnh nhân
+        </div>
+        <div
+          style="
+            margin-left: auto;
+            padding: 8px 18px;
+            border-radius: 20px;
+            background: #e0f7f5;
+            color: #00bfae;
+            font-weight: 600;
+            font-size: 1rem;
+          "
+          th:text="${order.result != null ? 'Đã có kết quả' : 'Chưa có kết quả'}"
+        ></div>
+      </div>
+
+      <div
+        th:if="${order.result == null}"
+        style="text-align: center; padding: 32px 0 12px 0"
+      >
+        <img
+          src="/static/images/health-empty.svg"
+          alt="Chưa có kết quả"
+          style="width: 160px; margin-bottom: 18px"
+        />
+        <div style="font-size: 1.15rem; color: #888; margin-bottom: 8px">
+          Bạn chưa có kết quả xét nghiệm
+        </div>
+        <div style="color: #aaa">
+          Vui lòng quay lại sau hoặc liên hệ cơ sở y tế để biết thêm chi tiết.
+        </div>
+      </div>
+
+      <div th:if="${order.result != null}">
+        <div
+          class="result-section"
+          style="
+            background: #f6fffe;
+            border-radius: 16px;
+            padding: 28px 18px;
+            text-align: center;
+            margin-bottom: 24px;
+          "
+        >
+          <img
+            src="/static/images/health-success.svg"
+            alt="Đã có kết quả"
+            style="width: 120px; margin-bottom: 12px"
+          />
+          <div style="font-size: 1.15rem; color: #888; margin-bottom: 8px">
+            Kết quả xét nghiệm của bạn
+          </div>
+          <div
+            style="
+              font-size: 1.5rem;
+              color: #00bfae;
+              font-weight: 700;
+              margin-bottom: 12px;
+            "
+            th:text="${order.result}"
+          ></div>
+          <div
+            class="result-note"
+            th:if="${order.note != null}"
+            style="color: #888; font-size: 1rem; margin-top: 10px"
+          >
+            <b>Ghi chú bác sĩ:</b> <span th:text="${order.note}"></span>
+          </div>
+          <div th:if="${order.pdfPath != null}" style="margin-top: 18px">
+            <a
+              class="btn-download"
+              th:href="@{'/uploads/pdf/' + ${order.pdfPath}}"
+              download
+              style="
+                display: inline-block;
+                margin: 8px 8px 0 0;
+                padding: 10px 22px;
+                background: #00bfae;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                text-decoration: none;
+              "
+              >Tải PDF</a
+            >
+            <a
+              class="btn-print"
+              th:href="@{'/uploads/pdf/' + ${order.pdfPath}}"
+              target="_blank"
+              style="
+                display: inline-block;
+                margin: 8px 8px 0 0;
+                padding: 10px 22px;
+                background: #00bfae;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                text-decoration: none;
+              "
+              >In kết quả</a
+            >
+          </div>
+        </div>
+        <table
+          style="
+            margin: 0 auto 0 auto;
+            border-collapse: collapse;
+            width: 100%;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 191, 174, 0.07);
+          "
+        >
+          <tr>
+            <th
+              style="
+                background: #e0f7f5;
+                color: #00bfae;
+                font-weight: 600;
+                padding: 12px 18px;
+                text-align: left;
+              "
+            >
+              Mã đơn
+            </th>
+            <td style="padding: 12px 18px" th:text="${order.customerCode}"></td>
+          </tr>
+          <tr>
+            <th
+              style="
+                background: #e0f7f5;
+                color: #00bfae;
+                font-weight: 600;
+                padding: 12px 18px;
+                text-align: left;
+              "
+            >
+              Loại xét nghiệm
+            </th>
+            <td style="padding: 12px 18px" th:text="${order.testType}"></td>
+          </tr>
+          <tr>
+            <th
+              style="
+                background: #e0f7f5;
+                color: #00bfae;
+                font-weight: 600;
+                padding: 12px 18px;
+                text-align: left;
+              "
+            >
+              Ngày lấy mẫu
+            </th>
+            <td
+              style="padding: 12px 18px"
+              th:text="${order.appointmentTime != null ? #dates.format(order.appointmentTime, 'dd/MM/yyyy') : ''}"
+            ></td>
+          </tr>
+          <tr>
+            <th
+              style="
+                background: #e0f7f5;
+                color: #00bfae;
+                font-weight: 600;
+                padding: 12px 18px;
+                text-align: left;
+              "
+            >
+              Bác sĩ phụ trách
+            </th>
+            <td
+              style="padding: 12px 18px"
+              th:text="${order.doctorName != null ? order.doctorName : 'Đang cập nhật'}"
+            ></td>
+          </tr>
+          <tr>
+            <th
+              style="
+                background: #e0f7f5;
+                color: #00bfae;
+                font-weight: 600;
+                padding: 12px 18px;
+                text-align: left;
+              "
+            >
+              Cơ sở thực hiện
+            </th>
+            <td style="padding: 12px 18px" th:text="${order.location}"></td>
+          </tr>
+          <tr>
+            <th
+              style="
+                background: #e0f7f5;
+                color: #00bfae;
+                font-weight: 600;
+                padding: 12px 18px;
+                text-align: left;
+              "
+            >
+              Ngày trả kết quả
+            </th>
+            <td
+              style="padding: 12px 18px"
+              th:text="${order.resultTime != null ? #dates.format(order.resultTime, 'dd/MM/yyyy HH:mm') : ''}"
+            ></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="result-btn" style="margin-top: 32px">
+        <a th:href="@{'/test-orders/list'}">Quay lại danh sách</a>
+      </div>
+    </div>
+  </body>
+</html>

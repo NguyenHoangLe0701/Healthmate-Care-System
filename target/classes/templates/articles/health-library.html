@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="healthLibrarySection(articles)">
+        <div class="health-library">
+            <div class="health-library__card" th:each="article : ${articles}">
+                <a th:href="@{'/articles/' + ${article.id}}">
+                    <img
+                        class="health-library__card-image"
+                        th:src="${article.imageUrl}"
+                        th:alt="${article.title}"
+                    />
+                </a>
+                <div class="health-library__card-content">
+                    <span class="health-library__card-category" th:text="${article.category}">SỨC KHỎE PHỤ NỮ</span>
+                    <h3 class="health-library__card-title">
+                        <a th:href="@{'/articles/' + ${article.id}}" th:text="${article.title}">Những điều phụ nữ cần biết về ung thư cổ tử cung</a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý cơ sở y tế</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+</head>
+<body>
+<div class="dashboard-layout">
+    <nav th:replace="~{fragments/sidebar :: sidebar}"></nav>
+    <div class="main-content">
+        <div th:replace="~{dashboard/dashboard_header :: dashboardHeader}"></div>
+        <div class="dashboard-main">
+            <div th:replace="~{dashboard/hospital-management :: contentHospital}"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html> 

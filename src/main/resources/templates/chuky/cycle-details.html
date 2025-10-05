@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Kết quả tính ngày rụng trứng</title>
+    <link rel="stylesheet" th:href="@{/css/cycle_detail.css}" />
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .querySelectorAll(".cycle-calendar-cell")
+          .forEach(function (cell) {
+            cell.addEventListener("click", function () {
+              document
+                .querySelectorAll(".cycle-calendar-cell.selected")
+                .forEach(function (sel) {
+                  sel.classList.remove("selected");
+                });
+              cell.classList.add("selected");
+            });
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="cycle-app-bg">
+        <div class="cycle-container">
+          <ul class="cycle-info-list">
+            <li>
+              Ngày bắt đầu:
+              <span
+                th:text="${#temporals.format(cycle.startDate, 'dd-MM-yyyy')}"
+              ></span>
+            </li>
+            <li>
+              Độ dài chu kỳ: <span th:text="${cycle.cycleLength}"></span> ngày
+            </li>
+            <li>
+              Số ngày hành kinh:
+              <span th:text="${cycle.periodLength}"></span> ngày
+            </li>
+          </ul>
+          <hr />
+          <div class="cycle-title">Kết quả của bạn</div>
+          <div class="cycle-month-nav">
+            <th:block th:if="${prev2Month != null}">
+              <a
+                class="cycle-month-link"
+                th:href="@{|/cycles/details/${cycle.id}?month=${prev2Month}&year=${prev2Year}|}"
+                >&laquo;</a
+              >
+            </th:block>
+            <th:block th:if="${prev2Month == null}">
+              <span class="cycle-month-link cycle-disabled">&laquo;</span>
+            </th:block>
+            <th:block th:if="${prevMonth != null}">
+              <a
+                class="cycle-month-link"
+                th:href="@{|/cycles/details/${cycle.id}?month=${prevMonth}&year=${prevYear}|}"
+                >&lt;</a
+              >
+            </th:block>
+            <th:block th:if="${prevMonth == null}">
+              <span class="cycle-month-link cycle-disabled">&lt;</span>
+            </th:block>
+            <span class="cycle-month-title">
+              Tháng <span th:text="${showMonth}"></span> -
+              <span th:text="${showYear}"></span>
+            </span>
+            <th:block th:if="${nextMonth != null}">
+              <a
+                class="cycle-month-link"
+                th:href="@{|/cycles/details/${cycle.id}?month=${nextMonth}&year=${nextYear}|}"
+                >&gt;</a
+              >
+            </th:block>
+            <th:block th:if="${nextMonth == null}">
+              <span class="cycle-month-link cycle-disabled">&gt;</span>
+            </th:block>
+            <th:block th:if="${next2Month != null}">
+              <a
+                class="cycle-month-link"
+                th:href="@{|/cycles/details/${cycle.id}?month=${next2Month}&year=${next2Year}|}"
+                >&raquo;</a
+              >
+            </th:block>
+            <th:block th:if="${next2Month == null}">
+              <span class="cycle-month-link cycle-disabled">&raquo;</span>
+            </th:block>
+          </div>
+          <table class="cycle-calendar-table">
+            <thead>
+              <tr>
+                <th class="cycle-calendar-header">CN</th>
+                <th class="cycle-calendar-header">Thứ 2</th>
+                <th class="cycle-calendar-header">Thứ 3</th>
+                <th class="cycle-calendar-header">Thứ 4</th>
+                <th class="cycle-calendar-header">Thứ 5</th>
+                <th class="cycle-calendar-header">Thứ 6</th>
+                <th class="cycle-calendar-header">Thứ 7</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="week : ${weeks}">
+                <td
+                  th:each="day : ${week}"
+                  th:classappend="'cycle-calendar-cell ' + (${day != null} ? 
+                  (${cycleDayLabels[day.toString()]} == 'Ngày có kinh nguyệt' ? 'cycle-bg-menstruation' :
+                  (${cycleDayLabels[day.toString()]} == 'Ngày bắt đầu có khả năng thụ thai' ? 'cycle-bg-fertile-start' :
+                  (${cycleDayLabels[day.toString()]} == 'Ngày có khả năng thụ thai (ngày thứ hai)' ? 'cycle-bg-fertile-2' :
+                  (${cycleDayLabels[day.toString()]} == 'Ngày có khả năng thụ thai (hai ngày trước rụng trứng)' ? 'cycle-bg-fertile-3' :
+                  (${cycleDayLabels[day.toString()]} == 'Ngày có khả năng thụ thai cao' ? 'cycle-bg-fertile-high' :
+                  (${cycleDayLabels[day.toString()]} == 'Ngày trứng rụng, có khả năng thụ thai cao nhất' ? 'cycle-bg-ovulation' :
+                  (${cycleDayLabels[day.toString()]} == 'Tỷ lệ thụ thai giảm' ? 'cycle-bg-test' :
+                  (${cycleDayLabels[day.toString()]} == 'Ngày an toàn tương đối' ? 'cycle-bg-safe' :
+                  (${cycleDayLabels[day.toString()]} == 'Ngày an toàn tuyệt đối' ? 'cycle-bg-safe-absolute' :
+                  (${cycleDayLabels[day.toString()]} == 'Thử thai' ? 'cycle-bg-test' :
+                  (${cycleDayLabels[day.toString()]} == 'Ngày có khả năng thụ thai' ? 'cycle-bg-fertile-2' : 'cycle-bg-default'))))))))))) : '')"
+                >
+                  <div th:if="${day != null}">
+                    <span class="cycle-day-number">
+                      <span th:text="${day.dayOfMonth}"></span>
+                      <span
+                        th:if="${day.dayOfMonth == 1}"
+                        style="font-size: 10px; color: #888"
+                        >/ <span th:text="${day.monthValue}"></span>
+                      </span>
+                    </span>
+                    <div class="cycle-icon-wrapper">
+                      <span th:switch="${cycleDayLabels[day.toString()]}">
+                        <img
+                          th:case="'Ngày có kinh nguyệt'"
+                          class="cycle-calendar-icon"
+                          th:src="@{/images/sinhsan/menstruation.svg}"
+                          alt="Ngày có kinh nguyệt"
+                        />
+                        <img
+                          th:case="'Ngày bắt đầu có khả năng thụ thai'"
+                          class="cycle-calendar-icon"
+                          th:src="@{/images/sinhsan/ovulation-1.svg}"
+                          alt="Ngày bắt đầu có khả năng thụ thai"
+                        />
+                        <img
+                          th:case="'Ngày có khả năng thụ thai (ngày thứ hai)'"
+                          class="cycle-calendar-icon"
+                          th:src="@{/images/sinhsan/ovulation-2.svg}"
+                          alt="Ngày có khả năng thụ thai (ngày thứ hai)"
+                        />
+                        <img
+                          th:case="'Ngày có khả năng thụ thai (hai ngày trước rụng trứng)'"
+                          class="cycle-calendar-icon"
+                          th:src="@{/images/sinhsan/ovulation-3.svg}"
+                          alt="Ngày có khả năng thụ thai (hai ngày trước rụng trứng)"
+                        />
+                        <img
+                          th:case="'Ngày có khả năng thụ thai cao'"
+                          class="cycle-calendar-icon"
+                          th:src="@{/images/sinhsan/ovulation-4.svg}"
+                          alt="Ngày có khả năng thụ thai cao"
+                        />
+                        <img
+                          th:case="'Ngày trứng rụng, có khả năng thụ thai cao nhất'"
+                          class="cycle-calendar-icon"
+                          th:src="@{/images/sinhsan/ovulation-5.svg}"
+                          alt="Ngày trứng rụng, có khả năng thụ thai cao nhất"
+                        />
+                        <img
+                          th:case="'Tỷ lệ thụ thai giảm'"
+                          class="cycle-calendar-icon"
+                          th:src="@{/images/sinhsan/ovulation-6.svg}"
+                          alt="Tỷ lệ thụ thai giảm"
+                        />
+                        <img
+                          th:case="'Ngày có khả năng thụ thai'"
+                          class="cycle-calendar-icon"
+                          th:src="@{/images/sinhsan/ovulation-2.svg}"
+                          alt="Ngày có khả năng thụ thai"
+                        />
+                        <img
+                          th:case="'Ngày an toàn tương đối'"
+                          class="cycle-calendar-icon"
+                          th:src="@{/images/sinhsan/relatively-safe.svg}"
+                          alt="Ngày an toàn tương đối"
+                        />
+                        <img
+                          th:case="'Ngày an toàn tuyệt đối'"
+                          class="cycle-calendar-icon"
+                          th:src="@{/images/sinhsan/absolutely-safe.svg}"
+                          alt="Ngày an toàn tuyệt đối"
+                        />
+                        <img
+                          th:case="'Thử thai'"
+                          class="cycle-calendar-icon"
+                          th:src="@{/images/sinhsan/test-pregnancy.svg}"
+                          alt="Thử thai"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="cycle-legend">
+            <h4 class="cycle-legend-title">Chú thích biểu tượng</h4>
+            <ul class="cycle-legend-list">
+              <li>
+                <img
+                  class="cycle-legend-icon"
+                  th:src="@{/images/sinhsan/menstruation.svg}"
+                  alt="Ngày có kinh nguyệt"
+                />
+                <b>Ngày có kinh nguyệt</b
+                ><span style="margin-left: 6px"
+                  >Đây là ngày có kỳ kinh nguyệt của bạn.</span
+                >
+              </li>
+              <li>
+                <img
+                  class="cycle-legend-icon"
+                  th:src="@{/images/sinhsan/ovulation-1.svg}"
+                  alt="Ngày bắt đầu có khả năng thụ thai"
+                />
+                <b>Ngày bắt đầu có khả năng thụ thai</b
+                ><span style="margin-left: 6px"
+                  >Ngày đầu tiên trong cửa sổ thụ thai.</span
+                >
+              </li>
+              <li>
+                <img
+                  class="cycle-legend-icon"
+                  th:src="@{/images/sinhsan/ovulation-2.svg}"
+                  alt="Ngày có khả năng thụ thai (ngày thứ hai)"
+                />
+                <b>Ngày có khả năng thụ thai (ngày thứ hai)</b
+                ><span style="margin-left: 6px"
+                  >Ngày thứ hai trong cửa sổ thụ thai.</span
+                >
+              </li>
+              <li>
+                <img
+                  class="cycle-legend-icon"
+                  th:src="@{/images/sinhsan/ovulation-2.svg}"
+                  alt="Ngày có khả năng thụ thai"
+                />
+                <b>Ngày có khả năng thụ thai</b
+                ><span style="margin-left: 6px"
+                  >Các ngày trong cửa sổ thụ thai (không phải ngày thứ hai,
+                  không phải hai ngày trước rụng trứng).</span
+                >
+              </li>
+              <li>
+                <img
+                  class="cycle-legend-icon"
+                  th:src="@{/images/sinhsan/ovulation-3.svg}"
+                  alt="Ngày có khả năng thụ thai (hai ngày trước rụng trứng)"
+                />
+                <b>Ngày có khả năng thụ thai (hai ngày trước rụng trứng)</b
+                ><span style="margin-left: 6px"
+                  >Hai ngày trước rụng trứng, khả năng thụ thai tăng.</span
+                >
+              </li>
+              <li>
+                <img
+                  class="cycle-legend-icon"
+                  th:src="@{/images/sinhsan/ovulation-4.svg}"
+                  alt="Ngày có khả năng thụ thai cao"
+                />
+                <b>Ngày có khả năng thụ thai cao</b
+                ><span style="margin-left: 6px"
+                  >Một ngày trước rụng trứng, khả năng thụ thai cao.</span
+                >
+              </li>
+              <li>
+                <img
+                  class="cycle-legend-icon"
+                  th:src="@{/images/sinhsan/ovulation-5.svg}"
+                  alt="Ngày trứng rụng, có khả năng thụ thai cao nhất"
+                />
+                <b>Ngày trứng rụng, có khả năng thụ thai cao nhất</b
+                ><span style="margin-left: 6px"
+                  >Ngày rụng trứng, khả năng thụ thai cao nhất.</span
+                >
+              </li>
+              <li>
+                <img
+                  class="cycle-legend-icon"
+                  th:src="@{/images/sinhsan/ovulation-6.svg}"
+                  alt="Tỷ lệ thụ thai giảm"
+                />
+                <b>Tỷ lệ thụ thai giảm</b
+                ><span style="margin-left: 6px"
+                  >Một ngày sau rụng trứng, khả năng thụ thai giảm.</span
+                >
+              </li>
+              <li>
+                <img
+                  class="cycle-legend-icon"
+                  th:src="@{/images/sinhsan/relatively-safe.svg}"
+                  alt="Ngày an toàn tương đối"
+                />
+                <b>Ngày an toàn tương đối</b
+                ><span style="margin-left: 6px"
+                  >Sau hành kinh, trước cửa sổ thụ thai.</span
+                >
+              </li>
+              <li>
+                <img
+                  class="cycle-legend-icon"
+                  th:src="@{/images/sinhsan/absolutely-safe.svg}"
+                  alt="Ngày an toàn tuyệt đối"
+                />
+                <b>Ngày an toàn tuyệt đối</b
+                ><span style="margin-left: 6px"
+                  >Cuối chu kỳ, sau cửa sổ thụ thai.</span
+                >
+              </li>
+              <li>
+                <img
+                  class="cycle-legend-icon"
+                  th:src="@{/images/sinhsan/test-pregnancy.svg}"
+                  alt="Thử thai"
+                />
+                <b>Thử thai</b
+                ><span style="margin-left: 6px"
+                  >Một tuần sau rụng trứng, nên thử thai.</span
+                >
+              </li>
+            </ul>
+          </div>
+          <h2 class="cycle-section-title">Nhắc nhở</h2>
+          <ul class="cycle-info-list">
+            <li>
+              <span class="cycle-highlight">Ngày rụng trứng dự kiến:</span>
+              <span
+                th:text="${#temporals.format(ovulation, 'dd-MM-yyyy')}"
+              ></span>
+            </li>
+            <li>
+              <span class="cycle-highlight">Cửa sổ thụ thai:</span>
+              <span
+                th:text="${#temporals.format(fertileWindow[0], 'dd-MM-yyyy')}"
+              ></span>
+              đến
+              <span
+                th:text="${#temporals.format(fertileWindow[1], 'dd-MM-yyyy')}"
+              ></span>
+            </li>
+          </ul>
+          <form
+            th:action="@{/cycles/add-reminder}"
+            method="post"
+            class="cycle-reminder-form"
+          >
+            <input type="hidden" name="cycleId" th:value="${cycle.id}" />
+            <div class="cycle-reminder-group">
+              <label class="cycle-reminder-label">Loại thuốc tránh thai:</label>
+              <select name="method" class="cycle-reminder-select" required>
+                <option value="PILL_21">Thuốc 21 viên</option>
+                <option value="PILL_28">Thuốc 28 viên</option>
+              </select>
+            </div>
+            <div class="cycle-reminder-group">
+              <label class="cycle-reminder-radio">
+                <input
+                  type="radio"
+                  name="pillOption"
+                  value="auto"
+                  checked
+                  onclick="document.getElementById('pillTimeInput').style.display='none';"
+                />
+                Để hệ thống tự tạo lịch nhắc (giờ mặc định 20:00)
+              </label>
+            </div>
+            <div class="cycle-reminder-group">
+              <label class="cycle-reminder-radio">
+                <input
+                  type="radio"
+                  name="pillOption"
+                  value="manual"
+                  onclick="document.getElementById('pillTimeInput').style.display='block';"
+                />
+                Tôi muốn chọn giờ nhắc uống thuốc
+              </label>
+              <div
+                id="pillTimeInput"
+                class="cycle-reminder-time"
+                style="display: none; margin-top: 8px"
+              >
+                <input
+                  type="time"
+                  name="pillTime"
+                  class="cycle-reminder-time-input"
+                />
+              </div>
+            </div>
+            <button type="submit" class="cycle-reminder-btn">
+              Tạo lịch nhắc
+            </button>
+          </form>
+
+          <!-- Thêm danh sách lịch nhắc và nút xóa nhiều -->
+          <h3 class="cycle-pill-title">Lịch uống thuốc tránh thai:</h3>
+          <ul class="cycle-pill-list">
+            <li th:each="reminder : ${pillReminders}">
+              <label>
+                <input
+                  type="checkbox"
+                  class="reminder-checkbox"
+                  data-reminder-id="[[${reminder.id}]]"
+                  th:value="${reminder.id}"
+                  onclick="syncCheckboxes(this)"
+                />
+                <span class="cycle-pill-icon">💊</span>
+                <span
+                  th:text="${#temporals.format(reminder.date, 'dd-MM-yyyy')}"
+                ></span>
+                <span th:if="${reminder.time != null}">
+                  - Nhắc lúc <span th:text="${reminder.time}"></span>
+                </span>
+              </label>
+            </li>
+          </ul>
+          <form
+            id="reminderNotifyForm"
+            style="margin-bottom: 10px; display: inline"
+          >
+            <input
+              type="hidden"
+              name="notifyReminderIds"
+              id="notifyReminderIds"
+            />
+            <button
+              type="button"
+              class="cycle-reminder-btn"
+              onclick="notifySelectedReminders()"
+              style="margin-right: 10px"
+            >
+              Nhắc nhở các lịch đã chọn
+            </button>
+          </form>
+          <form
+            th:action="@{/cycles/delete-reminders}"
+            method="post"
+            id="multiDeleteForm"
+            style="display: inline"
+          >
+            <input type="hidden" name="cycleId" th:value="${cycle.id}" />
+            <!-- Sử dụng nhiều input hidden cho từng id -->
+            <span id="deleteReminderInputs"></span>
+            <button
+              type="submit"
+              class="cycle-reminder-delete-btn"
+              onclick="return confirm('Bạn chắc chắn muốn xóa các lịch nhắc đã chọn?')"
+            >
+              Xóa các lịch nhắc đã chọn
+            </button>
+          </form>
+          <script>
+            // Đồng bộ checkbox và cập nhật hidden input cho cả hai form
+            function syncCheckboxes(changedCb) {
+              const checkboxes =
+                document.querySelectorAll(".reminder-checkbox");
+              const checkedIds = Array.from(checkboxes)
+                .filter((cb) => cb.checked)
+                .map((cb) => cb.value);
+              document.getElementById("notifyReminderIds").value =
+                checkedIds.join(",");
+              // Xóa các input cũ
+              const deleteInputs = document.getElementById(
+                "deleteReminderInputs"
+              );
+              deleteInputs.innerHTML = "";
+              // Thêm input hidden cho từng id
+              checkedIds.forEach((id) => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "reminderIds";
+                input.value = id;
+                deleteInputs.appendChild(input);
+              });
+            }
+            function notifySelectedReminders() {
+              const checked = document.querySelectorAll(
+                ".reminder-checkbox:checked"
+              );
+              if (checked.length === 0) {
+                alert("Vui lòng chọn ít nhất một lịch nhắc để nhận thông báo!");
+                return;
+              }
+              let msg = "Bạn đã chọn các lịch nhắc:\n";
+              checked.forEach((cb) => {
+                const label = cb.parentElement;
+                msg += "- " + label.innerText.trim() + "\n";
+              });
+              alert(
+                msg +
+                  "\n(Hệ thống sẽ nhắc nhở bạn vào đúng thời gian đã chọn nếu bạn bật thông báo trên trình duyệt hoặc ứng dụng!)"
+              );
+            }
+          </script>
+          <a class="cycle-back-link" th:href="@{/cycles}">Quay lại</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

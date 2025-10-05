@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Nhập kết quả xét nghiệm HIV</title>
+  </head>
+  <body>
+    <h2>Nhập kết quả xét nghiệm HIV</h2>
+    <form
+      th:action="@{'/test-orders/enter-result/' + ${order.id}}"
+      method="post"
+    >
+      <label>Họ tên bệnh nhân:</label>
+      <input type="text" name="patientName" required /><br />
+      <label>Mã khách hàng:</label>
+      <input type="text" name="patientCode" required /><br />
+      <label>Ngày sinh:</label>
+      <input type="date" name="dob" required /><br />
+      <label>Giới tính:</label>
+      <input type="text" name="gender" required /><br />
+      <label>Địa điểm xét nghiệm:</label>
+      <input
+        type="text"
+        name="location"
+        th:value="${order.location}"
+        required
+      /><br />
+      <label>Ngày lấy mẫu:</label>
+      <input type="date" name="sampleDate" required /><br />
+      <label>Ngày trả kết quả:</label>
+      <input type="date" name="resultDate" required /><br />
+      <label>Kết quả:</label>
+      <select name="resultValue" required>
+        <option value="Âm tính">Âm tính</option>
+        <option value="Dương tính">Dương tính</option></select
+      ><br />
+      <label>Phương pháp:</label>
+      <input
+        type="text"
+        name="method"
+        value="Test nhanh, ELISA, Western Blot, PCR"
+        required
+      /><br />
+      <label>Loại mẫu:</label>
+      <input type="text" name="sampleType" value="Máu" required /><br />
+      <label>Ghi chú/Tư vấn:</label>
+      <textarea name="note"></textarea><br />
+      <label>Chữ ký bác sĩ:</label>
+      <input type="text" name="doctorSign" /><br />
+      <label>Thông tin cơ sở:</label>
+      <input type="text" name="facilityInfo" /><br />
+      <button type="submit">Lưu kết quả</button>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bảng điều khiển bác sĩ</title>
+    <link rel="stylesheet" th:href="@{/css/doctor-dash.css}" />
+    <!-- CSS moved to static/css/doctordash.css -->
+  </head>
+  <style>
+    /* Table container */
+    .testorder-table-container {
+      background: linear-gradient(120deg, #e0fcf8 0%, #fafdff 100%);
+      padding: 32px 18px 24px 18px;
+      border-radius: 18px;
+      box-shadow: 0 4px 32px #00bfae22, 0 1.5px 0 #b2f5ea;
+      max-width: 1200px;
+      margin: 32px auto 0 auto;
+    }
+
+    /* Table */
+    .testorder-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px #b2f5ea33;
+    }
+    .testorder-th,
+    .testorder-td {
+      padding: 14px 14px;
+      border-bottom: 1.5px solid #e0fcf8;
+      text-align: left;
+      font-size: 1.04em;
+      transition: background 0.18s;
+    }
+    .testorder-th {
+      background: linear-gradient(90deg, #e0fcf8 60%, #fafdff 100%);
+      color: #00bfae;
+      font-weight: 800;
+      letter-spacing: 0.7px;
+      border-top: 2px solid #b2f5ea;
+      text-shadow: 0 1px 0 #fff;
+    }
+    .testorder-table tr:last-child .testorder-td {
+      border-bottom: none;
+    }
+    .testorder-td {
+      vertical-align: middle;
+      background: #fff;
+      transition: background 0.18s;
+    }
+    .testorder-table tr:hover .testorder-td {
+      background: #e0fcf8;
+    }
+
+    /* Status badge */
+    .testorder-status {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 0.98em;
+      background: #e0fcf8;
+      color: #00bfae;
+      box-shadow: 0 1px 4px #b2f5ea33;
+      margin-right: 2px;
+    }
+    .testorder-status.result {
+      background: #e3f0ff;
+      color: #1976d2;
+    }
+
+    /* Button styles */
+    .testorder-btn {
+      background: linear-gradient(90deg, #00bfae 60%, #1abc9c 100%);
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1em;
+      transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+      box-shadow: 0 2px 12px #b2f5ea44;
+      margin-bottom: 4px;
+      letter-spacing: 0.2px;
+      outline: none;
+      margin-right: 4px;
+    }
+    .testorder-btn[disabled],
+    .testorder-btn.disabled {
+      background: #aaa;
+      cursor: not-allowed;
+      box-shadow: none;
+      opacity: 0.7;
+    }
+    .testorder-btn:not([disabled]):hover {
+      background: linear-gradient(90deg, #1abc9c 10%, #00bfae 100%);
+      box-shadow: 0 6px 24px #00bfae44;
+      transform: translateY(-1px) scale(1.04);
+    }
+    .testorder-btn:active:not([disabled]) {
+      background: #1976d2;
+      box-shadow: 0 1px 4px #b2f5ea44;
+      transform: scale(0.98);
+    }
+
+    /* Select & form */
+    .testorder-select,
+    .testorder-select:focus {
+      padding: 8px 14px;
+      border-radius: 7px;
+      border: 1.5px solid #b2f5ea;
+      font-size: 1em;
+      background: #fafdff;
+      transition: border 0.18s, box-shadow 0.18s;
+      box-shadow: 0 1px 4px #b2f5ea;
+      outline: none;
+      margin-bottom: 6px;
+    }
+    .testorder-select:focus {
+      border: 1.5px solid #00bfae;
+      background: #e0fcf8;
+      box-shadow: 0 2px 8px #00bfae44;
+    }
+    .testorder-status-form {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      margin-bottom: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .testorder-table {
+        font-size: 0.98em;
+      }
+    }
+    @media (max-width: 600px) {
+      .testorder-table-container {
+        padding: 8px 2px 8px 2px;
+      }
+      .testorder-table {
+        font-size: 0.95em;
+      }
+      .testorder-th,
+      .testorder-td {
+        font-size: 0.95em;
+        padding: 8px 6px;
+      }
+      .testorder-btn {
+        padding: 7px 10px;
+        font-size: 0.97em;
+      }
+    }
+  </style>
+  <body class="doctor-dash-body">
+    <div th:replace="doctor_dash/fragments/doctor-header :: doctorHeader"></div>
+    <div class="doctor-dash-container">
+      <div class="doctor-dash-section-title" style="margin-bottom: 18px">
+        Danh sách tất cả đơn xét nghiệm
+      </div>
+      <div class="testorder-table-container">
+        <table class="testorder-table">
+          <tr>
+            <th class="testorder-th">ID</th>
+            <th class="testorder-th">Họ tên</th>
+            <th class="testorder-th">Loại xét nghiệm</th>
+            <th class="testorder-th">Trạng thái</th>
+            <th class="testorder-th">Thời gian đặt</th>
+            <th class="testorder-th">Kết quả</th>
+            <th class="testorder-th">Giá cần thanh toán</th>
+            <th class="testorder-th">Nhập kết quả</th>
+          </tr>
+          <tr th:each="order : ${orders}">
+            <td class="testorder-td" th:text="${order.id}"></td>
+            <td class="testorder-td" th:text="${order.fullName}"></td>
+            <td class="testorder-td" th:text="${order.testType}"></td>
+            <td class="testorder-td">
+              <span th:switch="${order.status}">
+                <span th:case="'BOOKED'" class="testorder-status"
+                  >Đã đặt lịch</span
+                >
+                <span th:case="'CHECKED_IN'" class="testorder-status"
+                  >Đã đến cơ sở</span
+                >
+                <span th:case="'SAMPLE_COLLECTED'" class="testorder-status"
+                  >Đã lấy mẫu</span
+                >
+                <span th:case="'TESTING'" class="testorder-status"
+                  >Đang xét nghiệm</span
+                >
+                <span th:case="'RESULT_READY'" class="testorder-status"
+                  >Có kết quả</span
+                >
+                <span th:case="'RESULT_DELIVERED'" class="testorder-status"
+                  >Đã trả kết quả</span
+                >
+                <span th:case="'CONSULTED'" class="testorder-status"
+                  >Đã tư vấn</span
+                >
+                <span th:case="*" class="testorder-status"
+                  >[[${order.status}]]</span
+                >
+              </span>
+            </td>
+            <td
+              class="testorder-td"
+              th:text="${order.bookingTime != null ? #strings.substring(order.bookingTime, 0, 16) : ''}"
+            ></td>
+            <td class="testorder-td">
+              <span
+                th:if="${order.result != null}"
+                class="testorder-status result"
+                th:text="${order.result}"
+              ></span>
+              <span
+                th:if="${order.result == null}"
+                class="testorder-status result"
+                >Chưa có</span
+              >
+            </td>
+            <td
+              class="testorder-td"
+              th:text="${order.price != null ? #numbers.formatInteger(order.price, 0, 'POINT') + ' đ' : ''}"
+            ></td>
+            <td class="testorder-td">
+              <a
+                th:if="${order.result == null}"
+                th:href="@{'/test-orders/enter-result/' + ${order.id}}"
+                class="testorder-btn"
+                >Xác nhận/Gửi kết quả</a
+              >
+              <span
+                th:if="${order.result != null}"
+                class="testorder-btn disabled"
+                disabled
+                >Đã có</span
+              >
+              <form
+                th:action="@{'/test-orders/update-status/' + ${order.id}}"
+                method="post"
+                class="testorder-status-form"
+              >
+                <select
+                  class="testorder-select"
+                  id="status"
+                  name="status"
+                  required
+                >
+                  <option value="BOOKED">Đã đặt lịch</option>
+                  <option value="CHECKED_IN">CHECKED_IN - Đã đến cơ sở</option>
+                  <option value="SAMPLE_COLLECTED">
+                    SAMPLE_COLLECTED - Đã lấy mẫu
+                  </option>
+                  <option value="TESTING">TESTING - Đang xét nghiệm</option>
+                  <option value="RESULT_READY">
+                    RESULT_READY - Có kết quả
+                  </option>
+                  <option value="CONSULTED">CONSULTED - Đã tư vấn</option>
+                </select>
+                <button type="submit" class="testorder-btn">
+                  Cập nhật trạng thái
+                </button>
+              </form>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div th:replace="doctor_dash/fragments/doctor-footer :: doctorFooter"></div>
+  </body>
+</html>

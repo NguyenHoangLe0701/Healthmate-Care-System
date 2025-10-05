@@ -1,0 +1,410 @@
+<div th:fragment="contentConsultant">
+    <link rel="stylesheet" th:href="@{/css/consultant.css}" />
+    
+    <!-- Header Section -->
+    <div class="consultant-header">
+        <div class="consultant-header-content">
+            <div class="consultant-title-section">
+                <h1 class="consultant-main-title">
+                    <i class="fa fa-users"></i>
+                    Quản lý Tư vấn viên
+                </h1>
+                <p class="consultant-subtitle">Quản lý thông tin và trạng thái của các tư vấn viên trong hệ thống</p>
+            </div>
+            <div class="consultant-stats">
+                <div class="consultant-stat-card">
+                    <div class="consultant-stat-icon active">
+                        <i class="fa fa-user-check"></i>
+                    </div>
+                    <div class="consultant-stat-info">
+                        <span class="consultant-stat-number" th:text="${#lists.size(consultants)}">0</span>
+                        <span class="consultant-stat-label">Tổng số</span>
+                    </div>
+                </div>
+                <div class="consultant-stat-card">
+                    <div class="consultant-stat-icon">
+                        <i class="fa fa-user-clock"></i>
+                    </div>
+                    <div class="consultant-stat-info">
+                        <span class="consultant-stat-number" th:text="${#lists.size(consultants.?[status == 'ACTIVE'])}">0</span>
+                        <span class="consultant-stat-label">Đang hoạt động</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="consultant-action-bar">
+        <div class="consultant-search-box">
+            <i class="fa fa-search"></i>
+            <input type="text" id="consultantSearch" placeholder="Tìm kiếm tư vấn viên..." class="consultant-search-input">
+        </div>
+        <button class="consultant-btn-primary" onclick="openAddModal()">
+            <i class="fa fa-plus"></i>
+            Thêm Tư vấn viên
+        </button>
+    </div>
+
+    <!-- Table Container -->
+    <div class="consultant-table-wrapper">
+        <div class="consultant-table-container">
+            <table class="consultant-table" id="consultantTable">
+                <thead>
+                    <tr>
+                        <th class="consultant-th-id">ID</th>
+                        <th class="consultant-th-name">Họ tên</th>
+                        <th class="consultant-th-email">Email</th>
+                        <th class="consultant-th-phone">Số điện thoại</th>
+                        <th class="consultant-th-spec">Chuyên môn</th>
+                        <th class="consultant-th-exp">Kinh nghiệm</th>
+                        <th class="consultant-th-status">Trạng thái</th>
+                        <th class="consultant-th-actions">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="consultant : ${consultants}" class="consultant-row">
+                        <td class="consultant-td-id" th:text="${consultant.id}"></td>
+                        <td class="consultant-td-name">
+                            <div class="consultant-name-info">
+                                <div class="consultant-avatar">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div class="consultant-name-details">
+                                    <span class="consultant-full-name" th:text="${consultant.name}"></span>
+                                    <span class="consultant-email-small" th:text="${consultant.email}"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="consultant-td-email" th:text="${consultant.email}"></td>
+                        <td class="consultant-td-phone" th:text="${consultant.phone}"></td>
+                        <td class="consultant-td-spec">
+                            <span class="consultant-specialization" th:text="${consultant.specialization}"></span>
+                        </td>
+                        <td class="consultant-td-exp">
+                            <div class="consultant-experience" th:text="${consultant.experience}"></div>
+                        </td>
+                        <td class="consultant-td-status">
+                            <span th:if="${consultant.status == 'ACTIVE'}" class="consultant-status-badge active">
+                                <i class="fa fa-circle"></i> Hoạt động
+                            </span>
+                            <span th:if="${consultant.status == 'INACTIVE'}" class="consultant-status-badge inactive">
+                                <i class="fa fa-circle"></i> Không hoạt động
+                            </span>
+                        </td>
+                        <td class="consultant-td-actions">
+                            <div class="consultant-action-buttons">
+                                <button class="consultant-btn-icon consultant-btn-view" 
+                                        th:title="'Xem chi tiết: ' + ${consultant.name}"
+                                        onclick="viewConsultant(this)"
+                                        th:data-id="${consultant.id}"
+                                        th:data-name="${consultant.name}"
+                                        th:data-email="${consultant.email}"
+                                        th:data-phone="${consultant.phone}"
+                                        th:data-specialization="${consultant.specialization}"
+                                        th:data-experience="${consultant.experience}"
+                                        th:data-status="${consultant.status}"
+                                        th:data-notes="${consultant.notes}">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                <button class="consultant-btn-icon consultant-btn-edit" 
+                                        th:title="'Chỉnh sửa: ' + ${consultant.name}"
+                                        onclick="openEditModal(this)"
+                                        th:data-id="${consultant.id}"
+                                        th:data-name="${consultant.name}"
+                                        th:data-email="${consultant.email}"
+                                        th:data-phone="${consultant.phone}"
+                                        th:data-specialization="${consultant.specialization}"
+                                        th:data-experience="${consultant.experience}"
+                                        th:data-status="${consultant.status}"
+                                        th:data-notes="${consultant.notes}">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button class="consultant-btn-icon consultant-btn-delete" 
+                                        th:title="'Xóa: ' + ${consultant.name}"
+                                        th:data-id="${consultant.id}"
+                                        th:data-name="${consultant.name}"
+                                        onclick="deleteConsultant(this)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(consultants)}" class="consultant-empty-row">
+                        <td colspan="8" class="consultant-empty-cell">
+                            <div class="consultant-empty-state">
+                                <div class="consultant-empty-icon">
+                                    <i class="fa fa-users"></i>
+                                </div>
+                                <h3 class="consultant-empty-title">Chưa có tư vấn viên nào</h3>
+                                <p class="consultant-empty-description">Hãy thêm tư vấn viên đầu tiên để bắt đầu quản lý</p>
+                                <button class="consultant-btn-primary" onclick="openAddModal()">
+                                    <i class="fa fa-plus"></i>
+                                    Thêm Tư vấn viên đầu tiên
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Thêm mới -->
+    <div id="addModal" class="consultant-modal">
+        <div class="consultant-modal-content">
+            <div class="consultant-modal-header">
+                <h2 class="consultant-modal-title">
+                    <i class="fa fa-user-plus"></i>
+                    Thêm Tư vấn viên mới
+                </h2>
+                <button class="consultant-modal-close" onclick="closeAddModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <form th:action="@{/dashboard/consultants/add}" method="post" class="consultant-form">
+                <div class="consultant-form-grid">
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Họ tên <span class="required">*</span></label>
+                        <input type="text" name="name" class="consultant-form-input" required>
+                    </div>
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Email <span class="required">*</span></label>
+                        <input type="email" name="email" class="consultant-form-input" required>
+                    </div>
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Số điện thoại</label>
+                        <input type="text" name="phone" class="consultant-form-input">
+                    </div>
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Chuyên môn</label>
+                        <input type="text" name="specialization" class="consultant-form-input">
+                    </div>
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Kinh nghiệm</label>
+                        <textarea name="experience" class="consultant-form-textarea" rows="3"></textarea>
+                    </div>
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Trạng thái</label>
+                        <select name="status" class="consultant-form-select">
+                            <option value="ACTIVE">Hoạt động</option>
+                            <option value="INACTIVE">Không hoạt động</option>
+                        </select>
+                    </div>
+                    <div class="consultant-form-group consultant-form-full-width">
+                        <label class="consultant-form-label">Ghi chú</label>
+                        <textarea name="notes" class="consultant-form-textarea" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="consultant-form-actions">
+                    <button type="button" class="consultant-btn-secondary" onclick="closeAddModal()">
+                        <i class="fa fa-times"></i>
+                        Hủy
+                    </button>
+                    <button type="submit" class="consultant-btn-primary">
+                        <i class="fa fa-save"></i>
+                        Thêm Tư vấn viên
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Chỉnh sửa -->
+    <div id="editModal" class="consultant-modal">
+        <div class="consultant-modal-content">
+            <div class="consultant-modal-header">
+                <h2 class="consultant-modal-title">
+                    <i class="fa fa-user-edit"></i>
+                    Chỉnh sửa Tư vấn viên
+                </h2>
+                <button class="consultant-modal-close" onclick="closeEditModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <form th:action="@{/dashboard/consultants/edit}" method="post" class="consultant-form">
+                <input type="hidden" name="id" id="editId">
+                <div class="consultant-form-grid">
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Họ tên <span class="required">*</span></label>
+                        <input type="text" name="name" id="editName" class="consultant-form-input" required>
+                    </div>
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Email <span class="required">*</span></label>
+                        <input type="email" name="email" id="editEmail" class="consultant-form-input" required>
+                    </div>
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Số điện thoại</label>
+                        <input type="text" name="phone" id="editPhone" class="consultant-form-input">
+                    </div>
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Chuyên môn</label>
+                        <input type="text" name="specialization" id="editSpecialization" class="consultant-form-input">
+                    </div>
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Kinh nghiệm</label>
+                        <textarea name="experience" id="editExperience" class="consultant-form-textarea" rows="3"></textarea>
+                    </div>
+                    <div class="consultant-form-group">
+                        <label class="consultant-form-label">Trạng thái</label>
+                        <select name="status" id="editStatus" class="consultant-form-select">
+                            <option value="ACTIVE">Hoạt động</option>
+                            <option value="INACTIVE">Không hoạt động</option>
+                        </select>
+                    </div>
+                    <div class="consultant-form-group consultant-form-full-width">
+                        <label class="consultant-form-label">Ghi chú</label>
+                        <textarea name="notes" id="editNotes" class="consultant-form-textarea" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="consultant-form-actions">
+                    <button type="button" class="consultant-btn-secondary" onclick="closeEditModal()">
+                        <i class="fa fa-times"></i>
+                        Hủy
+                    </button>
+                    <button type="submit" class="consultant-btn-primary">
+                        <i class="fa fa-save"></i>
+                        Cập nhật
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Xem chi tiết -->
+    <div id="viewModal" class="consultant-modal">
+        <div class="consultant-modal-content">
+            <div class="consultant-modal-header">
+                <h2 class="consultant-modal-title">
+                    <i class="fa fa-user"></i>
+                    Chi tiết Tư vấn viên
+                </h2>
+                <button class="consultant-modal-close" onclick="closeViewModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="consultant-detail-content">
+                <div class="consultant-detail-avatar">
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="consultant-detail-info">
+                    <div class="consultant-detail-row">
+                        <span class="consultant-detail-label">Họ tên:</span>
+                        <span class="consultant-detail-value" id="viewName"></span>
+                    </div>
+                    <div class="consultant-detail-row">
+                        <span class="consultant-detail-label">Email:</span>
+                        <span class="consultant-detail-value" id="viewEmail"></span>
+                    </div>
+                    <div class="consultant-detail-row">
+                        <span class="consultant-detail-label">Số điện thoại:</span>
+                        <span class="consultant-detail-value" id="viewPhone"></span>
+                    </div>
+                    <div class="consultant-detail-row">
+                        <span class="consultant-detail-label">Chuyên môn:</span>
+                        <span class="consultant-detail-value" id="viewSpecialization"></span>
+                    </div>
+                    <div class="consultant-detail-row">
+                        <span class="consultant-detail-label">Kinh nghiệm:</span>
+                        <span class="consultant-detail-value" id="viewExperience"></span>
+                    </div>
+                    <div class="consultant-detail-row">
+                        <span class="consultant-detail-label">Trạng thái:</span>
+                        <span class="consultant-detail-value" id="viewStatus"></span>
+                    </div>
+                    <div class="consultant-detail-row">
+                        <span class="consultant-detail-label">Ghi chú:</span>
+                        <span class="consultant-detail-value" id="viewNotes"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="consultant-form-actions">
+                <button type="button" class="consultant-btn-secondary" onclick="closeViewModal()">
+                    <i class="fa fa-times"></i>
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functions
+        function openAddModal() {
+            document.getElementById('addModal').classList.add('active');
+        }
+        
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+        }
+        
+        function openEditModal(button) {
+            const data = button.dataset;
+            document.getElementById('editId').value = data.id;
+            document.getElementById('editName').value = data.name;
+            document.getElementById('editEmail').value = data.email;
+            document.getElementById('editPhone').value = data.phone || '';
+            document.getElementById('editSpecialization').value = data.specialization || '';
+            document.getElementById('editExperience').value = data.experience || '';
+            document.getElementById('editStatus').value = data.status || 'ACTIVE';
+            document.getElementById('editNotes').value = data.notes || '';
+            document.getElementById('editModal').classList.add('active');
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function viewConsultant(button) {
+            const data = button.dataset;
+            document.getElementById('viewName').textContent = data.name;
+            document.getElementById('viewEmail').textContent = data.email;
+            document.getElementById('viewPhone').textContent = data.phone || 'Chưa có';
+            document.getElementById('viewSpecialization').textContent = data.specialization || 'Chưa có';
+            document.getElementById('viewExperience').textContent = data.experience || 'Chưa có';
+            document.getElementById('viewStatus').textContent = data.status === 'ACTIVE' ? 'Hoạt động' : 'Không hoạt động';
+            document.getElementById('viewNotes').textContent = data.notes || 'Không có ghi chú';
+            document.getElementById('viewModal').classList.add('active');
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.remove('active');
+        }
+
+        function deleteConsultant(button) {
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+            if (confirm(`Bạn có chắc chắn muốn xóa tư vấn viên "${name}"?`)) {
+                window.location.href = `/dashboard/consultants/delete/${id}`;
+            }
+        }
+        
+        // Search functionality
+        document.getElementById('consultantSearch').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#consultantTable tbody tr.consultant-row');
+            
+            rows.forEach(row => {
+                const name = row.querySelector('.consultant-full-name').textContent.toLowerCase();
+                const email = row.querySelector('.consultant-td-email').textContent.toLowerCase();
+                const specialization = row.querySelector('.consultant-specialization').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || email.includes(searchTerm) || specialization.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = ['addModal', 'editModal', 'viewModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</div> 

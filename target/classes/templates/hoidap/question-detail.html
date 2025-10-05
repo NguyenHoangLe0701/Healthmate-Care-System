@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chi tiết câu hỏi</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/congdongchitiet.css}" />
+    <script>
+      function showImagePreview(event) {
+        const input = event.target;
+        const preview = document.getElementById("imagePreview");
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = "block";
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          preview.src = "";
+          preview.style.display = "none";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="main-wrap">
+        <div class="questions-list">
+          <div class="question-card">
+            <div class="question-title" th:text="${question.title}"></div>
+            <div class="question-content" th:text="${question.content}"></div>
+            <div
+              th:if="${question.imageUrl != null and question.imageUrl != ''}"
+              style="margin: 12px 0"
+            >
+              <img
+                th:src="${question.imageUrl}"
+                alt="Ảnh minh họa"
+                style="
+                  max-width: 400px;
+                  max-height: 300px;
+                  border: 1px solid #ccc;
+                "
+              />
+            </div>
+            <div class="question-meta">
+              <span
+                class="question-specialist"
+                th:text="'Chuyên khoa ' + ${question.specialization}"
+              ></span>
+              <span>Tuổi: <span th:text="${question.age}"></span></span>
+              <span>Giới tính: <span th:text="${question.gender}"></span></span>
+            </div>
+            <div class="question-meta">
+              <span
+                >Thời gian đăng:
+                <span
+                  th:text="${#temporals.format(question.createdAt, 'dd/MM/yyyy HH:mm')}"
+                ></span
+              ></span>
+              <span th:if="${question.answeredAt != null}"
+                >| Thời gian trả lời:
+                <span
+                  th:text="${#temporals.format(question.answeredAt, 'dd/MM/yyyy HH:mm')}"
+                ></span
+              ></span>
+            </div>
+            <div th:if="${question.rejected}">
+              <p style="color: red; font-weight: bold">
+                Câu hỏi đã bị bác sĩ từ chối.
+              </p>
+              <p
+                th:if="${question.rejectedReason != null && question.rejectedReason != ''}"
+              >
+                <b>Lý do từ chối:</b>
+                <span th:text="${question.rejectedReason}"></span>
+              </p>
+            </div>
+            <div style="margin-top: 18px">
+              <span
+                th:if="${question.rejected}"
+                style="color: red; font-weight: bold"
+                >[Đã bị từ chối]</span
+              >
+              <span
+                th:if="${(question.rejected == null or question.rejected == false) and (question.closed == true)}"
+                style="color: red; font-weight: bold"
+                >[Đã đóng]</span
+              >
+              <span
+                th:if="${(question.closed == null or question.closed == false) and (question.rejected == null or question.rejected == false)}"
+                style="color: green; font-weight: bold"
+                >[Đang mở]</span
+              >
+              <!-- Nút đóng/mở và từ chối câu hỏi cho bác sĩ -->
+              <div style="margin: 12px 0">
+                <form
+                  th:if="${session.role == 'DOCTOR' and (question.closed == null or question.closed == false) and (question.rejected == null or question.rejected == false)}"
+                  th:action="@{/cong-dong/toggle-close}"
+                  method="post"
+                  style="display: inline"
+                >
+                  <input
+                    type="hidden"
+                    name="questionId"
+                    th:value="${question.id}"
+                  />
+                  <button
+                    type="submit"
+                    th:text="${question.closed} ? 'Mở lại câu hỏi' : 'Đóng câu hỏi'"
+                    class="close-question-btn"
+                  ></button>
+                </form>
+                <span
+                  th:if="${session.role == 'DOCTOR' and (question.closed == null or question.closed == false) and (question.rejected == null or question.rejected == false)}"
+                >
+                  <button
+                    type="button"
+                    onclick="document.getElementById('rejectForm').style.display='block'"
+                    class="reject-question-btn"
+                  >
+                    Từ chối câu hỏi
+                  </button>
+                  <form
+                    id="rejectForm"
+                    th:action="@{/cong-dong/reject}"
+                    method="post"
+                    style="display: none; margin-top: 8px"
+                  >
+                    <input
+                      type="hidden"
+                      name="questionId"
+                      th:value="${question.id}"
+                    />
+                    <textarea
+                      name="reason"
+                      rows="2"
+                      cols="40"
+                      placeholder="Nhập lý do từ chối..."
+                    ></textarea
+                    ><br />
+                    <button type="submit" style="color: red">
+                      Xác nhận từ chối
+                    </button>
+                    <button
+                      type="button"
+                      onclick="document.getElementById('rejectForm').style.display='none'"
+                    >
+                      Hủy
+                    </button>
+                  </form>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="question-card">
+            <h3 style="margin-bottom: 10px">Trả lời</h3>
+            <ul>
+              <li th:each="a : ${answers}">
+                <b th:text="${a.doctor.name}"></b>:
+                <span th:text="${a.content}"></span>
+                <span
+                  style="color: #888; font-size: 0.9em"
+                  th:text="${#temporals.format(a.createdAt, 'dd/MM/yyyy HH:mm')}"
+                ></span>
+                <!-- Hiển thị reply của user cho từng answer nếu có -->
+                <div
+                  th:if="${a.userReply != null}"
+                  style="
+                    margin-top: 8px;
+                    margin-left: 24px;
+                    background: #f8fafc;
+                    border-radius: 6px;
+                    padding: 8px 12px;
+                  "
+                >
+                  <b>Bạn:</b> <span th:text="${a.userReply}"></span>
+                  <span
+                    style="color: #888; font-size: 0.9em"
+                    th:text="${a.userReplyAt != null ? #temporals.format(a.userReplyAt, 'dd/MM/yyyy HH:mm') : ''}"
+                  ></span>
+                </div>
+                <!-- DEBUG: Hiển thị giá trị userId để kiểm tra -->
+                <!-- Form trả lời lại bác sĩ: chỉ hiện cho USER là chủ câu hỏi, nếu câu hỏi chưa đóng/chưa bị từ chối, đã có trả lời bác sĩ, và user chưa reply -->
+                <form
+                  th:if="${session.role == 'USER' and (question.closed == null or question.closed == false) and (question.rejected == null or question.rejected == false) and a.userReply == null and question.user != null and session.userId != null and (question.user.id == session.userId or question.user.id.equals(session.userId))}"
+                  th:action="@{/cong-dong/reply}"
+                  method="post"
+                  style="margin-top: 10px; margin-left: 24px"
+                >
+                  <input type="hidden" name="answerId" th:value="${a.id}" />
+                  <textarea
+                    name="replyContent"
+                    rows="2"
+                    cols="40"
+                    placeholder="Phản hồi cho bác sĩ..."
+                    required
+                    class="ask-form-input"
+                  ></textarea>
+                  <br />
+                  <button
+                    type="submit"
+                    class="ask-form-btn"
+                    style="width: auto; padding: 6px 18px; font-size: 1em"
+                  >
+                    Gửi phản hồi
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+          <!-- Form trả lời cho bác sĩ (nếu là bác sĩ) -->
+          <div
+            class="question-card"
+            th:if="${session.role == 'DOCTOR' and (question.closed == null or question.closed == false) and (question.rejected == null or question.rejected == false)}"
+          >
+            <form th:action="@{/cong-dong/answer}" method="post">
+              <input
+                type="hidden"
+                name="questionId"
+                th:value="${question.id}"
+              />
+              <textarea
+                name="content"
+                placeholder="Nội dung trả lời"
+                required
+                class="ask-form-input"
+              ></textarea>
+              <br />
+              <button type="submit" class="ask-form-btn">Gửi trả lời</button>
+            </form>
+          </div>
+          <!-- Nút cảm ơn hiện đại, chỉ cho cảm ơn 1 lần, cập nhật giao diện nếu đã cảm ơn -->
+          <div
+            class="question-card"
+            style="background: transparent; box-shadow: none; border: none"
+          >
+            <form
+              id="thankForm"
+              th:action="@{/cong-dong/thank}"
+              method="post"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                border: none;
+                background: none;
+                box-shadow: none;
+              "
+              th:if="${session.role == 'USER'}"
+            >
+              <input
+                type="hidden"
+                name="questionId"
+                th:value="${question.id}"
+              />
+              <button
+                type="submit"
+                id="thankBtn"
+                class="thank-btn"
+                th:classappend="${userThanked} ? ' disabled' : ''"
+                th:disabled="${userThanked}"
+                aria-label="Cảm ơn câu hỏi này"
+              >
+                <span
+                  class="icon-heart"
+                  th:text="${userThanked} ? '❤️' : '🤍'"
+                ></span>
+                <span th:text="${userThanked} ? 'Đã cảm ơn' : 'Cảm ơn'"></span>
+              </button>
+              <span class="thank-count">
+                <i class="fa fa-heart" style="color: #10b981"></i>
+                <span th:text="${question.thankCount}"></span>
+              </span>
+              <a th:href="@{/cong-dong}" class="back-link"
+                >Quay lại danh sách</a
+              >
+            </form>
+          </div>
+        </div>
+        <!-- Form hỏi câu hỏi cho USER -->
+        <div class="ask-form-wrap" th:if="${session.role} == 'USER'">
+          <div class="ask-form-box">
+            <div class="ask-form-title">Đặt câu hỏi cho bác sĩ</div>
+            <form
+              th:action="@{/cong-dong/ask}"
+              method="post"
+              enctype="multipart/form-data"
+              class="ask-form"
+              id="askForm"
+            >
+              <div class="ask-form-row">
+                <img
+                  src="https://lh3.googleusercontent.com/a/ACg8ocIq4RXRTqIud49CLvJtqBbu76PPxJmposFsVLZAmV0_MUk6OcU=s96-c"
+                  alt="avatar-user"
+                  class="ask-form-avatar"
+                />
+                <input
+                  name="age"
+                  type="number"
+                  placeholder="Tuổi*"
+                  required
+                  class="ask-form-age ask-form-input"
+                />
+                <div class="ask-form-gender">
+                  <label
+                    ><input type="radio" name="gender" value="Nam" /> Nam</label
+                  >
+                  <label
+                    ><input type="radio" name="gender" value="Nữ" checked />
+                    Nữ</label
+                  >
+                </div>
+              </div>
+              <select name="specialization" class="ask-form-input" required>
+                <option value="">Chọn chuyên khoa</option>
+                <option value="Phụ khoa">Chuyên khoa Phụ khoa</option>
+                <option value="Nam Học">Nam Học</option>
+                <option value="Sản">Chuyên khoa Sản</option>
+                <option value="Nội nhi">Chuyên khoa Nội nhi</option>
+              </select>
+              <input
+                name="title"
+                maxlength="150"
+                placeholder="Tiêu đề (vd: Mọc mụn nước ở lòng bàn tay)"
+                required
+                class="ask-form-input"
+              />
+              <textarea
+                name="content"
+                rows="4"
+                placeholder="Nội dung câu hỏi (vd: Mỗi khi sử dụng hóa chất lòng bàn tay tôi bị đỏ và mọc mụn nước. Nhờ bác sĩ tư vấn cho tôi nên sử dụng thuốc gì?) "
+                required
+                class="ask-form-input"
+              ></textarea>
+              <label class="ask-form-image">
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/1828/1828925.png"
+                  alt="Thêm ảnh"
+                />
+                <span>Thêm ảnh</span>
+                <input
+                  type="file"
+                  name="imageFile"
+                  accept="image/*"
+                  style="display: none"
+                  onchange="showImagePreview(event)"
+                />
+              </label>
+              <img
+                id="imagePreview"
+                class="ask-form-image-preview"
+                style="display: none"
+              />
+              <div class="ask-form-note">
+                * Câu trả lời của bạn sẽ được hiển thị công khai
+              </div>
+              <button type="submit" class="ask-form-btn">GỬI</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

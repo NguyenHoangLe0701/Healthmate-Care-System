@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="relatedArticlesSection(articles, title, subtitle)">
+        <div class="related-articles">
+            <h2 class="related-articles__title" th:text="${title}">Bài viết liên quan</h2>
+            <p class="related-articles__subtitle" th:text="${subtitle}">Tìm hiểu thêm bằng cách đọc các bài viết liên quan của chúng tôi!</p>
+            <div class="related-articles__container">
+                <div class="related-articles__card" th:each="article : ${articles}">
+                    <a th:href="@{'/articles/' + ${article.id}}">
+                        <img th:src="${article.imageUrl}" th:alt="${article.title}">
+                    </a>
+                    <div class="related-articles__card-content">
+                        <span class="related-articles__card-tag" th:text="${article.category}"></span>
+                        <h3>
+                            <a th:href="@{'/articles/' + ${article.id}}" th:text="${article.title}"></a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

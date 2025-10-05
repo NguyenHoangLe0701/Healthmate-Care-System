@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Thông tin đặt khám</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+      .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 24px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+      }
+      .info-box {
+        border: 1px solid #ddd;
+        padding: 16px;
+        border-radius: 10px;
+        margin-bottom: 24px;
+      }
+      .info-box h4 {
+        margin-bottom: 12px;
+      }
+      .info-box .row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .info-box img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid #ccc;
+      }
+      .label {
+        background: #e3f2fd;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-weight: bold;
+        color: #0d47a1;
+      }
+      .note {
+        font-size: 14px;
+        color: #888;
+      }
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+      }
+      .btn-next {
+        margin-top: 24px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div layout:fragment="content">
+      <div class="container">
+        <!-- Thông tin người dùng -->
+        <div class="info-box">
+          <h4>Người tới khám</h4>
+          <p class="note">
+            <span th:if="${session.userName == null}">
+              Bạn chưa đăng nhập –
+              <a class="login-trigger" style="color: #009879; font-weight: bold"
+                >Đăng nhập ngay</a
+              >
+            </span>
+            <span th:if="${session.userName != null}">
+              Xin chào
+              <strong th:text="${session.userName}">Tên người dùng</strong>
+            </span>
+          </p>
+        </div>
+
+        <!-- Giờ hẹn -->
+        <div class="info-box">
+          <h4>Giờ hẹn</h4>
+          <p>
+            <span class="label" th:text="${selectedTime}">16:00</span>
+            <span class="label" th:text="${selectedDate}">08/07/2025</span>
+          </p>
+        </div>
+
+        <!-- Thông tin bác sĩ -->
+        <div class="info-box">
+          <div class="row">
+            <img th:src="${doctor.imgUrl}" alt="Ảnh bác sĩ" />
+            <div>
+              <div><strong th:text="${doctor.name}">Tên bác sĩ</strong></div>
+              <div th:text="${doctor.specialty}">Chuyên khoa</div>
+            </div>
+            <strong
+              th:text="${doctor.price != null ? #numbers.formatDecimal(doctor.price, 0, 0) + ' đ' : 'Chưa có'}"
+            >
+              150000 đ
+            </strong>
+          </div>
+        </div>
+
+        <!-- Triệu chứng -->
+        <div class="info-box">
+          <h4>Triệu chứng *</h4>
+          <textarea
+            id="symptom"
+            name="symptom"
+            placeholder="Mô tả triệu chứng..."
+          ></textarea>
+        </div>
+
+        <!-- Form -->
+        <form
+          th:action="@{/thanh-toan}"
+          method="get"
+          style="margin-top: 20px"
+          id="bookingForm"
+        >
+          <input type="hidden" name="doctorId" th:value="${doctor.id}" />
+          <input type="hidden" name="selectedDate" th:value="${selectedDate}" />
+          <input type="hidden" name="selectedTime" th:value="${selectedTime}" />
+          <input type="hidden" name="symptom" id="symptomInput" />
+
+          <button type="submit" id="btnNext" class="btn-next">
+            Tiếp tục đến thanh toán
+          </button>
+        </form>
+
+        <script th:inline="javascript">
+          document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("bookingForm");
+            const nextBtn = document.getElementById("btnNext");
+            const symptomTextarea = document.getElementById("symptom");
+            const symptomInput = document.getElementById("symptomInput");
+
+            const isLoggedIn = /*[[${session.userName != null}]]*/ false;
+
+            nextBtn.addEventListener("click", function (e) {
+              const symptom = symptomTextarea.value.trim();
+
+              if (!isLoggedIn) {
+                e.preventDefault();
+                showAlert("Vui lòng đăng nhập để tiếp tục đặt lịch.");
+                return;
+              }
+
+              if (!symptom) {
+                e.preventDefault();
+                showAlert("Vui lòng nhập triệu chứng trước khi tiếp tục!");
+                return;
+              }
+
+              symptomInput.value = symptom;
+              form.submit();
+            });
+
+            function showAlert(message) {
+              let popup = document.createElement("div");
+              popup.textContent = "⚠️ " + message;
+              popup.style.position = "fixed";
+              popup.style.top = "20px";
+              popup.style.right = "20px";
+              popup.style.padding = "14px 20px";
+              popup.style.backgroundColor = "#f44336";
+              popup.style.color = "#fff";
+              popup.style.borderRadius = "8px";
+              popup.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
+              popup.style.zIndex = 9999;
+              document.body.appendChild(popup);
+
+              setTimeout(() => {
+                popup.style.opacity = "0";
+                setTimeout(() => popup.remove(), 300);
+              }, 3000);
+            }
+          });
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

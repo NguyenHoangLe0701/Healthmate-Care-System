@@ -1,0 +1,45 @@
+<div th:fragment="contentSetting">
+    <link rel="stylesheet" href="/css/setting.css">
+    <div class="setting-container">
+        <div class="setting-title">Cài đặt tài khoản</div>
+        <div class="setting-profile">
+            <img th:src="@{/images/hiemmuon/tải xuống.png}" class="setting-avatar" />
+            <div>
+                <div class="setting-username">ADMIN</div>
+                <div class="setting-role">Quản trị viên</div>
+            </div>
+        </div>
+        <ul class="setting-list">
+            <li><i class="fa-solid fa-key"></i> <a href="#">Đổi mật khẩu</a></li>
+            <li><i class="fa-solid fa-user"></i> <a href="#">Thông tin cá nhân</a></li>
+            <li><i class="fa-solid fa-moon"></i> <a href="#">Chế độ tối</a></li>
+            <li><i class="fa-solid fa-language"></i> <a href="#">Ngôn ngữ</a></li>
+            <li><i class="fa-solid fa-headset"></i> <a href="#">Liên hệ hỗ trợ</a></li>
+            <li style="margin-top: 28px;">
+                <button type="button" class="btn-logout" onclick="showLogoutModal()">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất
+                </button>
+            </li>
+        </ul>
+    </div>
+    <!-- Modal xác nhận đăng xuất -->
+    <div id="logoutModal" class="modal-logout">
+        <div class="modal-content-logout">
+            <span class="close-logout" onclick="closeLogoutModal()">&times;</span>
+            <div class="modal-icon"><i class="fa-solid fa-circle-question"></i></div>
+            <div class="modal-title">Bạn chắc chắn muốn đăng xuất?</div>
+            <form action="/logout" method="post">
+                <button type="submit" class="btn-confirm-logout">Đăng xuất</button>
+                <button type="button" class="btn-cancel-logout" onclick="closeLogoutModal()">Hủy</button>
+            </form>
+        </div>
+    </div>
+    <script>
+    function showLogoutModal() {
+        document.getElementById('logoutModal').classList.add('active');
+    }
+    function closeLogoutModal() {
+        document.getElementById('logoutModal').classList.remove('active');
+    }
+    </script>
+</div> 

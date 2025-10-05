@@ -1,0 +1,75 @@
+/* CSS riêng cho modal hồ sơ sức khỏe */
+
+#addModal > div, #editModal > div {
+  background: #fff;
+  border-radius: 18px;
+  padding: 36px 32px;
+  min-width: 340px;
+  max-width: 95vw;
+  margin: auto;
+  position: relative;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.18);
+  animation: modalIn 0.2s;
+}
+@media (max-width: 600px) {
+  #addModal > div, #editModal > div {
+    padding: 18px 6px;
+    min-width: 98vw;
+  }
+}
+
+#addModal form > div, #editModal form > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 700px) {
+  #addModal form > div, #editModal form > div {
+    grid-template-columns: 1fr;
+  }
+}
+
+.health-form-control, select.health-form-control, textarea.health-form-control {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #cfd8dc;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  background: #f8f9fa;
+  transition: border 0.2s;
+}
+.health-form-control:focus, select.health-form-control:focus, textarea.health-form-control:focus {
+  border: 2px solid #009879;
+  outline: none;
+  background: #fff;
+}
+
+.health-btn-action {
+  padding: 10px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.health-btn-add {
+  background: #009879;
+  color: #fff;
+}
+.health-btn-add:hover {
+  background: #007a63;
+}
+.health-btn-cancel {
+  background: #e0e0e0;
+  color: #333;
+}
+.health-btn-cancel:hover {
+  background: #bdbdbd;
+}
+
+.health-modal-notes-row {
+  grid-column: 1 / -1;
+} 

@@ -1,0 +1,280 @@
+<header th:fragment="siteHeader">
+  <div class="body-custom">
+    <div class="top-bar">
+      <div class="hotline">
+        Hotline đặt khám:
+        <span style="margin-left: 5px">📞 1900 3367</span>
+      </div>
+      <div class="auth">
+        <div
+          th:if="${session.userName != null}"
+          class="hm-dropdown-wrap"
+          style="display: inline-block; position: relative"
+        >
+          <button type="button" id="hmUserDropdownBtn" class="hm-dropdown-btn">
+            <i
+              class="fa-regular fa-circle-user icon-user"
+              style="font-size: 28px"
+            ></i>
+            <span style="font-weight: bold; font-size: 18px"
+              >[[${session.userName}]]</span
+            >
+          </button>
+          <div class="hm-dropdown-menu" id="hmUserDropdownMenu">
+            <a th:href="@{/profile}" class="hm-dropdown-link"
+              >Thông tin cá nhân</a
+            >
+            <a th:href="@{/appointment-history}" class="hm-dropdown-link"
+              >Lịch sử đặt khám</a
+            >
+            <a th:href="@{/test-orders/list}" class="hm-dropdown-link">
+              Lịch sử xét nghiệm
+            </a>
+            <a th:href="@{/health-records}" class="hm-dropdown-link"
+              >Hồ sơ sức khỏe</a
+            >
+            <a th:href="@{/cong-dong/cau-hoi-cua-toi}" class="hm-dropdown-link"
+              >Câu hỏi của tôi</a
+            >
+            <div class="hm-dropdown-divider"></div>
+            <a th:href="@{/auth/logout}" class="hm-dropdown-link hm-logout-link"
+              >Đăng xuất</a
+            >
+          </div>
+        </div>
+        <a th:href="@{/login}" id="loginBtn" th:if="${session.userName == null}"
+          >Đăng nhập / Đăng Ký</a
+        >
+        <span th:if="${session.role == 'DOCTOR'}">
+          <a
+            th:href="@{/doctor_dash/doctor-dashboard}"
+            class="hm-dropdown-link"
+            style="color: #00bfae; font-weight: 700"
+            >DoctorIVIE</a
+          >
+        </span>
+      </div>
+    </div>
+    <div class="main-header">
+      <div class="logo">
+        <a href="/" title="Trang chủ">
+          <img
+            src="https://ivie.vn/_next/image?url=%2F_next%2Fstatic%2FIVIE_logo.svg&w=384&q=75"
+            alt="Logo"
+          />
+        </a>
+      </div>
+      <nav class="nav">
+        <div class="dropdown-wrap" id="dropdownWrap">
+          <a href="javascript:void(0);" class="dropdown" id="dropdownBtn"
+            >Đặt khám</a
+          >
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a th:href="@{/appointment-booking}">Đặt khám online</a>
+            <a th:href="@{/dichvu}">Chuyên khoa</a>
+            <a href="#">Cơ sở y tế</a>
+            <a th:href="@{/bac-si-noi-bat}">Bác sĩ</a>
+            <a th:href="@{/cycles}">Khai báo chu kỳ mới</a>
+            <a th:href="@{/test-orders/book}">Đặt lịch xét nghiệm STIs</a>
+          </div>
+        </div>
+        <a th:href="@{/hiemmuon}">Hiếm Muộn</a>
+        <a th:href="@{/s_experiences}">Kinh nghiệm</a>
+        <a th:href="@{/cong-dong}">Hỏi đáp bác sĩ</a>
+        <a th:href="@{/health-records}">Hồ sơ sức khỏe</a>
+      </nav>
+      <div class="menu-icon" id="menuIcon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <!-- Đổi side-menu thành aside -->
+    <aside class="side-menu" id="sideMenu">
+      <button class="close-btn" id="closeMenu">&times;</button>
+      <div class="menu-section" style="margin-bottom: 8px">
+        <div
+          class="menu-title"
+          style="font-size: 18px; color: #00103a; font-weight: 600"
+        >
+          <span th:if="${session.userName == null}">
+            <a
+              th:href="@{/register}"
+              style="color: #00103a; text-decoration: none; margin-right: 12px"
+              >Đăng ký</a
+            >
+            /
+            <a
+              th:href="@{/login}"
+              style="color: #00103a; text-decoration: none"
+              id="loginBtn"
+              >Đăng nhập</a
+            >
+          </span>
+          <span th:if="${session.userName != null}">
+            <i class="fa-regular fa-circle-user icon-user"></i>
+            <span style="font-weight: bold">[[${session.userName}]]</span>
+            <a
+              th:href="@{/auth/logout}"
+              style="
+                margin-left: 10px;
+                color: black;
+                background: #e0f2ef;
+                padding: 6px 16px;
+                border-radius: 4px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: background 0.2s;
+              "
+              onmouseover="this.style.background='#b4dbd3'"
+              onmouseout="this.style.background='#e0f2ef'"
+              >Đăng xuất</a
+            >
+          </span>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="menu-section">
+        <div class="menu-links">
+          <a href="javascript:void(0);" class="dropdown" id="dropdownBtnMobile"
+            >Đặt khám</a
+          >
+          <div class="dropdown-content" id="dropdownContentMobile">
+            <a th:href="@{/appointment-booking}">Đặt khám online</a>
+            <a href="#">Chuyên khoa</a>
+            <a href="#">Cơ sở y tế</a>
+            <a th:href="@{/bac-si-noi-bat}">Bác sĩ</a>
+            <a th:href="@{/cycles}">Xem lịch sử chu kỳ</a>
+            <a th:href="@{/cycles}">Khai báo chu kỳ mới</a>
+          </div>
+          <a th:href="@{/hiemmuon}">Hiếm Muộn</a>
+          <a th:href="@{articles/s_experiences}">Kinh nghiệm</a>
+          <a href="#">Hỏi đáp bác sĩ</a>
+          <a th:href="@{/health-records}">Hồ sơ sức khỏe</a>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="menu-section">
+        <div
+          class="menu-title"
+          style="font-size: 16px; color: #00103a; font-weight: 500"
+        >
+          Tải App
+        </div>
+        <div class="app-links">
+          <div>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+              alt="Google Play"
+              style="height: 40px"
+            />
+            <img
+              src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+              alt="App Store"
+              style="height: 40px"
+            />
+          </div>
+          <img
+            class="qr"
+            src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://ivie.vn"
+            alt="QR Code"
+          />
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="support-links">
+        <div class="support-box">
+          <span class="icon">📞</span>
+          <div style="font-size: 14px; color: #00103a">Hotline đặt khám:</div>
+          <div style="font-size: 18px; font-weight: 600; color: #009879">
+            1900 3367
+          </div>
+        </div>
+        <div class="support-box">
+          <span class="icon">⚙️</span>
+          <div style="font-size: 14px; color: #00103a">
+            Trung tâm<br />trợ giúp
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div class="side-menu-overlay" id="sideMenuOverlay"></div>
+  </div>
+  <style>
+    /* Custom dropdown for header, avoid class name collision */
+    .hm-dropdown-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hm-dropdown-menu {
+      display: none;
+      position: absolute;
+      left: -100px;
+      top: 100%;
+      background: #fff;
+      border: 1.5px solid #009879;
+      border-radius: 8px;
+      min-width: 200px;
+      box-shadow: 0 4px 16px rgba(0, 152, 121, 0.18),
+        0 1.5px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 8px 0;
+      font-size: 16px;
+      font-weight: 500;
+      animation: hmFadeInDropdown 0.18s;
+    }
+    .hm-dropdown-menu .hm-dropdown-link {
+      display: block;
+      padding: 10px 16px;
+      color: #00103a;
+      text-decoration: none;
+      transition: background 0.18s, color 0.18s;
+    }
+    .hm-dropdown-menu .hm-dropdown-link:hover {
+      background: #e0f2ef !important;
+      color: #009879 !important;
+    }
+    .hm-dropdown-divider {
+      border-top: 1px solid #eee;
+      margin: 4px 0;
+    }
+    .hm-logout-link {
+      color: #e74c3c !important;
+    }
+    @keyframes hmFadeInDropdown {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+  <script>
+    // Custom dropdown for header (no class collision)
+    document.addEventListener("DOMContentLoaded", function () {
+      var userDropdownBtn = document.getElementById("hmUserDropdownBtn");
+      var userDropdownMenu = document.getElementById("hmUserDropdownMenu");
+      if (userDropdownBtn && userDropdownMenu) {
+        userDropdownBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          userDropdownMenu.style.display =
+            userDropdownMenu.style.display === "block" ? "none" : "block";
+        });
+        document.addEventListener("click", function () {
+          userDropdownMenu.style.display = "none";
+        });
+        userDropdownMenu.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+      }
+    });
+  </script>
+</header>
