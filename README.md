@@ -4,9 +4,9 @@
 
 **HealthMate** là hệ thống hỗ trợ chăm sóc sức khỏe sinh sản, tư vấn y tế trực tuyến và quản lý phòng khám.
 Ứng dụng giúp kết nối **người dùng** với **bác sĩ**, đồng thời cung cấp cho **quản trị viên** công cụ quản lý toàn diện.
-### Trang người dùng
-👉 ![User Page](src/main/resources/static/images/github/TrangChu.png)
-👉 ![User Page](src/main/resources/static/images/github/TrangChu-2.png)
+### 👉Trang người dùng
+ ![User Page](src/main/resources/static/images/github/TrangChu.jpg)
+ ![User Page](src/main/resources/static/images/github/TrangChu-2.png)
 ---
 
 ## 🚀 Tính năng nổi bật
@@ -66,18 +66,18 @@ pom.xml
 
 ## 🖼️ Giao diện minh họa
 
-### Công cụ tính ngày rụng trứng
+### 👉Công cụ tính ngày rụng trứng
 
-👉 ![Ovulation Tool](src/main/resources/static/images/github/KhaiBaoChuKyKinhNguyet.png)
-👉 ![Ovulation Tool](src/main/resources/static/images/github/DatXetNghiemSTIs-2.png)
+ ![Ovulation Tool](src/main/resources/static/images/github/KhaiBaoChuKyKinhNguyet.png)
+ ![Ovulation Tool](src/main/resources/static/images/github/DatXetNghiemSTIs-2.png)
 
-### Hỏi đáp bác sĩ
+### 👉Hỏi đáp bác sĩ
 
-👉 ![Doctor Q\&A](src/main/resources/static/images/github/HoiDapBacSy.png)
+ ![Doctor Q\&A](src/main/resources/static/images/github/HoiDapBacSy.png)
 
-### Trang quản trị (Admin Dashboard)
+### 👉Trang quản trị (Admin Dashboard)
 
-👉 ![Admin Dashboard](src/main/resources/static/images/github/admin.png)
+ ![Admin Dashboard](src/main/resources/static/images/github/admin-2.png)
 
 ---
 
@@ -86,8 +86,8 @@ pom.xml
 ### 1. Clone repo
 
 ```bash
-git clone https://github.com/<NguyenHoangLe0701>/healthmate-care-system.git
-cd healthmate-care-system
+git clone https://github.com/<NguyenHoangLe0701>/Healthmate-Care-System.git
+cd Healthmate-Care-System
 ```
 
 ### 2. Chạy bằng Docker
