@@ -189,7 +189,6 @@
                     th:text="${a.userReplyAt != null ? #temporals.format(a.userReplyAt, 'dd/MM/yyyy HH:mm') : ''}"
                   ></span>
                 </div>
-                <!-- DEBUG: Hiển thị giá trị userId để kiểm tra -->
                 <!-- Form trả lời lại bác sĩ: chỉ hiện cho USER là chủ câu hỏi, nếu câu hỏi chưa đóng/chưa bị từ chối, đã có trả lời bác sĩ, và user chưa reply -->
                 <form
                   th:if="${session.role == 'USER' and (question.closed == null or question.closed == false) and (question.rejected == null or question.rejected == false) and a.userReply == null and question.user != null and session.userId != null and (question.user.id == session.userId or question.user.id.equals(session.userId))}"
