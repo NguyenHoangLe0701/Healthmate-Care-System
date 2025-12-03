@@ -22,10 +22,31 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@RequestParam String name, @RequestParam String email, @RequestParam String password,
                           @RequestParam(required = false) String role, Model model, HttpSession session) {
+        // Validation
+        if (name == null || name.trim().isEmpty()) {
+            model.addAttribute("error", "Tên không được để trống");
+            return "redirect:/#register";
+        }
+        if (email == null || email.trim().isEmpty() || !email.contains("@")) {
+            model.addAttribute("error", "Email không hợp lệ");
+            return "redirect:/#register";
+        }
+        if (password == null || password.length() < 6) {
+            model.addAttribute("error", "Mật khẩu phải có ít nhất 6 ký tự");
+            return "redirect:/#register";
+        }
+        
+        // Kiểm tra email đã tồn tại chưa
+        User existingUser = userService.findByEmail(email);
+        if (existingUser != null) {
+            model.addAttribute("error", "Email này đã được sử dụng");
+            return "redirect:/#register";
+        }
+        
         User user = new User();
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
+        user.setName(name.trim());
+        user.setEmail(email.trim().toLowerCase());
+        user.setPassword(password); // UserService sẽ mã hóa password
         if (role != null && !role.isEmpty()) {
             user.setRole(role);
         } else {
@@ -35,6 +56,7 @@ public class AuthController {
         session.setAttribute("userName", user.getName());
         session.setAttribute("userEmail", user.getEmail());
         session.setAttribute("role", user.getRole());
+        session.setAttribute("userId", user.getId());
         // Nếu đăng ký là bác sĩ thì chuyển hướng về trang hỏi đáp bác sĩ
         if ("DOCTOR".equals(user.getRole())) {
             return "redirect:/cong-dong";
