@@ -33,7 +33,6 @@
         /*<![CDATA[*/
         // Đảm bảo users là JS array đúng kiểu
         const users = [[${users}]];
-        console.log('Users data:', users); // Debug log
         
         // Thống kê số lượng theo role
         const roleCount = { 'ADMIN': 0, 'DOCTOR': 0, 'USER': 0 };
@@ -41,8 +40,6 @@
             if (roleCount[u.role]) roleCount[u.role]++;
             else roleCount[u.role] = 1;
         });
-        
-        console.log('Role count:', roleCount); // Debug log
         
         document.getElementById('totalUser').innerText = users.length;
         document.getElementById('totalAdmin').innerText = roleCount['ADMIN'] || 0;
