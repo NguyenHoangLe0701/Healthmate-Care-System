@@ -485,6 +485,60 @@
                 deleteInputs.appendChild(input);
               });
             }
+            // Yêu cầu quyền thông báo từ trình duyệt
+            function requestNotificationPermission() {
+              if ("Notification" in window) {
+                Notification.requestPermission().then(function (permission) {
+                  if (permission === "granted") {
+                    console.log("Đã cấp quyền thông báo");
+                  } else {
+                    console.log("Quyền thông báo bị từ chối");
+                  }
+                });
+              }
+            }
+
+            // Gửi thông báo nhắc nhở
+            function sendNotification(title, body, tag) {
+              if ("Notification" in window && Notification.permission === "granted") {
+                const notification = new Notification(title, {
+                  body: body,
+                  icon: "/images/icon_home/icon.webp",
+                  tag: tag,
+                  requireInteraction: true,
+                });
+                
+                notification.onclick = function () {
+                  window.focus();
+                  notification.close();
+                };
+                
+                // Tự động đóng sau 10 giây
+                setTimeout(() => {
+                  notification.close();
+                }, 10000);
+              }
+            }
+
+            // Lên lịch nhắc nhở cho các reminder đã chọn
+            function scheduleReminders(reminders) {
+              reminders.forEach(function(reminder) {
+                const reminderDate = new Date(reminder.date + "T" + reminder.time);
+                const now = new Date();
+                const timeUntilReminder = reminderDate.getTime() - now.getTime();
+                
+                if (timeUntilReminder > 0) {
+                  setTimeout(function() {
+                    sendNotification(
+                      "Nhắc nhở uống thuốc",
+                      "Đã đến giờ uống thuốc tránh thai: " + reminder.date + " lúc " + reminder.time,
+                      "pill-reminder-" + reminder.id
+                    );
+                  }, timeUntilReminder);
+                }
+              });
+            }
+
             function notifySelectedReminders() {
               const checked = document.querySelectorAll(
                 ".reminder-checkbox:checked"
@@ -493,16 +547,54 @@
                 alert("Vui lòng chọn ít nhất một lịch nhắc để nhận thông báo!");
                 return;
               }
-              let msg = "Bạn đã chọn các lịch nhắc:\n";
-              checked.forEach((cb) => {
-                const label = cb.parentElement;
-                msg += "- " + label.innerText.trim() + "\n";
-              });
-              alert(
-                msg +
-                  "\n(Hệ thống sẽ nhắc nhở bạn vào đúng thời gian đã chọn nếu bạn bật thông báo trên trình duyệt hoặc ứng dụng!)"
-              );
+              
+              // Yêu cầu quyền thông báo nếu chưa có
+              if ("Notification" in window) {
+                if (Notification.permission === "default") {
+                  requestNotificationPermission();
+                }
+                
+                if (Notification.permission === "granted") {
+                  // Thu thập thông tin reminder
+                  const reminders = [];
+                  checked.forEach((cb) => {
+                    const label = cb.parentElement;
+                    const text = label.innerText.trim();
+                    // Parse date và time từ text (format: "💊 DD-MM-YYYY - Nhắc lúc HH:MM")
+                    const match = text.match(/(\d{2}-\d{2}-\d{4}).*?(\d{2}:\d{2})/);
+                    if (match) {
+                      reminders.push({
+                        id: cb.value,
+                        date: match[1],
+                        time: match[2]
+                      });
+                    }
+                  });
+                  
+                  // Lên lịch nhắc nhở
+                  scheduleReminders(reminders);
+                  
+                  alert(
+                    "Đã thiết lập thông báo cho " + checked.length + " lịch nhắc!\n\n" +
+                    "Hệ thống sẽ tự động nhắc nhở bạn vào đúng thời gian đã chọn."
+                  );
+                } else {
+                  alert(
+                    "Vui lòng cấp quyền thông báo cho trình duyệt để nhận nhắc nhở!\n\n" +
+                    "Bạn có thể cấp quyền trong cài đặt trình duyệt."
+                  );
+                }
+              } else {
+                alert("Trình duyệt của bạn không hỗ trợ thông báo.");
+              }
             }
+            
+            // Yêu cầu quyền thông báo khi trang được tải
+            document.addEventListener("DOMContentLoaded", function() {
+              if ("Notification" in window && Notification.permission === "default") {
+                // Không tự động yêu cầu, chỉ yêu cầu khi người dùng click nút
+              }
+            });
           </script>
           <a class="cycle-back-link" th:href="@{/cycles}">Quay lại</a>
         </div>
