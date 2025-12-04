@@ -33,9 +33,22 @@
             />
           </div>
           <div class="cycle-right">
+            <!-- Thông báo lỗi/thành công -->
+            <div th:if="${error}" class="alert alert-error" style="background-color: #fee; color: #c33; padding: 10px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #fcc;">
+              <strong>Lỗi:</strong> <span th:text="${error}"></span>
+              <a th:if="${duplicateCycleId}" th:href="@{/cycles/edit/{id}(id=${duplicateCycleId})}" 
+                 style="margin-left: 10px; color: #1976d2; text-decoration: underline;">
+                Cập nhật chu kỳ hiện có
+              </a>
+            </div>
+            <div th:if="${success}" class="alert alert-success" style="background-color: #efe; color: #3c3; padding: 10px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #cfc;">
+              <strong>Thành công:</strong> <span th:text="${success}"></span>
+            </div>
+            
             <div class="cycle-form-section">
-              <h2>Nhập thông tin của bạn</h2>
-              <form th:action="@{/cycles/add}" method="post">
+              <h2 th:text="${cycle.id != null ? 'Chỉnh sửa chu kỳ' : 'Nhập thông tin của bạn'}"></h2>
+              <form th:object="${cycle}" th:action="${cycle.id != null ? '/cycles/edit/' + cycle.id : '/cycles/add'}" method="post">
+                <input type="hidden" th:if="${cycle.id != null}" th:field="*{id}" />
                 <div class="cycle-form-group">
                   <label class="cycle-method-label">
                     Chọn phương pháp tính toán
@@ -50,8 +63,9 @@
                       id="method1"
                       name="method"
                       value="regular"
-                      th:field="*{cycle.method}"
+                      th:field="*{method}"
                       checked
+                      onchange="updateIrregularInfo()"
                     />
                     <label for="method1" class="cycle-method-box">
                       <img
@@ -65,7 +79,8 @@
                       id="method2"
                       name="method"
                       value="irregular"
-                      th:field="*{cycle.method}"
+                      th:field="*{method}"
+                      onchange="updateIrregularInfo()"
                     />
                     <label for="method2" class="cycle-method-box">
                       <img
@@ -75,6 +90,10 @@
                       <div>Chu kì kinh nguyệt không đều</div>
                     </label>
                   </div>
+                  <div id="irregularInfo" style="display: none; margin-top: 10px; padding: 10px; background-color: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; color: #856404;">
+                    <strong>💡 Lưu ý:</strong> Với chu kỳ không đều, vui lòng nhập <strong>độ dài chu kỳ trung bình</strong> của bạn (tính từ 3-6 chu kỳ gần nhất). 
+                    Ví dụ: nếu các chu kỳ của bạn là 25, 28, 30, 27 ngày, hãy nhập trung bình là 27-28 ngày.
+                  </div>
                 </div>
                 <div class="cycle-form-group">
                   <label class="cycle-label"
@@ -83,18 +102,20 @@
                   >
                   <input
                     type="date"
-                    th:field="*{cycle.startDate}"
+                    th:field="*{startDate}"
                     class="cycle-input"
                     required
+                    max=""
+                    id="startDateInput"
                   />
                 </div>
                 <div class="cycle-form-group">
-                  <label class="cycle-label"
+                  <label class="cycle-label" id="cycleLengthLabel"
                     >Độ dài chu kỳ kinh của bạn
                     <span style="color: #e83e8c">*</span></label
                   >
                   <select
-                    th:field="*{cycle.cycleLength}"
+                    th:field="*{cycleLength}"
                     class="cycle-select"
                     required
                   >
@@ -127,7 +148,7 @@
                     <span style="color: #e83e8c">*</span></label
                   >
                   <select
-                    th:field="*{cycle.periodLength}"
+                    th:field="*{periodLength}"
                     class="cycle-select"
                     required
                   >
@@ -139,8 +160,11 @@
                   </select>
                 </div>
                 <button type="submit" class="cycle-btn">
-                  Tính chỉ số ngay
+                  <span th:text="${cycle.id != null ? 'Cập nhật' : 'Tính chỉ số ngay'}"></span>
                 </button>
+                <a th:if="${cycle.id != null}" th:href="@{/cycles}" class="cycle-btn" style="display: inline-block; margin-left: 10px; text-decoration: none; background-color: #888;">
+                  Hủy
+                </a>
               </form>
             </div>
             <div class="cycle-form-section">
@@ -150,14 +174,21 @@
                   <th>Ngày bắt đầu</th>
                   <th>Độ dài chu kỳ</th>
                   <th>Số ngày hành kinh</th>
-                  <th>Chi tiết</th>
+                  <th>Thao tác</th>
                 </tr>
                 <tr th:each="c : ${cycles}">
-                  <td th:text="${c.startDate}"></td>
+                  <td th:text="${#temporals.format(c.startDate, 'dd-MM-yyyy')}"></td>
                   <td th:text="${c.cycleLength}"></td>
                   <td th:text="${c.periodLength}"></td>
-                  <td>
-                    <a th:href="@{/cycles/details/{id}(id=${c.id})}">Xem</a>
+                  <td style="white-space: nowrap;">
+                    <a th:href="@{/cycles/details/{id}(id=${c.id})}" style="margin-right: 10px;">Xem</a>
+                    <a th:href="@{/cycles/edit/{id}(id=${c.id})}" style="margin-right: 10px; color: #1976d2;">Sửa</a>
+                    <form th:action="@{/cycles/delete/{id}(id=${c.id})}" method="post" style="display: inline;" 
+                          onsubmit="return confirm('Bạn có chắc chắn muốn xóa chu kỳ này? Tất cả lịch nhắc liên quan cũng sẽ bị xóa.');">
+                      <button type="submit" style="background: none; border: none; color: #c33; cursor: pointer; text-decoration: underline; padding: 0;">
+                        Xóa
+                      </button>
+                    </form>
                   </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(cycles)}">
@@ -176,6 +207,40 @@
           </div>
         </div>
       </div>
+      <script>
+        // Giới hạn startDate không được trong tương lai
+        document.addEventListener("DOMContentLoaded", function() {
+          const startDateInput = document.getElementById("startDateInput");
+          if (startDateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            startDateInput.setAttribute("max", today);
+          }
+        });
+        
+        // Cập nhật thông tin khi chọn irregular
+        function updateIrregularInfo() {
+          const method2 = document.getElementById("method2");
+          const irregularInfo = document.getElementById("irregularInfo");
+          const cycleLengthLabel = document.getElementById("cycleLengthLabel");
+          
+          if (method2 && method2.checked) {
+            if (irregularInfo) irregularInfo.style.display = "block";
+            if (cycleLengthLabel) {
+              cycleLengthLabel.innerHTML = "Độ dài chu kỳ trung bình của bạn <span style='color: #e83e8c'>*</span>";
+            }
+          } else {
+            if (irregularInfo) irregularInfo.style.display = "none";
+            if (cycleLengthLabel) {
+              cycleLengthLabel.innerHTML = "Độ dài chu kỳ kinh của bạn <span style='color: #e83e8c'>*</span>";
+            }
+          }
+        }
+        
+        // Gọi khi trang load để set đúng trạng thái
+        document.addEventListener("DOMContentLoaded", function() {
+          updateIrregularInfo();
+        });
+      </script>
     </div>
   </body>
 </html>
